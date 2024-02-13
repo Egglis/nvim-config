@@ -4,3 +4,5 @@
 --
 
 vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "ø", "b")
+vim.keymap.set("n", "Ø", "B")
