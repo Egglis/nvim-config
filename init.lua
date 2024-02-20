@@ -23,7 +23,7 @@ Kickstart.nvim is a template for your own configuration.
 
 Kickstart Guide:
 
-I have Left several `:help X` comments throughout the init.lua
+I have left several `:help X` comments throughout the init.lua
 You should run that command and read that help section for more information.
 
 In addition, I have some `NOTE:` items throughout the file.
@@ -43,8 +43,6 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- [[ Install `lazy.nvim` plugin manager ]]
---    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -58,6 +56,9 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
+
+
+require("custom.plugins")
 
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
@@ -106,6 +107,7 @@ require('lazy').setup({
           -- This step is not supported in many windows environments
           -- Remove the below condition to re-enable on windows
           if vim.fn.has 'win32' == 1 then
+            return
           end
           return 'make install_jsregexp'
         end)(),
@@ -342,34 +344,6 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 
--- Egil keymaps
-
-
-
-vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "ø", "b")
-vim.keymap.set("n", "Ø", "B")
-vim.keymap.set("n", "<leader>fe", ":Ex<enter>")
-
-vim.keymap.set("n", "<C-l>", "V$")
-vim.keymap.set("n", "<C-a>", "ggVG", { noremap = true })
-
--- Move line up
-vim.keymap.set("n", "<A-k>", ":m-2<CR>==", { noremap = true, silent = true })
-vim.keymap.set("v", "<A-k>", ":m'<-2<CR>gv=gv", { noremap = true, silent = true })
-
--- Move line down
-vim.keymap.set("n", "<A-j>", ":m+<CR>==", { noremap = true, silent = true })
-vim.keymap.set("v", "<A-j>", ":m'>+<CR>gv=gv", { noremap = true, silent = true })
-
-vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-W>/gI<Left><Left><Left>")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
-vim.opt.tabstop = 4
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -605,6 +579,7 @@ require('which-key').register({
 require('mason').setup()
 require('mason-lspconfig').setup()
 
+local servers = {
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -612,12 +587,7 @@ require('mason-lspconfig').setup()
 --  the `settings` field of the server config. You must look up that documentation yourself.
 --
 --  If you want to override the default filetypes that your language server will attach to you can
---  define the property 'filetypes' to the map in question.
-local servers = {
-  -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
+  lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
@@ -625,7 +595,7 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
-
+}
 
 -- Setup neovim lua configuration
 require('neodev').setup()
