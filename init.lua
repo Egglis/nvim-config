@@ -478,7 +478,7 @@ local servers = {
   },
 }
 
--- Setup neovim lua configuration
+-- 
 require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
