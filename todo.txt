@@ -1,0 +1,8 @@
+ Stuff to add/explore
+
+ - Harpoon
+ - Tmux
+ - Jq ()
+ - Better git plugin???
+ - Add buffer tabs
+ 

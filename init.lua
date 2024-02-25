@@ -20,9 +20,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("custom.config")
 
-
-
-
 -- [[ Configure plugins ]]
 require('lazy').setup({
   -- Git related plugins
@@ -478,7 +475,7 @@ local servers = {
   },
 }
 
--- 
+--
 require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
