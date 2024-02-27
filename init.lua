@@ -1,4 +1,4 @@
--- Set <space> as the leader key
+--zt/ Set <space> as the leader key
 -- See `:help mapleader`
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -17,9 +17,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 require("custom.config")
-
 -- [[ Configure plugins ]]
 require('lazy').setup({
   -- Git related plugins

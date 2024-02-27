@@ -42,3 +42,6 @@ vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Prev buffer" })
 -- More vscode keymaps!
 vim.keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save" })
 vim.keymap.set("n", "<C-y>", "<CR>")
+
+-- ToogleTerm
+vim.keymap.set("n", "<C-t>", ":ToggleTerm<CR>")

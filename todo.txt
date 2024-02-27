@@ -3,6 +3,6 @@
  - Harpoon
  - Tmux
  - Jq ()
- - Better git plugin???
+ - Better git plugin, already have better terminal support, but need to try lazygit 
  - Add buffer tabs
- 
+ - Configure copilot.lua  
