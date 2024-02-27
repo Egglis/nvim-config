@@ -10,4 +10,5 @@ Set-Alias -Name nconfig -Value goto-nvimconfig
 
 Function saveto-git-repo {cp ~/Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 ~/AppData/Local/nvim/powershell}
 Set-Alias -Name sprofile saveto-git-repo
+
 clear

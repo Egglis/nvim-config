@@ -241,6 +241,7 @@ require('telescope').setup {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        ["<C-y>"] = require("telescope.actions").select_default,
       },
     },
   },
