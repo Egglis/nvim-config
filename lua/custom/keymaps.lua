@@ -45,7 +45,8 @@ vim.keymap.set("n", "<C-y>", "<CR>")
 
 -- ToogleTerm
 vim.keymap.set("n", "<C-t>", ":ToggleTerm<CR>")
-
+vim.keymap.set("t", "<C-c>", "<C-\\><C-n>")
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 -- Window navigation
 vim.keymap.set("t", "<C-w>h", "<C-\\><C-N><C-w>h")
 vim.keymap.set("t", "<C-w>j", "<C-\\><C-N><C-w>j")
