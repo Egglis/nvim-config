@@ -17,5 +17,16 @@ Set-Alias -Name desk -Value goto-desktop
 Function goto-documents {Set-Location -Path ~/Documents}
 Set-Alias -Name doc -Value goto-documents
 
-Function help {Echo "goto-nvimconfig - Go to Neovim Config Directory"; Echo "sprofile - Save Powershell Profile to Git Repo"; Echo "desk - Go to Desktop"; Echo "doc - Go to Documents"}
+Function help {
+		Echo "goto-nvimconfig - Go to Neovim Config Directory"; 
+		Echo "sprofile - Save Powershell Profile to Git Repo"; 
+		Echo "desk - Go to Desktop"; 
+		Echo "doc - Go to Documents";
+		Echo "nvimf - Open Neovim in file explorer";
+}
 Set-Alias -Name phelp -Value help
+
+Function nvim-ex {nvim .}
+Set-Alias -Name nvimf -Value nvim-ex
+
+

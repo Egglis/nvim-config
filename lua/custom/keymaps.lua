@@ -20,6 +20,10 @@ vim.keymap.set("n", "<A-j>", ":m+<CR>==", { noremap = true, silent = true })
 -- Replace all instances of hovered word
 vim.keymap.set("n", "<leader>sr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-W>/gI<Left><Left><Left>")
 
+-- Native window splitting keymaps in neoVim
+vim.keymap.set("n", "<leader>sv", ":vs<CR>", { desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>sh", ":sp<CR>", { desc = "Split window horizontally" })
+
 -- Half move up/do
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
