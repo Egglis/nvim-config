@@ -1,6 +1,0 @@
- Stuff to add/explore
-
- - Harpoon
- - Tmux
- - Learn JQ for jason parsing
- - Better git plugin, already have better terminal support, but need to try lazygit 
