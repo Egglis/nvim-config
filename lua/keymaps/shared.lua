@@ -18,8 +18,11 @@ return function()
     keymap("n", "<C-u>", "<C-u>zz")
     keymap("n", "<C-d>", "<C-d>zz")
 
-    -- Werid keymaps
+		-- E and B
+		keymap({"n", "v"}, "B", "0w")
+		keymap({"n", "v"}, "E", "$")
+
+    -- Weird keymaps
     keymap("n", "<C-a>", "ggVG", { noremap = true })
     keymap("n", "Ø", "/\"<CR>F\"i$<Esc><Esc>", opts)
-    keymap({"n","v"}, "ø","$")
 end

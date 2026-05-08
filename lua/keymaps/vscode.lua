@@ -5,6 +5,9 @@ return function()
     keymap({ "n", "v" }, "K", "<cmd>lua require('vscode').action('editor.action.moveLinesUpAction')<cr>")
     keymap({ "n", "v" }, "J", "<cmd>lua require('vscode').action('editor.action.moveLinesDownAction')<cr>")
 
+    keymap({ "n", "v" }, "<leader>pn", "<cmd>lua require('vscode').action('editor.action.marker.next')<cr>")
+    keymap({ "n", "v" }, "<leader>pp", "<cmd>lua require('vscode').action('editor.action.marker.prev')<cr>")
+
     -- VS-code plugin 
     keymap({ "n", "v" }, "<leader>fa", "<cmd>lua require('vscode').action('periscope.search')<CR>")
     keymap({ "n", "v" }, "<leader>fd", "<cmd>lua require('vscode').action('editor.action.formatDocument')<CR>")
