@@ -34,6 +34,10 @@
 - [x] 4.5 Update `AGENTS.md` for the new options, pickers and plugins. Verify by reading the diff.
 - [x] 4.6 Restore `lua/keymaps/shared.lua` to the original (user decision) and drop its §3 entries from AGENTS.md. Verify: `git diff a7e4463 -- lua/keymaps/shared.lua` is empty.
 
+## 5. Review fixes: punctuation drift
+
+- [x] 5.1 Restore the em-dashes the §4 edits turned into hyphens in `gates.ps1` (pwsh check) and `docs/dependencies.md` (PowerShell row), and use em-dashes on the new ripgrep lines. Verify: `git diff a7e4463..HEAD -- gates.ps1 docs/dependencies.md` shows only the added ripgrep lines.
+
 ## Workflow follow-up
 
 - Whole-change self-review and an optional independent review, per AGENTS.md.
