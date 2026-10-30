@@ -20,7 +20,11 @@ The same config repo is used for both. The entry point (`init.lua`) branches on 
 ```
 nvim/
 ├── init.lua                        # Entry point — conditional boot logic
-├── AGENT.md                        # This file
+├── AGENTS.md                       # This file
+├── gates.ps1                       # OpenSpec gate targets (build/format/validate/deps)
+├── docs/dependencies.md            # Required tools, checked by `gates.ps1 deps`
+├── openspec/                       # OpenSpec specs and changes
+├── .opencode/                      # OpenSpec /opsx-* commands and skills
 ├── readme.md                       # Minimal readme
 ├── lazy-lock.json                  # Pinned plugin versions (commit lockfile)
 ├── nvim.code-workspace             # VSCode workspace for editing this config
@@ -284,3 +288,92 @@ Add to `lua/keymaps/shared.lua`. Must not depend on any plugin.
 
 ### New LSP server
 Add to the `servers` table in `lua/lsp_config.lua`. Mason handles installation automatically.
+
+---
+
+## OpenSpec workflow
+
+<!-- egg-setup: egg-setup 1, 2026-10-30 -->
+
+Changes are tracked with OpenSpec. Build them with `/opsx-apply`, following this loop on top of it.
+Notes go in the change's `devlog/` folder via the `egg-devlog` skill.
+
+### Gates
+
+Run through `gates.ps1` (`pwsh ./gates.ps1 <target>`); a gate passed only if you saw its
+`LABEL_EXIT:0`. Quote exit lines, never paraphrase them.
+
+- `pwsh ./gates.ps1 build` — starts Neovim headless with `init.lua`; fails on any startup error.
+- `pwsh ./gates.ps1 format` — `stylua --check` (2-space indent) over `init.lua` and `lua/`.
+- `pwsh ./gates.ps1 validate` — `openspec validate --strict` on every active change.
+- `pwsh ./gates.ps1 gates` — all of the above.
+
+`pwsh ./gates.ps1 deps` is separate: it checks that every tool and login in `docs/dependencies.md` is
+present.
+
+### Starting a change
+
+1. Ask which change to build, even if there is only one (`pwsh ./gates.ps1 changes`).
+2. Resume point: the newest devlog note's `## Next` and the first unticked task in `tasks.md`. In a
+   fresh session, the `egg-pickup` skill does this and steps 3–5.
+3. `pwsh ./gates.ps1 deps` → `DEPS_EXIT:0`. If not, stop: offer to install what's missing, and hand any
+   login to the user as `!<cmd>` — never try to authenticate yourself.
+4. Clean working tree (unless resuming a recorded stop), `pwsh ./gates.ps1 validate` green, on branch
+   `change/<change-name>`.
+5. Read `proposal.md`, `design.md`, and the specs the change touches.
+
+A task that needs a tool, SDK, service or login not in `docs/dependencies.md` is a stop: ask before
+adding it. Once agreed, add its row there and its check to the `deps` target in `gates.ps1` in the same
+section commit, and say why in a devlog note.
+
+### Each section (`## N.` in `tasks.md`), in order
+
+1. Note the base commit (`git rev-parse --short HEAD`) — in a start note for larger sections.
+2. Implement the section's tasks, with tests. Write a devlog note for any non-obvious decision.
+3. **Self-review** `git diff <base>` plus untracked files, against the spec requirements rather than
+   just the tasks: missing requirements, untested behaviour, swallowed errors, dead or stub code,
+   contracts that drifted from earlier sections, violations of `design.md ## Decisions`.
+   Fix what you find.
+4. `pwsh ./gates.ps1 gates` — all green. A section may land red only as a deliberate, stated call (e.g.
+   a test a later section turns green), recorded in the devlog note and the commit body.
+5. Tick the section's tasks and write the section-done devlog note. Assume the context will be cleared
+   before the next section, so the note must be enough to resume from alone. Its `## Next` names the
+   next section and its first task (or the whole-change review, after the last section). It also records
+   anything this session knows that the repo doesn't: the user's answers, gotchas you hit, deferred
+   nits, decisions in flight. Then make **one commit** for the section:
+   ```
+   feat(<change-name>): <section summary> (§N)
+
+   - N.1 <task summary>
+   - N.2 <task summary>
+   ```
+6. **Hand off.** Run the `egg-handoff` skill to check that a cold session can resume from the repo
+   alone. Then end the turn by asking whether the user wants to start a new session (`/new`) or restart
+   `opencode` before the next step. If they'd rather keep going, continue in this session.
+
+### Finishing a change
+
+1. Self-review the whole change, `git diff <first-section-base>..HEAD`: duplicated abstractions,
+   leftover scaffolding, cross-section drift, and whether the spec is genuinely satisfied.
+2. Write the change-done devlog note and report to the user. Then **offer** an independent code review
+   of the change branch before archiving (e.g. a fresh-context `general` subagent reviewing
+   `git diff <first-section-base>..HEAD` against the specs), and run it if they say yes.
+3. Fixes from either review don't land as loose commits. Add them to `tasks.md` as one or more new
+   sections (`## N+1. Review fixes: <theme>`), agree them with the user, and build them with the
+   section loop above, hand-off included. Then return to step 2.
+4. Once the review is done or declined and no fix sections are open, **offer** `/opsx-archive`, and
+   wait for a yes.
+
+### Stop and ask
+
+Stop when: a requirement is ambiguous or contradicts the spec or design; scope would change; a task
+needs human verification (how keymaps feel in real Neovim or inside VSCode via vscode-neovim,
+theme/statusline look, LSP behaviour in a live buffer); or gates won't go green after two honest
+attempts.
+
+To stop: leave work uncommitted and tasks unticked; write a `stopped-…` devlog note stating exactly what
+blocked and the question; end the turn with the question — for human verification, a copy-pasteable
+recipe. Never decide a product question yourself and flag it afterwards.
+
+Before the user ends a session or clears the context at any other point, run the `egg-handoff` skill.
+Resume with the `egg-pickup` skill.
