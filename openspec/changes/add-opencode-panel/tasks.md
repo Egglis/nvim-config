@@ -1,7 +1,7 @@
 ## 1. Dependency
 
-- [ ] 1.1 Add an `opencode` row to `docs/dependencies.md` (install, `opencode --version` check, auth = provider connected via `/connect`)
-- [ ] 1.2 Add the matching `Check` to the `deps` target in `gates.ps1` and confirm `DEPS_EXIT:0`
+- [x] 1.1 Add an `opencode` row to `docs/dependencies.md` (install, `opencode --version` check, auth = provider connected via `/connect`)
+- [x] 1.2 Add the matching `Check` to the `deps` target in `gates.ps1` and confirm `DEPS_EXIT:0`
 
 ## 2. Plugin spec
 
