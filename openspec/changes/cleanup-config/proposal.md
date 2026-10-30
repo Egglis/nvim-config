@@ -23,10 +23,10 @@ The config works day to day, but it is fragile and harder to read than it needs 
   - Drop the code-action kind filter.
 - **Readability**
   - Leave `vscode.lua` as written (user decision during §3).
-  - Use `<cmd>…<CR>` mappings, each with a `desc`.
+  - Leave `shared.lua` as written (user decision during §4). Other new mappings use `<cmd>…<CR>`, each with a `desc`.
   - Use one option API (`vim.opt`) in grouped sections.
   - Split `lsp_config.lua` into `lua/lsp/servers.lua` and `lua/lsp/keymaps.lua`.
-  - Remove dead code: `lua/bru/vscode_keymaps.lua` (after moving its `n`/`N` re-centering into `shared.lua`), the `copilot` lualine component, unused `opts` locals, the duplicate mappings in `regular.lua`, and stale comments.
+  - Remove dead code: `lua/bru/vscode_keymaps.lua` (not migrated), the `copilot` lualine component, unused `opts` locals, the duplicate mappings in `regular.lua`, and stale comments.
   - Move `clipboard = unnamedplus` into the options module (standalone Neovim only).
 - **Sensible defaults**
   - Options: `undofile`, `signcolumn=yes`, `expandtab`, `splitright`/`splitbelow`, `cursorline`, and `updatetime=250`.

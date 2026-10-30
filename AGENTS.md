@@ -80,10 +80,10 @@ The leader key is `<Space>`.
 ### Conventions
 
 - Each keymap file **returns a function** — it does not execute on require. `init.lua` calls the returned function.
-- `shared.lua` — safe for both environments; no plugin dependencies allowed.
+- `shared.lua` — safe for both environments; no plugin dependencies allowed. Leave this file as the user wrote it unless asked.
 - `vscode.lua` — may use `require('vscode').action(...)` freely. Leave this file as the user wrote it unless asked.
 - `regular.lua` — may use any plugin or Neovim-only API.
-- Every mapping outside `vscode.lua` gets a `desc`. Prefer `<cmd>…<CR>` over `:…<CR>`.
+- Every mapping outside `shared.lua`/`vscode.lua` gets a `desc`. Prefer `<cmd>…<CR>` over `:…<CR>`.
 - LSP keymaps live in `lua/lsp/keymaps.lua` (buffer-local, set from an `LspAttach` autocmd).
 - Plugin-specific keymaps (e.g., Telescope) live inside the plugin's own spec file in `plugins/`.
 
@@ -104,7 +104,6 @@ Active in both standalone Neovim and VSCode.
 | `<Esc>` | n | Clear search highlight |
 | `<C-u>` | n | Half-page up + re-center |
 | `<C-d>` | n | Half-page down + re-center |
-| `n` / `N` | n | Next / previous match + re-center |
 | `B` | n, v | Jump to first word of line (`0w`) |
 | `E` | n, v | Jump to end of line (`$`) |
 | `<C-a>` | n | Select all (`ggVG`) |
@@ -175,20 +174,23 @@ User command `:Format` → `vim.lsp.buf.format()`.
 | Keys | Action |
 |------|--------|
 | `<leader>ff` | Find files |
+| `<leader>fa` | Live grep across the project (needs `rg`) |
+| `<leader>fb` | Open buffers |
+| `<leader>fh` | Help tags |
 
-> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. These are separate code paths (not a runtime conflict) but be aware of the semantic difference.
+> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. These are separate code paths (not a runtime conflict) but be aware of the semantic difference.
 
 ---
 
 ### Completion (nvim-cmp) — `lua/plugins/cmp.lua`
-Insert-mode only; active when the completion menu is visible.
+Insert/select mode. Sources: lazydev, LSP, path, buffer. LSP snippets expand via Neovim's built-in `vim.snippet`.
 
 | Keys | Action |
 |------|--------|
 | `<C-n>` | Next completion item |
 | `<C-p>` | Previous completion item |
-| `<Tab>` | Next item (or fallback) |
-| `<S-Tab>` | Previous item (or fallback) |
+| `<Tab>` | Next item, else jump to next snippet placeholder, else fallback |
+| `<S-Tab>` | Previous item, else jump to previous snippet placeholder, else fallback |
 | `<CR>` | Confirm selection |
 
 ---
@@ -211,6 +213,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/nvim-cmp` | `cmp.lua` | Completion engine |
 | `hrsh7th/cmp-nvim-lsp` | `cmp.lua` | LSP completion source |
 | `hrsh7th/cmp-path` | `cmp.lua` | Path completion source |
+| `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 
 ---
 
@@ -237,15 +240,17 @@ No external formatter or linter plugins are currently configured. Formatting goe
 | Option | Value |
 |--------|-------|
 | Leader | `<Space>` |
-| `updatetime` | 50ms |
+| `updatetime` | 250ms |
 | `timeoutlen` | 300ms |
-| `tabstop` / `shiftwidth` | 2 |
+| `tabstop` / `shiftwidth` / `softtabstop` | 2, `expandtab` on |
 | `scrolloff` | 8 |
 | `number` + `relativenumber` | true |
 | `hlsearch` | false |
 | `incsearch` | true |
 | `ignorecase` + `smartcase` | true |
 | `termguicolors` | true |
+
+Standalone only (not in VSCode): `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`.
 
 ---
 
@@ -263,8 +268,7 @@ When adding new bindings, consider that characters like `Ø`, `Æ`, `Å`, `ø`, 
 
 | Issue | Location | Details |
 |-------|----------|---------|
-| No snippet engine | `lua/plugins/cmp.lua` | luasnip was removed; `<Tab>` falls back gracefully but no snippet expansion exists. |
-| Telescope tag | `lua/plugins/telescope.lua` | `tag = "0.1.x"` fails to check out on a fresh install; fixed in `cleanup-config` §4.3. |
+| None currently tracked | | |
 
 ---
 

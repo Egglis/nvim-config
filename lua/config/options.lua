@@ -5,10 +5,11 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Timing
-opt.updatetime = 50
+opt.updatetime = 250
 opt.timeoutlen = 300
 
 -- Indentation
+opt.expandtab = true
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
@@ -28,4 +29,9 @@ opt.scrolloff = 8
 -- Standalone Neovim only
 if not vim.g.vscode then
   opt.clipboard = "unnamedplus"
+  opt.undofile = true
+  opt.signcolumn = "yes"
+  opt.cursorline = true
+  opt.splitright = true
+  opt.splitbelow = true
 end

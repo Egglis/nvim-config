@@ -27,11 +27,12 @@
 
 ## 4. Sensible defaults
 
-- [ ] 4.1 Add options: `expandtab`, `updatetime=250`, and in standalone mode only `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`. Verify: headless option values match every scenario in the editor-options spec.
-- [ ] 4.2 Ask the user to agree to adding `ripgrep` to `docs/dependencies.md` and the `deps` target. Once agreed, add the row and its check. Verify: `pwsh ./gates.ps1 deps` → `DEPS_EXIT:0`.
-- [ ] 4.3 Add telescope mappings `<leader>fa` live_grep, `<leader>fb` buffers and `<leader>fh` help_tags, with descriptions, and move telescope off the `0.1.x` tag. Verify: headless `maparg` shows all four `<leader>f*` mappings.
-- [ ] 4.4 Add `hrsh7th/cmp-buffer` and `vim.snippet`-based snippet expansion with `<Tab>`/`<S-Tab>` jumping between placeholders. Verify: `pwsh ./gates.ps1 gates` is all green, then stop for human verification of snippet expansion in a live buffer.
-- [ ] 4.5 Update `AGENTS.md` for the new options, pickers and plugins. Verify by reading the diff.
+- [x] 4.1 Add options: `expandtab`, `updatetime=250`, and in standalone mode only `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`. Verify: headless option values match every scenario in the editor-options spec.
+- [x] 4.2 Ask the user to agree to adding `ripgrep` to `docs/dependencies.md` and the `deps` target. Once agreed, add the row and its check. Verify: `pwsh ./gates.ps1 deps` → `DEPS_EXIT:0`.
+- [x] 4.3 Add telescope mappings `<leader>fa` live_grep, `<leader>fb` buffers and `<leader>fh` help_tags, with descriptions, and move telescope off the `0.1.x` tag. Verify: headless `maparg` shows all four `<leader>f*` mappings.
+- [x] 4.4 Add `hrsh7th/cmp-buffer` and `vim.snippet`-based snippet expansion with `<Tab>`/`<S-Tab>` jumping between placeholders. Verify: `pwsh ./gates.ps1 gates` is all green, then stop for human verification of snippet expansion in a live buffer.
+- [x] 4.5 Update `AGENTS.md` for the new options, pickers and plugins. Verify by reading the diff.
+- [x] 4.6 Restore `lua/keymaps/shared.lua` to the original (user decision) and drop its §3 entries from AGENTS.md. Verify: `git diff a7e4463 -- lua/keymaps/shared.lua` is empty.
 
 ## Workflow follow-up
 

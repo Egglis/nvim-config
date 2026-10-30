@@ -9,4 +9,5 @@ Every tool this repo needs. `pwsh ./gates.ps1 deps` checks each row.
 | Git | any | lazy.nvim plugin bootstrap, version control | `winget install Git.Git` | `git --version` | — |
 | Node.js | 20+ | Runs the OpenSpec CLI | `winget install OpenJS.NodeJS.LTS` | `node --version` | — |
 | OpenSpec CLI | 1.x | Change tracking, `validate` gate | `npm i -g @fission-ai/openspec` | `openspec --version` | — |
-| PowerShell | 7+ | Runs `gates.ps1` | `winget install Microsoft.PowerShell` | `pwsh --version` | — |
+| PowerShell | 7+ | Runs `gates.ps1` | `winget install Microsoft.PowerShell` | `pwsh --version` | - |
+| ripgrep | any | Telescope `live_grep` (`<leader>fa` in standalone Neovim) | `winget install BurntSushi.ripgrep.MSVC` | `rg --version` | - |
