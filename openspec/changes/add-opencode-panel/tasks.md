@@ -5,10 +5,10 @@
 
 ## 2. Plugin spec
 
-- [ ] 2.1 Create `lua/plugins/opencode.lua`: `sudo-tee/opencode.nvim`, lazy-loaded via `cmd = 'Opencode'` and `keys` for `<leader>og`, `<leader>oi`, `<leader>oI` (each with `desc`)
-- [ ] 2.2 `opts`: `preferred_picker = 'telescope'`, `lock_session_to_directory = true`, `ui.position = 'right'`, `ui.window_width = 0.40`; default global keymaps kept
-- [ ] 2.3 Dependencies: `hrsh7th/nvim-cmp`, `nvim-telescope/telescope.nvim`, and `MeanderingProgrammer/render-markdown.nvim` (`ft = { 'markdown', 'opencode_output' }`, `anti_conceal = { enabled = false }`)
-- [ ] 2.4 Install plugins, commit updated `lazy-lock.json`; `pwsh ./gates.ps1 gates` green (startup clean, plugin not loaded at startup)
+- [x] 2.1 Create `lua/plugins/opencode.lua`: `sudo-tee/opencode.nvim`, lazy-loaded via `cmd = 'Opencode'` and `keys` for `<leader>og`, `<leader>oi`, `<leader>oI` (each with `desc`)
+- [x] 2.2 `opts`: `preferred_picker = 'telescope'`, `lock_session_to_directory = true`, `ui.position = 'right'`, `ui.window_width = 0.40`; default global keymaps kept
+- [x] 2.3 Dependencies: `hrsh7th/nvim-cmp`, `nvim-telescope/telescope.nvim`, and `MeanderingProgrammer/render-markdown.nvim` (`ft = { 'markdown', 'opencode_output' }`, `anti_conceal = { enabled = false }`)
+- [x] 2.4 Install plugins, commit updated `lazy-lock.json`; `pwsh ./gates.ps1 gates` green (startup clean, plugin not loaded at startup)
 
 ## 3. Docs
 
