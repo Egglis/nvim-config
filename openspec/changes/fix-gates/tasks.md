@@ -2,8 +2,8 @@
 
 ## 1. Fix startup error
 
-- [ ] 1.1 Change `vim.opt.clipboard` in `lua/keymaps/regular.lua` to `'unnamedplus'` and verify `pwsh ./gates.ps1 build` prints `BUILD_EXIT:0`
-- [ ] 1.2 Verify `nvim --headless "+lua io.write(vim.o.clipboard)" +qa` prints `unnamedplus`
+- [x] 1.1 Change `vim.opt.clipboard` in `lua/keymaps/regular.lua` to `'unnamedplus'` and verify `pwsh ./gates.ps1 build` prints `BUILD_EXIT:0`
+- [x] 1.2 Verify `nvim --headless "+lua io.write(vim.o.clipboard)" +qa` prints `unnamedplus`
 
 ## 2. Formatting standard
 
