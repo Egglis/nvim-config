@@ -12,7 +12,7 @@
 
 ## 3. Docs
 
-- [ ] 3.1 `AGENTS.md`: add the two plugins to the plugin table and directory tree, and an "OpenCode" keymap section (`<leader>og`, `<leader>oi`, `<leader>oI`, `<leader>os`, `<leader>od`, plus a pointer to the plugin's full list)
+- [x] 3.1 `AGENTS.md`: add the two plugins to the plugin table and directory tree, and an "OpenCode" keymap section (`<leader>og`, `<leader>oi`, `<leader>oI`, `<leader>os`, `<leader>od`, plus a pointer to the plugin's full list)
 
 ## 4. Human verification
 

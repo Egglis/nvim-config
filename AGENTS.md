@@ -48,7 +48,8 @@ nvim/
     │   ├── lualine.lua             # Statusline
     │   ├── telescope.lua           # Fuzzy finder
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
-    │   └── cmp.lua                 # nvim-cmp autocompletion
+    │   ├── cmp.lua                 # nvim-cmp autocompletion
+    │   └── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
 ```
 
 ---
@@ -182,6 +183,25 @@ User command `:Format` → `vim.lsp.buf.format()`.
 
 ---
 
+### OpenCode — `lua/plugins/opencode.lua`
+Standalone only. Uses the plugin's default keymaps (prefix `<leader>o`); the panel opens on the right at
+40% width, and sessions are scoped to Neovim's cwd. Full list: `:help opencode.nvim` or the plugin's
+`docs/configuration.md`.
+
+| Keys | Action |
+|------|--------|
+| `<leader>og` | Toggle the OpenCode panel |
+| `<leader>oi` | Open prompt (current session) |
+| `<leader>oI` | Open prompt in a **new session** for the current workspace |
+| `<leader>os` | Select session |
+| `<leader>od` | Review OpenCode's changes (diff) |
+| `<leader>oy` | (visual) Add selection to context |
+| `<leader>oq` | Close the panel |
+
+In the prompt: `<CR>` (normal) / `<S-CR>` sends, `@` mention, `/` slash commands, `<Esc>` closes.
+
+---
+
 ### Completion (nvim-cmp) — `lua/plugins/cmp.lua`
 Insert/select mode. Sources: lazydev, LSP, path, buffer. LSP snippets expand via Neovim's built-in `vim.snippet`.
 
@@ -214,6 +234,8 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-nvim-lsp` | `cmp.lua` | LSP completion source |
 | `hrsh7th/cmp-path` | `cmp.lua` | Path completion source |
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
+| `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
+| `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
 
 ---
 
