@@ -1,31 +1,29 @@
-local lsp_config = require("lsp_config")
-
 return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      -- LSP Installer and utilities
       { "williamboman/mason.nvim", config = true },
       "williamboman/mason-lspconfig.nvim",
       { "j-hui/fidget.nvim", opts = {} },
-      "folke/neodev.nvim", -- Enhances Neovim Lua LSP config
+      "folke/neodev.nvim",
     },
-    -- Setup LSP servers and handlers
     config = function()
-      -- Setup Neodev for better Lua LSP configuration
+      local servers = require("lsp.servers")
+      local on_attach = require("lsp.keymaps").on_attach
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
       require("neodev").setup()
 
-      -- Setup Mason, then Mason-LSPConfig
-      require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = vim.tbl_keys(lsp_config.servers),
+        ensure_installed = vim.tbl_keys(servers),
         handlers = {
           function(server_name)
+            local server = servers[server_name] or {}
             require("lspconfig")[server_name].setup({
-              capabilities = lsp_config.capabilities,
-              on_attach = lsp_config.on_attach,
-              settings = lsp_config.servers[server_name],
-              filetypes = (lsp_config.servers[server_name] or {}).filetypes,
+              capabilities = capabilities,
+              on_attach = on_attach,
+              settings = server.settings,
+              filetypes = server.filetypes,
             })
           end,
         },

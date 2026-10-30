@@ -33,21 +33,22 @@ nvim/
 ├── powershell/
 │   └── Microsoft.PowerShell_profile.ps1  # PowerShell profile (aliases, oh-my-posh)
 └── lua/
-    ├── options/
-    │   └── options.lua             # All vim.opt settings
+    ├── config/
+    │   ├── options.lua             # All vim options (clipboard only in standalone)
+    │   └── lazy.lua                # lazy.nvim bootstrap + setup
     ├── keymaps/
     │   ├── shared.lua              # Active in BOTH Neovim and VSCode
     │   ├── vscode.lua              # VSCode-only (calls vscode.action())
     │   └── regular.lua             # Standalone Neovim-only
-    ├── lazy/
-    │   └── init_lazy.lua           # lazy.nvim bootstrap + setup
+    ├── lsp/
+    │   ├── servers.lua             # LSP server definitions (data only, no requires)
+    │   └── keymaps.lua             # Buffer-local LSP keymaps + :Format (on_attach)
     ├── plugins/                    # One file per plugin; auto-discovered by lazy.nvim
     │   ├── theme.lua               # tokyonight colorscheme
     │   ├── lualine.lua             # Statusline
     │   ├── telescope.lua           # Fuzzy finder
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, neodev
     │   └── cmp.lua                 # nvim-cmp autocompletion
-    ├── lsp_config.lua              # LSP server definitions, on_attach, capabilities
     └── bru/
         └── vscode_keymaps.lua      # LEGACY — not required anywhere, kept for reference
 ```
@@ -58,16 +59,19 @@ nvim/
 
 ```
 init.lua
-  ├── options/options.lua           (always)
+  ├── config/options.lua            (always)
   ├── keymaps/shared.lua            (always)
   ├── if vim.g.vscode:
   │     └── keymaps/vscode.lua
   └── else:
         ├── keymaps/regular.lua
-        └── lazy/init_lazy.lua      (loads all plugins)
+        └── config/lazy.lua         (loads all plugins)
 ```
 
 **Plugins are never loaded in VSCode mode.** Do not add plugin requires outside the `else` branch.
+Modules outside `plugins/` must not `require` a plugin at load time — only inside functions that run
+after lazy.nvim has set up (otherwise a fresh install crashes before plugins are installed).
+Don't name a folder under `lua/` after a plugin module (e.g. `lua/lazy/`) — it shadows `require`.
 
 ---
 
@@ -139,18 +143,13 @@ Only active when running inside VSCode via vscode-neovim. All mappings delegate 
 ---
 
 ### Standalone Neovim — `lua/keymaps/regular.lua`
-Active only in standalone Neovim (currently sparse; most bindings come from `shared.lua` and plugin files).
+Active only in standalone Neovim. Currently empty; most bindings come from `shared.lua` and plugin files.
 
-| Keys | Mode | Action |
-|------|------|--------|
-| `<leader>y` | n, v | Yank to clipboard (also in shared) |
-| `<C-s>` | n, v | Save file (also in shared) |
-
-Also sets `vim.opt.clipboard = 'unnamedplus'` so all yanks go to the system clipboard by default.
+`clipboard = unnamedplus` is set in `config/options.lua`, standalone only.
 
 ---
 
-### LSP — `lua/lsp_config.lua` (buffer-local, set in `on_attach`)
+### LSP — `lua/lsp/keymaps.lua` (buffer-local, set in `on_attach`)
 These are only active in buffers where an LSP server has attached.
 
 | Keys | Action |
@@ -217,7 +216,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 
 ## LSP Configuration
 
-LSP server definitions are centralized in `lua/lsp_config.lua` (module pattern). The `lsp.lua` plugin spec reads from this module to drive Mason auto-installation and lspconfig setup.
+LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., filetypes = ... }`). The `lsp.lua` plugin spec reads it inside `config` to drive Mason auto-installation and lspconfig setup; buffer keymaps come from `lua/lsp/keymaps.lua`.
 
 **Currently configured servers:**
 
@@ -226,14 +225,14 @@ LSP server definitions are centralized in `lua/lsp_config.lua` (module pattern).
 | `lua_ls` | Lua Language Server; configured for Neovim API awareness via neodev |
 
 To add a new language server:
-1. Add an entry to the `servers` table in `lua/lsp_config.lua`.
+1. Add an entry to `lua/lsp/servers.lua`.
 2. Mason will auto-install it; lspconfig will auto-configure it with shared `on_attach` and `capabilities`.
 
 No external formatter or linter plugins are currently configured. Formatting goes through `vim.lsp.buf.format()`.
 
 ---
 
-## Options (`lua/options/options.lua`)
+## Options (`lua/config/options.lua`)
 
 | Option | Value |
 |--------|-------|
@@ -266,10 +265,9 @@ When adding new bindings, consider that characters like `Ø`, `Æ`, `Å`, `ø`, 
 | Issue | Location | Details |
 |-------|----------|---------|
 | Dead code | `lua/bru/vscode_keymaps.lua` | Never required; legacy file predating the `keymaps/` split. Contains useful extras (`n`/`N` recentering, `ø=$`) that could be migrated. |
-| Duplicate mapping | `lua/keymaps/vscode.lua` lines 12 & 14 | `<leader>fa` is mapped twice to `periscope.search` — second is redundant. |
 | Copilot lualine component | `lua/plugins/lualine.lua` line 12 | References `"copilot"` but no Copilot plugin is in `lazy-lock.json` — component silently inactive. |
 | No snippet engine | `lua/plugins/cmp.lua` | luasnip was removed; `<Tab>` falls back gracefully but no snippet expansion exists. |
-| `regular.lua` duplicates `shared.lua` | `lua/keymaps/regular.lua` | `<leader>y` and `<C-s>` are already in `shared.lua`; the copies in `regular.lua` are redundant. |
+| Telescope tag | `lua/plugins/telescope.lua` | `tag = "0.1.x"` fails to check out on a fresh install; fixed in `cleanup-config` §4.3. |
 
 ---
 
@@ -288,7 +286,7 @@ Add to `lua/keymaps/vscode.lua`. Use `require('vscode').action('command.id')`.
 Add to `lua/keymaps/shared.lua`. Must not depend on any plugin.
 
 ### New LSP server
-Add to the `servers` table in `lua/lsp_config.lua`. Mason handles installation automatically.
+Add to `lua/lsp/servers.lua`. Mason handles installation automatically.
 
 ---
 

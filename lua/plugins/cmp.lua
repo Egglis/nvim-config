@@ -17,13 +17,10 @@ return {
       mapping = cmp.mapping.preset.insert({
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<Tab>"] = cmp.mapping.complete({}),
         ["<CR>"] = cmp.mapping.confirm({
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         }),
-        -- REMOVED: <Tab> and <S-Tab> mappings relying on luasnip.
-        -- We just keep the default behavior here:
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()

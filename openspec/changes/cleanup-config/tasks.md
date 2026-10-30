@@ -2,12 +2,12 @@
 
 ## 1. Robustness fixes and module layout
 
-- [ ] 1.1 Move `lua/options/options.lua` to `lua/config/options.lua` and `lua/lazy/init_lazy.lua` to `lua/config/lazy.lua`, using `vim.uv` instead of `vim.loop`; update `init.lua`. Verify: `lua/options/` and `lua/lazy/` no longer exist, and `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`.
-- [ ] 1.2 Rewrite `init.lua` to call the keymap modules directly (no `type()` guards), load `config.lazy` only when not in VSCode mode, and drop the `print`s. Verify: `nvim --headless "+lua print(#vim.split(vim.fn.execute('messages'), '\n'))" +qa` shows no config-originated message, and `nvim --headless --cmd "let g:vscode=1" "+lua io.write(tostring(package.loaded.lazy ~= nil))" +qa` prints `false`.
-- [ ] 1.3 Split `lua/lsp_config.lua` into `lua/lsp/servers.lua` (data only, no `require`s) and `lua/lsp/keymaps.lua`; make `lua/plugins/lsp.lua` load them inside `config`; set up Mason only once. Verify the fresh-install scenario: headless start with an empty temp `XDG_DATA_HOME`/`LOCALAPPDATA` plus `+Lazy! sync` raises no config error, and a second start is clean. Record the exact command in the devlog.
-- [ ] 1.4 Fix `lua/plugins/cmp.lua`: one `<Tab>` entry, and `completeopt` owned by cmp only (removed from options). Verify: `pwsh ./gates.ps1 gates` is all green.
-- [ ] 1.5 Remove the duplicate `<leader>fa` in `lua/keymaps/vscode.lua` and the duplicate `<leader>y`/`<C-s>` and unused `opts` in `lua/keymaps/regular.lua`; move `clipboard = unnamedplus` into the standalone block of `config/options.lua`. Verify: `nvim --headless "+lua io.write(vim.o.clipboard)" +qa` prints `unnamedplus`.
-- [ ] 1.6 Update `AGENTS.md` (directory structure, boot logic, Known Issues entries now fixed). Verify by reading the diff against the new tree.
+- [x] 1.1 Move `lua/options/options.lua` to `lua/config/options.lua` and `lua/lazy/init_lazy.lua` to `lua/config/lazy.lua`, using `vim.uv` instead of `vim.loop`; update `init.lua`. Verify: `lua/options/` and `lua/lazy/` no longer exist, and `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`.
+- [x] 1.2 Rewrite `init.lua` to call the keymap modules directly (no `type()` guards), load `config.lazy` only when not in VSCode mode, and drop the `print`s. Verify: `nvim --headless "+lua print(#vim.split(vim.fn.execute('messages'), '\n'))" +qa` shows no config-originated message, and `nvim --headless --cmd "let g:vscode=1" "+lua io.write(tostring(package.loaded.lazy ~= nil))" +qa` prints `false`.
+- [x] 1.3 Split `lua/lsp_config.lua` into `lua/lsp/servers.lua` (data only, no `require`s) and `lua/lsp/keymaps.lua`; make `lua/plugins/lsp.lua` load them inside `config`; set up Mason only once. Verify the fresh-install scenario: headless start with an empty temp `XDG_DATA_HOME`/`LOCALAPPDATA` plus `+Lazy! sync` raises no config error, and a second start is clean. Record the exact command in the devlog.
+- [x] 1.4 Fix `lua/plugins/cmp.lua`: one `<Tab>` entry, and `completeopt` owned by cmp only (removed from options). Verify: `pwsh ./gates.ps1 gates` is all green.
+- [x] 1.5 Remove the duplicate `<leader>fa` in `lua/keymaps/vscode.lua` and the duplicate `<leader>y`/`<C-s>` and unused `opts` in `lua/keymaps/regular.lua`; move `clipboard = unnamedplus` into the standalone block of `config/options.lua`. Verify: `nvim --headless "+lua io.write(vim.o.clipboard)" +qa` prints `unnamedplus`.
+- [x] 1.6 Update `AGENTS.md` (directory structure, boot logic, Known Issues entries now fixed). Verify by reading the diff against the new tree.
 
 ## 2. Modernise LSP for Neovim 0.11
 

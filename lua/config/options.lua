@@ -3,7 +3,6 @@ vim.g.maplocalleader = " "
 
 vim.o.updatetime = 50
 vim.o.timeoutlen = 300
-vim.o.completeopt = "menuone,noselect"
 
 vim.o.termguicolors = true
 
@@ -20,3 +19,7 @@ vim.wo.relativenumber = true
 
 vim.o.ignorecase = true
 vim.o.smartcase = true
+
+if not vim.g.vscode then
+  vim.opt.clipboard = "unnamedplus"
+end

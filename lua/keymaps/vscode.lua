@@ -11,7 +11,6 @@ return function()
   -- VS-code plugin
   keymap({ "n", "v" }, "<leader>fa", "<cmd>lua require('vscode').action('periscope.search')<CR>")
   keymap({ "n", "v" }, "<leader>fd", "<cmd>lua require('vscode').action('editor.action.formatDocument')<CR>")
-  keymap({ "n", "v" }, "<leader>fa", "<cmd>lua require('vscode').action('periscope.search')<CR>")
   keymap({ "n", "v" }, "<leader>ff", "<cmd>lua require('vscode').action('periscope.searchCurrentFile')<CR>")
   keymap({ "n", "v" }, "<leader>ku", "<cmd>lua require('vscode').action('editor.action.removeCommentLine')<CR>")
   keymap({ "n", "v" }, "<leader>kc", "<cmd>lua require('vscode').action('editor.action.addCommentLine')<CR>")
