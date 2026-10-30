@@ -42,7 +42,7 @@ Neovim 0.11.0 on Windows. One repo serves two runtimes: standalone Neovim (full 
    - `snippet.expand = function(a) vim.snippet.expand(a.body) end`, with `<Tab>`/`<S-Tab>` jumping between snippet placeholders when `vim.snippet.active()`.
    - Sources: `nvim_lsp`, `lazydev`, `path`, `buffer`.
    - The global `completeopt` is removed from options. cmp owns it.
-8. **VSCode keymaps through a local `action(cmd)` helper** that returns a Lua function calling `require("vscode").action(cmd)`, with a `desc` on each mapping. Harpoon slots 1–9 are created in a `for` loop.
+8. **`lua/keymaps/vscode.lua` is left as written** (user decision during §3). The only change to it is §1's removal of the identical duplicate `<leader>fa` line. No helper refactor and no `desc`s.
 9. **Shared keymaps:**
    - Use `<cmd>w<CR>` and `<cmd>nohlsearch<CR>`.
    - Add `n`/`N` → `nzzzv`/`Nzzzv`, moved from the legacy file.

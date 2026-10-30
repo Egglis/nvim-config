@@ -49,8 +49,6 @@ nvim/
     │   ├── telescope.lua           # Fuzzy finder
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   └── cmp.lua                 # nvim-cmp autocompletion
-    └── bru/
-        └── vscode_keymaps.lua      # LEGACY — not required anywhere, kept for reference
 ```
 
 ---
@@ -83,8 +81,9 @@ The leader key is `<Space>`.
 
 - Each keymap file **returns a function** — it does not execute on require. `init.lua` calls the returned function.
 - `shared.lua` — safe for both environments; no plugin dependencies allowed.
-- `vscode.lua` — may use `require('vscode').action(...)` freely.
+- `vscode.lua` — may use `require('vscode').action(...)` freely. Leave this file as the user wrote it unless asked.
 - `regular.lua` — may use any plugin or Neovim-only API.
+- Every mapping outside `vscode.lua` gets a `desc`. Prefer `<cmd>…<CR>` over `:…<CR>`.
 - LSP keymaps live in `lua/lsp/keymaps.lua` (buffer-local, set from an `LspAttach` autocmd).
 - Plugin-specific keymaps (e.g., Telescope) live inside the plugin's own spec file in `plugins/`.
 
@@ -105,6 +104,7 @@ Active in both standalone Neovim and VSCode.
 | `<Esc>` | n | Clear search highlight |
 | `<C-u>` | n | Half-page up + re-center |
 | `<C-d>` | n | Half-page down + re-center |
+| `n` / `N` | n | Next / previous match + re-center |
 | `B` | n, v | Jump to first word of line (`0w`) |
 | `E` | n, v | Jump to end of line (`$`) |
 | `<C-a>` | n | Select all (`ggVG`) |
@@ -254,7 +254,6 @@ No external formatter or linter plugins are currently configured. Formatting goe
 The user types on a Norwegian keyboard. Some bindings use Norwegian characters as convenient Vim keys:
 
 - `Ø` (shared) — jump into next quoted string
-- `ø` (legacy file) — end of line (`$`)
 
 When adding new bindings, consider that characters like `Ø`, `Æ`, `Å`, `ø`, `æ`, `å` are reachable home-row-adjacent keys on this layout and are good candidates for frequent-action bindings.
 
@@ -264,8 +263,6 @@ When adding new bindings, consider that characters like `Ø`, `Æ`, `Å`, `ø`, 
 
 | Issue | Location | Details |
 |-------|----------|---------|
-| Dead code | `lua/bru/vscode_keymaps.lua` | Never required; legacy file predating the `keymaps/` split. Contains useful extras (`n`/`N` recentering, `ø=$`) that could be migrated. |
-| Copilot lualine component | `lua/plugins/lualine.lua` line 12 | References `"copilot"` but no Copilot plugin is in `lazy-lock.json` — component silently inactive. |
 | No snippet engine | `lua/plugins/cmp.lua` | luasnip was removed; `<Tab>` falls back gracefully but no snippet expansion exists. |
 | Telescope tag | `lua/plugins/telescope.lua` | `tag = "0.1.x"` fails to check out on a fresh install; fixed in `cleanup-config` §4.3. |
 

@@ -9,7 +9,7 @@ return {
       section_separators = "",
     },
     sections = {
-      lualine_x = { "copilot", "encoding", "fileformat", "filetype" },
+      lualine_x = { "encoding", "fileformat", "filetype" },
     },
   },
 }

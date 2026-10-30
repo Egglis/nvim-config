@@ -36,10 +36,10 @@ In VSCode mode, the config SHALL define the VSCode mappings, each defined exactl
 - **THEN** mappings exist for `K`, `J`, `<leader>pn`, `<leader>pp`, `<leader>fa`, `<leader>fd`, `<leader>ff`, `<leader>ku`, `<leader>kc`, `<leader>gr`, `<leader>fe`, `<leader>fg`, `<leader>ha`, `<leader>hh`, `<leader>he`, `<leader>h1` to `<leader>h9`, `<leader>le`, `<leader>ee`, `<leader>bb`, `<leader>tt`, `<leader>tr` and `<leader>tb`, with the same VSCode commands as before this change
 
 ### Requirement: Every mapping has a description
-Every mapping defined by this config SHALL have a non-empty description.
+Every mapping defined by this config outside VSCode mode SHALL have a non-empty description. `lua/keymaps/vscode.lua` is excluded: the user keeps that file as written.
 
 #### Scenario: Descriptions present
-- **WHEN** the mappings defined by this config are listed with `nvim_get_keymap`
+- **WHEN** standalone Neovim has started and the mappings defined by this config are listed with `nvim_get_keymap`
 - **THEN** each has a non-empty `desc`
 
 ### Requirement: Standalone search pickers

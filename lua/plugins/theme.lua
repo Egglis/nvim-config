@@ -7,15 +7,8 @@ return {
       style = "night",
 
       on_highlights = function(hl, colors)
-        hl.LineNrAbove = {
-          fg = colors.blue, -- Use the theme's yellow color
-          bold = true,
-        }
-
-        hl.LineNrBelow = {
-          fg = colors.blue, -- Use the theme's yellow color
-          bold = true,
-        }
+        hl.LineNrAbove = { fg = colors.blue, bold = true }
+        hl.LineNrBelow = { fg = colors.blue, bold = true }
       end,
     })
     require("tokyonight").load()

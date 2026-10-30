@@ -1,25 +1,31 @@
+local opt = vim.opt
+
+-- Leader (must be set before any mapping)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.o.updatetime = 50
-vim.o.timeoutlen = 300
+-- Timing
+opt.updatetime = 50
+opt.timeoutlen = 300
 
-vim.o.termguicolors = true
+-- Indentation
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.softtabstop = 2
 
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.softtabstop = 2
+-- Search
+opt.hlsearch = false
+opt.incsearch = true
+opt.ignorecase = true
+opt.smartcase = true
 
-vim.opt.hlsearch = false
-vim.o.scrolloff = 8
-vim.opt.incsearch = true
+-- Display
+opt.termguicolors = true
+opt.number = true
+opt.relativenumber = true
+opt.scrolloff = 8
 
-vim.wo.number = true
-vim.wo.relativenumber = true
-
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
+-- Standalone Neovim only
 if not vim.g.vscode then
-  vim.opt.clipboard = "unnamedplus"
+  opt.clipboard = "unnamedplus"
 end

@@ -19,11 +19,11 @@
 
 ## 3. Readability
 
-- [ ] 3.1 Rewrite `lua/keymaps/vscode.lua` with a local `action(cmd)` helper, a `desc` on every mapping, and a `for` loop for Harpoon slots 1–9, keeping the same keys and commands. Verify: a headless run with `g:vscode=1` and a stubbed `vscode` module lists every key from the keymaps spec exactly once, each with a `desc`.
-- [ ] 3.2 Clean up `lua/keymaps/shared.lua`: use `<cmd>w<CR>` and `<cmd>nohlsearch<CR>`, add `n`/`N` re-centering, add a `desc` on every mapping, and fix stale comments. Verify: headless `maparg('n', 'n')` is `nzzzv`, and every config mapping has a non-empty `desc`.
-- [ ] 3.3 Rewrite `lua/config/options.lua` using `vim.opt` only, grouped by section. Verify: the headless option values match the editor-options spec, apart from options §4 adds.
-- [ ] 3.4 Delete `lua/bru/vscode_keymaps.lua`; remove the `copilot` lualine component; add `desc` to the telescope mapping. Verify: `rg -n "bru|copilot" lua init.lua` returns nothing, and `pwsh ./gates.ps1 gates` is all green.
-- [ ] 3.5 Update the keymaps tables and Known Issues in `AGENTS.md`. Then stop for human verification: give the user a recipe to try the shared and VSCode mappings inside VSCode.
+- [x] 3.1 Leave `lua/keymaps/vscode.lua` as written (user decision). Verify: `git diff a7e4463 -- lua/keymaps/vscode.lua` shows only §1's removal of the duplicate `<leader>fa` line.
+- [x] 3.2 Clean up `lua/keymaps/shared.lua`: use `<cmd>w<CR>` and `<cmd>nohlsearch<CR>`, add `n`/`N` re-centering, add a `desc` on every mapping, and fix stale comments. Verify: headless `maparg('n', 'n')` is `nzzzv`, and every config mapping has a non-empty `desc`.
+- [x] 3.3 Rewrite `lua/config/options.lua` using `vim.opt` only, grouped by section. Verify: the headless option values match the editor-options spec, apart from options §4 adds.
+- [x] 3.4 Delete `lua/bru/vscode_keymaps.lua`; remove the `copilot` lualine component; add `desc` to the telescope mapping. Verify: `rg -n "bru|copilot" lua init.lua` returns nothing, and `pwsh ./gates.ps1 gates` is all green.
+- [x] 3.5 Update the keymaps tables and Known Issues in `AGENTS.md`. Verify by reading the diff.
 
 ## 4. Sensible defaults
 

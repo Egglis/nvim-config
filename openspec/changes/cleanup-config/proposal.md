@@ -22,7 +22,7 @@ The config works day to day, but it is fragile and harder to read than it needs 
   - Move telescope off the old `0.1.x` tag.
   - Drop the code-action kind filter.
 - **Readability**
-  - Add an `action()` helper to `vscode.lua` and create the Harpoon slot mappings in a loop.
+  - Leave `vscode.lua` as written (user decision during §3).
   - Use `<cmd>…<CR>` mappings, each with a `desc`.
   - Use one option API (`vim.opt`) in grouped sections.
   - Split `lsp_config.lua` into `lua/lsp/servers.lua` and `lua/lsp/keymaps.lua`.
