@@ -42,12 +42,12 @@ nvim/
     │   └── regular.lua             # Standalone Neovim-only
     ├── lsp/
     │   ├── servers.lua             # LSP server definitions (data only, no requires)
-    │   └── keymaps.lua             # Buffer-local LSP keymaps + :Format (on_attach)
+    │   └── keymaps.lua             # Buffer-local LSP keymaps + :Format (LspAttach autocmd)
     ├── plugins/                    # One file per plugin; auto-discovered by lazy.nvim
     │   ├── theme.lua               # tokyonight colorscheme
     │   ├── lualine.lua             # Statusline
     │   ├── telescope.lua           # Fuzzy finder
-    │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, neodev
+    │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   └── cmp.lua                 # nvim-cmp autocompletion
     └── bru/
         └── vscode_keymaps.lua      # LEGACY — not required anywhere, kept for reference
@@ -85,7 +85,7 @@ The leader key is `<Space>`.
 - `shared.lua` — safe for both environments; no plugin dependencies allowed.
 - `vscode.lua` — may use `require('vscode').action(...)` freely.
 - `regular.lua` — may use any plugin or Neovim-only API.
-- LSP keymaps live in `lsp_config.lua` (buffer-local, set inside `on_attach`).
+- LSP keymaps live in `lua/lsp/keymaps.lua` (buffer-local, set from an `LspAttach` autocmd).
 - Plugin-specific keymaps (e.g., Telescope) live inside the plugin's own spec file in `plugins/`.
 
 ---
@@ -149,7 +149,7 @@ Active only in standalone Neovim. Currently empty; most bindings come from `shar
 
 ---
 
-### LSP — `lua/lsp/keymaps.lua` (buffer-local, set in `on_attach`)
+### LSP — `lua/lsp/keymaps.lua` (buffer-local, set from an `LspAttach` autocmd)
 These are only active in buffers where an LSP server has attached.
 
 | Keys | Action |
@@ -204,10 +204,10 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `nvim-telescope/telescope.nvim` | `telescope.lua` | Fuzzy file/text finder |
 | `nvim-lua/plenary.nvim` | (telescope dep) | Lua utility library |
 | `neovim/nvim-lspconfig` | `lsp.lua` | LSP client configs |
-| `williamboman/mason.nvim` | `lsp.lua` | LSP/tool installer UI |
-| `williamboman/mason-lspconfig.nvim` | `lsp.lua` | Bridges Mason + lspconfig |
+| `mason-org/mason.nvim` | `lsp.lua` | LSP/tool installer UI |
+| `mason-org/mason-lspconfig.nvim` | `lsp.lua` | Installs + enables servers (v2, `automatic_enable`) |
 | `j-hui/fidget.nvim` | `lsp.lua` | LSP progress spinner |
-| `folke/neodev.nvim` | `lsp.lua` | Lua LSP enhancements for Neovim config dev |
+| `folke/lazydev.nvim` | `lsp.lua` | Neovim API types for `lua_ls` (loads on `ft=lua`; also a cmp source) |
 | `hrsh7th/nvim-cmp` | `cmp.lua` | Completion engine |
 | `hrsh7th/cmp-nvim-lsp` | `cmp.lua` | LSP completion source |
 | `hrsh7th/cmp-path` | `cmp.lua` | Path completion source |
@@ -216,17 +216,17 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 
 ## LSP Configuration
 
-LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., filetypes = ... }`). The `lsp.lua` plugin spec reads it inside `config` to drive Mason auto-installation and lspconfig setup; buffer keymaps come from `lua/lsp/keymaps.lua`.
+LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., filetypes = ... }`). The `lsp.lua` plugin spec reads it inside `config` and uses Neovim 0.11's native API: `vim.lsp.config("*", { capabilities })` for shared settings, `vim.lsp.config(name, server)` per server, and mason-lspconfig v2 to install and `vim.lsp.enable` them. Buffer keymaps come from `lua/lsp/keymaps.lua`. Diagnostics are configured in `lsp.lua`'s `config` (inline virtual text, severity-sorted, rounded float).
 
 **Currently configured servers:**
 
 | Server | Notes |
 |--------|-------|
-| `lua_ls` | Lua Language Server; configured for Neovim API awareness via neodev |
+| `lua_ls` | Lua Language Server; configured for Neovim API awareness via lazydev |
 
 To add a new language server:
 1. Add an entry to `lua/lsp/servers.lua`.
-2. Mason will auto-install it; lspconfig will auto-configure it with shared `on_attach` and `capabilities`.
+2. Mason will auto-install it and mason-lspconfig enables it; it picks up the shared capabilities and the `LspAttach` keymaps.
 
 No external formatter or linter plugins are currently configured. Formatting goes through `vim.lsp.buf.format()`.
 

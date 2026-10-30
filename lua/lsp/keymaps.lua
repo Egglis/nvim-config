@@ -1,6 +1,6 @@
 local M = {}
 
-function M.on_attach(_, bufnr)
+local function on_attach(bufnr)
   local telescope = require("telescope.builtin")
 
   local nmap = function(keys, func, desc)
@@ -8,9 +8,7 @@ function M.on_attach(_, bufnr)
   end
 
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-  nmap("<leader>ca", function()
-    vim.lsp.buf.code_action({ context = { only = { "quickfix", "refactor", "source" } } })
-  end, "[C]ode [A]ction")
+  nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
   nmap("<leader>gd", telescope.lsp_definitions, "[G]oto [D]efinition")
   nmap("<leader>gr", telescope.lsp_references, "[G]oto [R]eferences")
@@ -24,8 +22,17 @@ function M.on_attach(_, bufnr)
   nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
   vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
-    vim.lsp.buf.format()
+    vim.lsp.buf.format({ bufnr = bufnr })
   end, { desc = "Format current buffer with LSP" })
+end
+
+function M.setup()
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("config-lsp-attach", { clear = true }),
+    callback = function(event)
+      on_attach(event.buf)
+    end,
+  })
 end
 
 return M

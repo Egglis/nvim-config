@@ -11,11 +11,11 @@
 
 ## 2. Modernise LSP for Neovim 0.11
 
-- [ ] 2.1 Switch to `mason-org/mason.nvim` and `mason-org/mason-lspconfig.nvim` v2. Configure servers through `vim.lsp.config('*', …)` and a per-server `vim.lsp.config(name, …)`, enabled via `ensure_installed`/`automatic_enable`; update `lazy-lock.json`. Verify: opening `init.lua` headless and waiting shows `lua_ls` in `vim.lsp.get_clients({ bufnr = 0 })`.
-- [ ] 2.2 Replace `neodev.nvim` with `folke/lazydev.nvim` (`ft = "lua"`) and add it as a cmp source. Verify: in `init.lua`, `lua_ls` reports no `undefined global 'vim'` diagnostic.
-- [ ] 2.3 Move LSP keymaps and `:Format` into an `LspAttach` autocmd in `lua/lsp/keymaps.lua`, requiring telescope inside the callbacks, and drop the code-action `only` filter. Verify: after attach, `nvim_buf_get_keymap(0, 'n')` contains all 11 LSP mappings with descriptions, and a non-LSP buffer (`:enew`) has none.
-- [ ] 2.4 Add `vim.diagnostic.config({ virtual_text = true, severity_sort = true, float = { border = "rounded" } })`. Verify: `vim.diagnostic.config().virtual_text` is truthy headless.
-- [ ] 2.5 Update the plugins and LSP sections of `AGENTS.md`. Then stop for human verification: give the user a recipe to check hover, rename, `:Format` and inline diagnostics in a live Lua buffer.
+- [x] 2.1 Switch to `mason-org/mason.nvim` and `mason-org/mason-lspconfig.nvim` v2. Configure servers through `vim.lsp.config('*', …)` and a per-server `vim.lsp.config(name, …)`, enabled via `ensure_installed`/`automatic_enable`; update `lazy-lock.json`. Verify: opening `init.lua` headless and waiting shows `lua_ls` in `vim.lsp.get_clients({ bufnr = 0 })`.
+- [x] 2.2 Replace `neodev.nvim` with `folke/lazydev.nvim` (`ft = "lua"`) and add it as a cmp source. Verify: in `init.lua`, `lua_ls` reports no `undefined global 'vim'` diagnostic.
+- [x] 2.3 Move LSP keymaps and `:Format` into an `LspAttach` autocmd in `lua/lsp/keymaps.lua`, requiring telescope inside the callbacks, and drop the code-action `only` filter. Verify: after attach, `nvim_buf_get_keymap(0, 'n')` contains all 11 LSP mappings with descriptions, and a non-LSP buffer (`:enew`) has none.
+- [x] 2.4 Add `vim.diagnostic.config({ virtual_text = true, severity_sort = true, float = { border = "rounded" } })`. Verify: `vim.diagnostic.config().virtual_text` is truthy headless.
+- [x] 2.5 Update the plugins and LSP sections of `AGENTS.md`. Then stop for human verification: give the user a recipe to check hover, rename, `:Format` and inline diagnostics in a live Lua buffer.
 
 ## 3. Readability
 
