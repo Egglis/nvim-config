@@ -26,7 +26,7 @@ function Get-Changes {
 $targets = [ordered]@{
     # Starts Neovim headless with this config; any startup error fails the gate.
     'build'  = { Invoke-Gate 'BUILD'  { nvim --headless -u init.lua "+lua if vim.v.errmsg ~= '' then io.stderr:write(vim.v.errmsg .. '\n') vim.cmd('cquit 1') else vim.cmd('qall!') end" } }
-    'format' = { Invoke-Gate 'FORMAT' { stylua --check --indent-type Spaces --indent-width 2 init.lua lua } }
+    'format' = { Invoke-Gate 'FORMAT' { stylua --check init.lua lua } }
 
     # Validates every active change. No active change is a failure, not a silent pass.
     'validate' = {

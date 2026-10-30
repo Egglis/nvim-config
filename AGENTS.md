@@ -22,6 +22,7 @@ nvim/
 ├── init.lua                        # Entry point — conditional boot logic
 ├── AGENTS.md                       # This file
 ├── gates.ps1                       # OpenSpec gate targets (build/format/validate/deps)
+├── stylua.toml                     # Lua formatting standard (used by the format gate)
 ├── docs/dependencies.md            # Required tools, checked by `gates.ps1 deps`
 ├── openspec/                       # OpenSpec specs and changes
 ├── .opencode/                      # OpenSpec /opsx-* commands and skills
@@ -304,7 +305,7 @@ Run through `gates.ps1` (`pwsh ./gates.ps1 <target>`); a gate passed only if you
 `LABEL_EXIT:0`. Quote exit lines, never paraphrase them.
 
 - `pwsh ./gates.ps1 build` — starts Neovim headless with `init.lua`; fails on any startup error.
-- `pwsh ./gates.ps1 format` — `stylua --check` (2-space indent) over `init.lua` and `lua/`.
+- `pwsh ./gates.ps1 format` — `stylua --check` over `init.lua` and `lua/`, using `stylua.toml`.
 - `pwsh ./gates.ps1 validate` — `openspec validate --strict` on every active change.
 - `pwsh ./gates.ps1 gates` — all of the above.
 

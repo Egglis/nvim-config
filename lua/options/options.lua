@@ -3,7 +3,7 @@ vim.g.maplocalleader = " "
 
 vim.o.updatetime = 50
 vim.o.timeoutlen = 300
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = "menuone,noselect"
 
 vim.o.termguicolors = true
 
