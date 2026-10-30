@@ -16,4 +16,4 @@
 
 ## 4. Human verification
 
-- [ ] 4.1 User checks in real Neovim: `<leader>og` opens the panel on the right and toggles it without losing the conversation; `<leader>oI` starts a new session in the current cwd with the prompt focused; `:checkhealth opencode` is clean
+- [x] 4.1 User checks in real Neovim: `<leader>og` opens the panel on the right and toggles it without losing the conversation; `<leader>oI` starts a new session in the current cwd with the prompt focused; `:checkhealth opencode` is clean
