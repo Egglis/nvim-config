@@ -333,6 +333,11 @@ Run through `gates.ps1` (`pwsh ./gates.ps1 <target>`); a gate passed only if you
 `pwsh ./gates.ps1 deps` is separate: it checks that every tool and login in `docs/dependencies.md` is
 present.
 
+### Git
+
+Personal project: commit straight to `master` (the repo's main branch) and push to `origin/master`. No
+feature branches, no pull requests. (`origin/main` is an unrelated 2024 history; ignore it.)
+
 ### Starting a change
 
 1. Ask which change to build, even if there is only one (`pwsh ./gates.ps1 changes`).
@@ -340,8 +345,7 @@ present.
    fresh session, the `egg-pickup` skill does this and steps 3–5.
 3. `pwsh ./gates.ps1 deps` → `DEPS_EXIT:0`. If not, stop: offer to install what's missing, and hand any
    login to the user as `!<cmd>` — never try to authenticate yourself.
-4. Clean working tree (unless resuming a recorded stop), `pwsh ./gates.ps1 validate` green, on branch
-   `change/<change-name>`.
+4. Clean working tree (unless resuming a recorded stop), `pwsh ./gates.ps1 validate` green, on `master`.
 5. Read `proposal.md`, `design.md`, and the specs the change touches.
 
 A task that needs a tool, SDK, service or login not in `docs/dependencies.md` is a stop: ask before
@@ -378,7 +382,7 @@ section commit, and say why in a devlog note.
 1. Self-review the whole change, `git diff <first-section-base>..HEAD`: duplicated abstractions,
    leftover scaffolding, cross-section drift, and whether the spec is genuinely satisfied.
 2. Write the change-done devlog note and report to the user. Then **offer** an independent code review
-   of the change branch before archiving (e.g. a fresh-context `general` subagent reviewing
+   of the change before archiving (e.g. a fresh-context `general` subagent reviewing
    `git diff <first-section-base>..HEAD` against the specs), and run it if they say yes.
 3. Fixes from either review don't land as loose commits. Add them to `tasks.md` as one or more new
    sections (`## N+1. Review fixes: <theme>`), agree them with the user, and build them with the

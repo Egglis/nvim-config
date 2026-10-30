@@ -25,5 +25,13 @@ return {
       position = "right",
       window_width = 0.40,
     },
+    keymap = {
+      input_window = {
+        -- <M-m> is swallowed by the Windows terminal as a window-close key; use <leader>om instead.
+        -- Normal mode only: an insert-mode <leader> mapping makes every typed space wait for timeoutlen.
+        ["<M-m>"] = false,
+        ["<leader>om"] = { "switch_mode", mode = "n" },
+      },
+    },
   },
 }
