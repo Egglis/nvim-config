@@ -35,7 +35,8 @@ nvim/
 └── lua/
     ├── config/
     │   ├── options.lua             # All vim options (clipboard only in standalone)
-    │   └── lazy.lua                # lazy.nvim bootstrap + setup
+    │   ├── lazy.lua                # lazy.nvim bootstrap + setup
+    │   └── repo_accent.lua         # Per-repo accent color (statusline block + terminal title)
     ├── keymaps/
     │   ├── shared.lua              # Active in BOTH Neovim and VSCode
     │   ├── vscode.lua              # VSCode-only (calls vscode.action())
@@ -64,6 +65,7 @@ init.lua
   │     └── keymaps/vscode.lua
   └── else:
         ├── keymaps/regular.lua
+        ├── config/repo_accent.lua  (setup: title + autocmds)
         └── config/lazy.lua         (loads all plugins)
 ```
 
@@ -254,6 +256,28 @@ To add a new language server:
 2. Mason will auto-install it and mason-lspconfig enables it; it picks up the shared capabilities and the `LspAttach` keymaps.
 
 No external formatter or linter plugins are currently configured. Formatting goes through `vim.lsp.buf.format()`.
+
+---
+
+## Repo Accent (`lua/config/repo_accent.lua`)
+
+Standalone only. Tells terminal windows apart without touching the colorscheme:
+
+- The statusline starts with the repo's folder name on the repo's **accent color** (first item of
+  `lualine_a`, before the mode); the rest of the statusline (sections b/c/x/y) is a 45% tint of it.
+- A full-width top bar (tabline, `showtabline=2`) on the accent shows the repo name. This hides the tab
+  list inside repos.
+- Lualine's `config` hands its opts to `repo_accent.attach_lualine()`, which owns `lualine.setup()` so the
+  tinted theme (a copy of `lualine.themes.auto`) can be rebuilt on a repo change.
+- Outside a git repo: no block, untinted statusline, no top bar.
+- The terminal title (`title`/`titlestring`) is the repo folder name — Windows Terminal shows it on the tab.
+- Repo = git root of Neovim's cwd (`vim.fs.root(cwd, ".git")`), re-evaluated on `VimEnter`/`DirChanged`;
+  opening a file from another repo does not change it.
+- Accent source: the repo's `.vscode/settings.json` → `workbench.colorCustomizations` →
+  `statusBar.background`, else `titleBar.activeBackground` (`#rrggbb`; comments/trailing commas OK).
+  Otherwise a stable pick from 9 tokyonight colors by hash of the folder name.
+- To pin a repo's color, set `"statusBar.background"` there (VSCode picks it up too). Changes apply on
+  restart or `:cd .`.
 
 ---
 

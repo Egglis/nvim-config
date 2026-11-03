@@ -38,9 +38,20 @@ anything in VSCode mode.
 6. **Title:** `vim.o.title = true` and `titlestring` set to the repo (or cwd) folder name; Windows
    Terminal shows it as the tab title.
 7. **Module shape:** `lua/config/repo_accent.lua` exposes `setup()`, `component()` (lualine table) and
-   pure helpers (`parse_jsonc`, `color_for`) for headless checks. It never requires a plugin. `setup()`
-   is called from `init.lua`'s standalone branch; lualine's spec requires the module inside its
-   `opts` function.
+   pure helpers (`parse_jsonc`, `vscode_color`, `hashed_color`, `fg_for`, `blend`, `resolve`) for headless
+   checks. It never requires a plugin at load
+   time. `setup()` is called from `init.lua`'s standalone branch; lualine's spec requires the module
+   inside its `opts` function.
+8. **More colour (after first verification: "difficult to see quickly"):** user chose statusline tint +
+   top bar.
+   - Tint = accent blended 45% over the statusline background `#16161e`, applied to lualine sections
+     b and c of every mode (x/y mirror them) via a copy of `lualine.themes.auto`. Section a (mode) keeps
+     its theme colour so modes stay readable.
+   - Lualine has to be re-`setup()` with the new theme on a repo change; lualine's `config` hands its
+     opts to `repo_accent.attach_lualine(opts)`, which owns that setup call.
+   - Top bar = `tabline` set to a single centred repo name on highlight `RepoAccentBar` (full accent),
+     `showtabline=2`; re-applied on `ColorScheme`. Outside a repo: `showtabline=1`, `tabline=""`.
+     Trade-off: the tab list is hidden inside repos — tabs aren't used in this config.
 
 ## Risks / Trade-offs
 

@@ -10,8 +10,11 @@
 
 ## 2. Statusline and docs
 
-- [ ] 2.1 Add the repo component as the first item of `lualine_a` in `lua/plugins/lualine.lua`
+- [x] 2.1 Add the repo component as the first item of `lualine_a` in `lua/plugins/lualine.lua`
       (hidden outside a repo), keeping `mode` after it
-- [ ] 2.2 Document the repo accent in `AGENTS.md` (directory tree, behaviour, how to pin a colour) and
+- [x] 2.2 Document the repo accent in `AGENTS.md` (directory tree, behaviour, how to pin a colour) and
       tick the first TODO in `readme.md`
-- [ ] 2.3 Human verification: statusline block and terminal tab title in two different repos
+- [x] 2.3 Tint lualine sections b/c with the blended accent (re-setup on repo change via
+      `attach_lualine`) and add the full-width accent top bar (tabline, `showtabline=2`, `ColorScheme`
+      re-apply); revert both outside a repo
+- [x] 2.4 Human verification: statusline tint, top bar and terminal tab title in two different repos

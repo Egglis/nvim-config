@@ -47,13 +47,32 @@ tokyonight colors by a stable hash of the repo folder name, so the same repo alw
 - **THEN** both show the same accent color
 
 ### Requirement: Accent shown only in the chrome
-The accent SHALL appear only as a block at the left of the statusline showing the repo folder name, with
-the accent as background and a readable foreground. The colorscheme, the editing area and every other
-highlight SHALL be unchanged.
+The accent SHALL color only the statusline and the top bar; the colorscheme and the editing area SHALL be
+unchanged, and every foreground on the accent or tint SHALL be chosen for readability.
 
 #### Scenario: Statusline block
 - **WHEN** standalone Neovim is inside a repo
 - **THEN** the statusline starts with the repo name on the accent color, and the colorscheme is still tokyonight `night`
+
+### Requirement: Tinted statusline
+Inside a repo, the rest of the statusline (lualine sections b, c, x, y, in every mode) SHALL use a strong
+tint of the accent as background; the mode section keeps its theme color.
+
+#### Scenario: Tinted statusline
+- **WHEN** standalone Neovim is inside a repo
+- **THEN** the statusline's middle sections have a background that is a blend of the accent and the statusline background
+
+### Requirement: Top bar
+Inside a repo, a full-width top bar (tabline) SHALL be shown on the full accent with the repo name centred.
+Outside a repo, the statusline SHALL use the plain theme and the top bar SHALL NOT be shown.
+
+#### Scenario: Top bar
+- **WHEN** standalone Neovim is inside a repo
+- **THEN** `showtabline` is 2 and the tabline is a full-width bar on the accent color with the repo name
+
+#### Scenario: Leaving a repo
+- **WHEN** the working directory changes to a folder outside any git repository
+- **THEN** the statusline uses the untinted theme and `showtabline` is back to 1
 
 ### Requirement: Terminal title names the repo
 Standalone Neovim SHALL set the terminal title to the repo folder name (or the working directory's

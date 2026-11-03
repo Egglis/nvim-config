@@ -16,6 +16,8 @@ M.palette = {
 
 local DARK_FG = "#1a1b26"
 local LIGHT_FG = "#c0caf5"
+local STATUS_BG = "#16161e"
+local TINT_ALPHA = 0.45
 
 M.state = { root = nil, name = nil, accent = nil, fg = nil }
 
@@ -111,6 +113,16 @@ function M.fg_for(accent)
   return luminance > 0.5 and DARK_FG or LIGHT_FG
 end
 
+-- `alpha` of `color` over `base`, both #rrggbb.
+function M.blend(color, base, alpha)
+  local out = {}
+  for i = 2, 6, 2 do
+    local c, b = tonumber(color:sub(i, i + 1), 16), tonumber(base:sub(i, i + 1), 16)
+    out[#out + 1] = string.format("%02x", math.floor(alpha * c + (1 - alpha) * b + 0.5))
+  end
+  return "#" .. table.concat(out)
+end
+
 -- Computes { root, name, accent, fg } for a directory; root/accent are nil outside a git repo.
 function M.resolve(dir)
   local root = vim.fs.root(dir, ".git")
@@ -119,16 +131,69 @@ function M.resolve(dir)
   end
   local name = vim.fs.basename(root)
   local accent = M.vscode_color(root) or M.hashed_color(name)
-  return { root = root, name = name, accent = accent, fg = M.fg_for(accent) }
+  local tint = M.blend(accent, STATUS_BG, TINT_ALPHA)
+  return {
+    root = root,
+    name = name,
+    accent = accent,
+    fg = M.fg_for(accent),
+    tint = tint,
+    tint_fg = M.fg_for(tint),
+  }
+end
+
+-- lualine theme for the current repo: sections b/c (and x/y, which mirror them) on the tint.
+function M.lualine_theme()
+  local theme = vim.deepcopy(require("lualine.themes.auto"))
+  if not M.state.accent then
+    return theme
+  end
+  for _, mode in pairs(theme) do
+    if type(mode) == "table" then
+      for _, section in ipairs({ "b", "c" }) do
+        if type(mode[section]) == "table" then
+          mode[section] = vim.tbl_extend("force", mode[section], { fg = M.state.tint_fg, bg = M.state.tint })
+        end
+      end
+    end
+  end
+  return theme
+end
+
+local lualine_opts = nil
+
+-- Called from lualine's spec `config`: owns lualine's setup so the theme can follow the repo.
+function M.attach_lualine(opts)
+  lualine_opts = opts
+  M.apply_lualine()
+end
+
+function M.apply_lualine()
+  if not lualine_opts then
+    return
+  end
+  lualine_opts.options = lualine_opts.options or {}
+  lualine_opts.options.theme = M.lualine_theme()
+  require("lualine").setup(lualine_opts)
+end
+
+local function apply_topbar()
+  if not M.state.accent then
+    vim.o.showtabline = 1
+    vim.o.tabline = ""
+    return
+  end
+  vim.api.nvim_set_hl(0, "RepoAccentBar", { fg = M.state.fg, bg = M.state.accent, bold = true })
+  vim.o.showtabline = 2
+  vim.o.tabline = "%#RepoAccentBar#%=" .. M.state.name:gsub("%%", "%%%%") .. "%="
 end
 
 function M.update()
   M.state = M.resolve(vim.fn.getcwd())
   vim.o.title = true
   vim.o.titlestring = (M.state.name or "nvim"):gsub("%%", "%%%%")
-  if package.loaded.lualine then
-    require("lualine").refresh()
-  end
+  apply_topbar()
+  M.apply_lualine()
 end
 
 -- lualine component: repo name on the accent color, hidden outside a repo.
@@ -148,10 +213,9 @@ end
 
 function M.setup()
   M.update()
-  vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
-    group = vim.api.nvim_create_augroup("repo_accent", { clear = true }),
-    callback = M.update,
-  })
+  local group = vim.api.nvim_create_augroup("repo_accent", { clear = true })
+  vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, { group = group, callback = M.update })
+  vim.api.nvim_create_autocmd("ColorScheme", { group = group, callback = apply_topbar })
 end
 
 return M
