@@ -34,4 +34,21 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require("opencode").setup(opts)
+
+    -- The plugin remembers a model per agent mode; keep the current model when switching modes instead.
+    local agent_model = require("opencode.services.agent_model")
+    local Promise = require("opencode.promise")
+    local state = require("opencode.state")
+    local switch_to_mode = agent_model.switch_to_mode
+    agent_model.switch_to_mode = Promise.async(function(mode)
+      local model = state.current_model
+      local ok = switch_to_mode(mode):await()
+      if ok and model then
+        state.model.set_model(model)
+      end
+      return ok
+    end)
+  end,
 }
