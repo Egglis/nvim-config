@@ -1,7 +1,8 @@
 # repo-accent Specification
 
 ## Purpose
-TBD - created by archiving change add-repo-accent-color. Update Purpose after archive.
+Lets each standalone Neovim window be recognised at a glance by its repo, through an accent color in the
+statusline and top bar and the terminal title, without changing the colorscheme.
 
 ## Requirements
 
