@@ -22,7 +22,7 @@
 
 ## 4. Human verification
 
-- [ ] 4.1 User checks in real Neovim, following a recipe the agent provides:
+- [x] 4.1 User checks in real Neovim, following a recipe the agent provides:
   - `<leader>ff`, `<leader>fa`, `<leader>fb`, `<leader>fh` work as before.
   - `<leader>fr`, `<leader>fw` (on a word, and on a visual selection), `<leader>fd`, `<leader>fg`, and `<leader>fR` after closing a picker with a query.
   - `<leader>fP` lists repos; picking one changes cwd, the accent bar follows, and the file picker opens.
