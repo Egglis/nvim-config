@@ -20,7 +20,7 @@
 
 ## 4. Human verification
 
-- [ ] 4.1 User checks in real Neovim (Windows Terminal), following a recipe the agent provides:
+- [x] 4.1 User checks in real Neovim (Windows Terminal), following a recipe the agent provides:
   - `<leader>tt` opens pwsh at the bottom, with the oh-my-posh prompt and `nconfig` working.
   - `dotnet --version` runs.
   - Start `dotnet watch` (or `ping -t localhost`), hide with `q`, and reopen with `<leader>tt`: the process is still running.
