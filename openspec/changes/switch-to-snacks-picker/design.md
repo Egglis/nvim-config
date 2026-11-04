@@ -47,6 +47,10 @@ startup cost.
    and `:cmd` for command items.
    Mappings without a `desc` (`vscode.lua`, some built-ins) still show up by their key, but they
    can't be found by name. `shared.lua` mappings have descriptions, so they can be.
+   *Found during implementation:* `multi` calls each source's confirm as a function, and `commands`'
+   confirm is the string `"cmd"` (crash), so the palette has its own dispatching `confirm`. snacks'
+   `cmd` action only types the command, so `<leader>fp` and `<leader>fc` run user commands whose
+   `nargs` is `0`/`?`/`*` and type the rest (built-ins included) on the command line (user's call).
 4. **`<leader>fk`/`<leader>fc` are the plain `keymaps`/`commands` sources** (all modes for keymaps).
 5. **LSP list keys call `require("snacks").picker.lsp_*()` inside wrapper functions** in
    `lua/lsp/keymaps.lua`. lazy.nvim loads snacks on the first `require`, which keeps the rule that

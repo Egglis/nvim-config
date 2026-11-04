@@ -193,6 +193,14 @@ nothing.
 | `<leader>fg` | Git status (changed files) |
 | `<leader>fR` | Resume the last picker with its query |
 | `<leader>fP` | Recent projects: confirming one does a **global** `:cd` there (repo accent follows) and opens the file picker |
+| `<leader>fp` | Command palette: normal-mode key mappings + `:` commands in one list |
+| `<leader>fk` | Key mappings (all modes) |
+| `<leader>fc` | `:` commands |
+
+In the palette and `<leader>fk`, mappings are found by their `desc`; mappings without one are listed only
+by their keys. Confirming a mapping replays its keys. Confirming a command (palette, `<leader>fc`) runs it
+if it's a user/plugin command that needs no argument (e.g. `:Lazy`); anything else, including built-ins
+like `:edit`, is typed on the command line for you to finish.
 
 > Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. `<leader>fd` is diagnostics here but **format document** in VSCode, and `<leader>fg` is git status here but **focus Source Control** in VSCode. These are separate code paths (not a runtime conflict) but be aware of the semantic difference.
 

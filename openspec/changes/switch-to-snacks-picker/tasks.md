@@ -16,9 +16,9 @@
 
 ## 3. Command palette
 
-- [ ] 3.1 Add `<leader>fp` opening `Snacks.picker.pick` with `multi` = keymaps (normal mode only) + commands, titled "Command Palette" (design decision 3). Check in the snacks source that `multi` items confirm with their own source's action; if not, add the dispatching `confirm` from decision 3 and note it in a devlog note. Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
-- [ ] 3.2 Add `<leader>fk` keymaps and `<leader>fc` commands, each with a `desc` (design decision 4). Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
-- [ ] 3.3 Docs: add `<leader>fp`/`fk`/`fc` to the `AGENTS.md` Pickers section, noting that only mappings with a `desc` can be found by name. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 3.1 Add `<leader>fp` opening `Snacks.picker.pick` with `multi` = keymaps (normal mode only) + commands, titled "Command Palette" (design decision 3). Check in the snacks source that `multi` items confirm with their own source's action; if not, add the dispatching `confirm` from decision 3 and note it in a devlog note. Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
+- [x] 3.2 Add `<leader>fk` keymaps and `<leader>fc` commands, each with a `desc` (design decision 4). Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
+- [x] 3.3 Docs: add `<leader>fp`/`fk`/`fc` to the `AGENTS.md` Pickers section, noting that only mappings with a `desc` can be found by name. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 4. Human verification
 

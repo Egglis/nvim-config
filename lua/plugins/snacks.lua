@@ -35,6 +35,32 @@ local function move_terminals(to)
   vim.cmd.stopinsert()
 end
 
+-- snacks' "cmd" action only types the command; run it when it takes no required argument.
+local function run_command(picker, item)
+  local nargs = item and item.command and item.command.nargs
+  if nargs == "0" or nargs == "?" or nargs == "*" then
+    picker:close()
+    vim.schedule(function()
+      vim.cmd(item.cmd)
+    end)
+  else
+    Snacks.picker.actions.cmd(picker, item)
+  end
+end
+
+-- multi pickers can't dispatch to a string confirm like "cmd", so the palette routes by item kind.
+local function palette_confirm(picker, item)
+  if item and item.cmd then
+    return run_command(picker, item)
+  end
+  picker:norm(function()
+    if item then
+      picker:close()
+      vim.api.nvim_input(item.item.lhs)
+    end
+  end)
+end
+
 local function toggle_terminal()
   if vim.v.count == 0 and vim.b.snacks_terminal then
     local buf = vim.api.nvim_get_current_buf()
@@ -127,6 +153,31 @@ return {
         Snacks.picker.projects()
       end,
       desc = "[F]ind [P]rojects",
+    },
+    {
+      "<leader>fp",
+      function()
+        Snacks.picker.pick({
+          title = "Command Palette",
+          multi = { { source = "keymaps", modes = { "n" } }, "commands" },
+          confirm = palette_confirm,
+        })
+      end,
+      desc = "[F]ind in command [P]alette",
+    },
+    {
+      "<leader>fk",
+      function()
+        Snacks.picker.keymaps()
+      end,
+      desc = "[F]ind [K]eymaps",
+    },
+    {
+      "<leader>fc",
+      function()
+        Snacks.picker.commands({ confirm = run_command })
+      end,
+      desc = "[F]ind [C]ommands",
     },
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },

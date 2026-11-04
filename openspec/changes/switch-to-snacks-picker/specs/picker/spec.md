@@ -29,7 +29,7 @@ In standalone Neovim, the config SHALL provide normal-mode find keys that open a
 - **THEN** a picker lists every line in the cwd containing `repo_accent`
 
 ### Requirement: Command palette
-`<leader>fp` SHALL open one picker listing every normal-mode key mapping that has a description, searchable by that description, together with every `:` command. Confirming a mapping SHALL run it; confirming a command SHALL run it.
+`<leader>fp` SHALL open one picker listing every normal-mode key mapping that has a description, searchable by that description, together with every `:` command. Confirming a mapping SHALL run it; confirming a command that needs no argument SHALL run it, and confirming any other command SHALL type it on the command line for the user to finish.
 
 #### Scenario: Run a mapping by name
 - **WHEN** the user presses `<leader>fp`, types `terminal toggle`, and confirms the matching entry
@@ -40,7 +40,7 @@ In standalone Neovim, the config SHALL provide normal-mode find keys that open a
 - **THEN** the lazy.nvim window opens
 
 ### Requirement: Keymap and command pickers
-`<leader>fk` SHALL list the key mappings and `<leader>fc` the `:` commands, each runnable on confirm, as separate pickers.
+`<leader>fk` SHALL list the key mappings and `<leader>fc` the `:` commands, each runnable on confirm (commands as in the command palette), as separate pickers.
 
 #### Scenario: Find a keymap
 - **WHEN** the user presses `<leader>fk` and types `find files`
