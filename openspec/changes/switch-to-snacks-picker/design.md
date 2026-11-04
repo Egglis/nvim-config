@@ -45,8 +45,8 @@ startup cost.
    *To check during implementation:* that each item in a `multi` picker confirms with its own source's
    action. If not, give the palette one `confirm` that runs `nvim_input(item.item.lhs)` for keymap items
    and `:cmd` for command items.
-   Mappings without a `desc` (`shared.lua`, `vscode.lua`, some built-ins) still show up by their key,
-   but they can't be found by name. This is accepted; those files stay as the user wrote them.
+   Mappings without a `desc` (`vscode.lua`, some built-ins) still show up by their key, but they
+   can't be found by name. `shared.lua` mappings have descriptions, so they can be.
 4. **`<leader>fk`/`<leader>fc` are the plain `keymaps`/`commands` sources** (all modes for keymaps).
 5. **LSP list keys call `require("snacks").picker.lsp_*()` inside wrapper functions** in
    `lua/lsp/keymaps.lua`. lazy.nvim loads snacks on the first `require`, which keeps the rule that
