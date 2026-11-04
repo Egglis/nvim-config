@@ -8,7 +8,7 @@ This document provides context for AI agents working on this Neovim configuratio
 
 This is a personal Neovim configuration that supports **two runtime environments**:
 
-1. **Standalone Neovim** — full plugin stack, LSP, completions, telescope, etc.
+1. **Standalone Neovim** — full plugin stack, LSP, completions, pickers, etc.
 2. **VSCode via vscode-neovim extension** — minimal mode; no plugins loaded, only keymaps that delegate to VSCode commands.
 
 The same config repo is used for both. The entry point (`init.lua`) branches on `vim.g.vscode` at startup.
@@ -47,11 +47,10 @@ nvim/
     ├── plugins/                    # One file per plugin; auto-discovered by lazy.nvim
     │   ├── theme.lua               # tokyonight colorscheme
     │   ├── lualine.lua             # Statusline
-    │   ├── telescope.lua           # Fuzzy finder
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   ├── cmp.lua                 # nvim-cmp autocompletion
     │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
-    │   └── snacks.lua              # folke/snacks.nvim (terminal module only)
+    │   └── snacks.lua              # folke/snacks.nvim (terminal + picker)
 ```
 
 ---
@@ -89,7 +88,7 @@ The leader key is `<Space>`.
 - `regular.lua` — may use any plugin or Neovim-only API.
 - Every mapping outside `shared.lua`/`vscode.lua` gets a `desc`. Prefer `<cmd>…<CR>` over `:…<CR>`.
 - LSP keymaps live in `lua/lsp/keymaps.lua` (buffer-local, set from an `LspAttach` autocmd).
-- Plugin-specific keymaps (e.g., Telescope) live inside the plugin's own spec file in `plugins/`.
+- Plugin-specific keymaps (e.g., the pickers) live inside the plugin's own spec file in `plugins/`.
 
 ---
 
@@ -159,12 +158,12 @@ These are only active in buffers where an LSP server has attached.
 |------|--------|
 | `<leader>rn` | Rename symbol |
 | `<leader>ca` | Code actions |
-| `<leader>gd` | Telescope: go to definition |
-| `<leader>gr` | Telescope: go to references |
-| `<leader>gi` | Telescope: go to implementation |
-| `<leader>td` | Telescope: type definition |
-| `<leader>ds` | Telescope: document symbols |
-| `<leader>ws` | Telescope: workspace symbols |
+| `<leader>gd` | Picker: go to definition |
+| `<leader>gr` | Picker: go to references |
+| `<leader>gi` | Picker: go to implementation |
+| `<leader>td` | Picker: type definition |
+| `<leader>ds` | Picker: document symbols |
+| `<leader>ws` | Picker: workspace symbols (live search) |
 | `K` | Hover documentation |
 | `<C-k>` | Signature help |
 | `gD` | Go to declaration |
@@ -173,7 +172,14 @@ User command `:Format` → `vim.lsp.buf.format()`.
 
 ---
 
-### Telescope — `lua/plugins/telescope.lua`
+### Pickers — `lua/plugins/snacks.lua`
+Standalone only. snacks.nvim picker, lazy-loaded on the keys below, the LSP list keys, or the first
+`vim.ui.select` (e.g. code actions): an `init` stub loads snacks, whose picker then replaces
+`vim.ui.select`. opencode.nvim uses it too (`preferred_picker = "snacks"`).
+
+Closing: `Ctrl+c` closes a picker while typing and in normal mode; `q` closes it in normal mode. `<Esc>`
+never closes it: while typing it switches to normal mode (move with `j`/`k`); in normal mode it does
+nothing.
 
 | Keys | Action |
 |------|--------|
@@ -245,8 +251,6 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 |--------|------|---------|
 | `folke/tokyonight.nvim` | `theme.lua` | Colorscheme (`night` style) |
 | `nvim-lualine/lualine.nvim` | `lualine.lua` | Statusline |
-| `nvim-telescope/telescope.nvim` | `telescope.lua` | Fuzzy file/text finder |
-| `nvim-lua/plenary.nvim` | (telescope dep) | Lua utility library |
 | `neovim/nvim-lspconfig` | `lsp.lua` | LSP client configs |
 | `mason-org/mason.nvim` | `lsp.lua` | LSP/tool installer UI |
 | `mason-org/mason-lspconfig.nvim` | `lsp.lua` | Installs + enables servers (v2, `automatic_enable`) |
@@ -258,7 +262,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Terminal panel only (`opts = { terminal = {} }`; lazy: `<leader>tt/tr/tb`, `<C-t>`) |
+| `folke/snacks.nvim` | `snacks.lua` | Terminal panel and pickers (`opts = { terminal, picker }`; lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, LSP list keys, `vim.ui.select`) |
 
 ---
 

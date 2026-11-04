@@ -8,7 +8,7 @@ return {
   },
   dependencies = {
     "hrsh7th/nvim-cmp",
-    "nvim-telescope/telescope.nvim",
+    "folke/snacks.nvim",
     {
       "MeanderingProgrammer/render-markdown.nvim",
       ft = { "markdown", "opencode_output" },
@@ -19,7 +19,7 @@ return {
     },
   },
   opts = {
-    preferred_picker = "telescope",
+    preferred_picker = "snacks",
     lock_session_to_directory = true,
     ui = {
       position = "right",

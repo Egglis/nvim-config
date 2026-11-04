@@ -1,8 +1,12 @@
 local M = {}
 
-local function on_attach(bufnr)
-  local telescope = require("telescope.builtin")
+local function picker(name)
+  return function()
+    require("snacks").picker[name]()
+  end
+end
 
+local function on_attach(bufnr)
   local nmap = function(keys, func, desc)
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
   end
@@ -10,12 +14,12 @@ local function on_attach(bufnr)
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
-  nmap("<leader>gd", telescope.lsp_definitions, "[G]oto [D]efinition")
-  nmap("<leader>gr", telescope.lsp_references, "[G]oto [R]eferences")
-  nmap("<leader>gi", telescope.lsp_implementations, "[G]oto [I]mplementation")
-  nmap("<leader>td", telescope.lsp_type_definitions, "Type [D]efinition")
-  nmap("<leader>ds", telescope.lsp_document_symbols, "[D]ocument [S]ymbols")
-  nmap("<leader>ws", telescope.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+  nmap("<leader>gd", picker("lsp_definitions"), "[G]oto [D]efinition")
+  nmap("<leader>gr", picker("lsp_references"), "[G]oto [R]eferences")
+  nmap("<leader>gi", picker("lsp_implementations"), "[G]oto [I]mplementation")
+  nmap("<leader>td", picker("lsp_type_definitions"), "Type [D]efinition")
+  nmap("<leader>ds", picker("lsp_symbols"), "[D]ocument [S]ymbols")
+  nmap("<leader>ws", picker("lsp_workspace_symbols"), "[W]orkspace [S]ymbols")
 
   nmap("K", vim.lsp.buf.hover, "Hover Documentation")
   nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")

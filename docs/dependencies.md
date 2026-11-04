@@ -11,4 +11,4 @@ Every tool this repo needs. `pwsh ./gates.ps1 deps` checks each row.
 | OpenSpec CLI | 1.x | Change tracking, `validate` gate | `npm i -g @fission-ai/openspec` | `openspec --version` | — |
 | PowerShell | 7+ | Runs `gates.ps1`; runtime shell for standalone Neovim (`:terminal`, `:!`, `system()`) | `winget install Microsoft.PowerShell` | `pwsh --version` | — |
 | OpenCode CLI | 1.x or 2.x | Server behind the `opencode.nvim` panel (`<leader>o…` in standalone Neovim) | `npm i -g opencode-ai` | `opencode --version` | provider connected: run `opencode`, then `/connect` (manual) |
-| ripgrep | any | Telescope `live_grep` (`<leader>fa` in standalone Neovim) | `winget install BurntSushi.ripgrep.MSVC` | `rg --version` | — |
+| ripgrep | any | snacks picker files and grep (`<leader>ff`/`<leader>fa` in standalone Neovim) | `winget install BurntSushi.ripgrep.MSVC` | `rg --version` | — |

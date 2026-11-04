@@ -50,7 +50,41 @@ end
 
 return {
   "folke/snacks.nvim",
+  init = function()
+    -- Load snacks on the first vim.ui.select; its picker setup then replaces this stub.
+    vim.ui.select = function(...)
+      return require("snacks").picker.select(...)
+    end
+  end,
   keys = {
+    {
+      "<leader>ff",
+      function()
+        Snacks.picker.files()
+      end,
+      desc = "[F]ind [F]iles",
+    },
+    {
+      "<leader>fa",
+      function()
+        Snacks.picker.grep()
+      end,
+      desc = "[F]ind [A]ll (live grep)",
+    },
+    {
+      "<leader>fb",
+      function()
+        Snacks.picker.buffers()
+      end,
+      desc = "[F]ind [B]uffers",
+    },
+    {
+      "<leader>fh",
+      function()
+        Snacks.picker.help()
+      end,
+      desc = "[F]ind [H]elp",
+    },
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
     {
@@ -70,5 +104,28 @@ return {
   },
   opts = {
     terminal = {},
+    picker = {
+      -- Ctrl+c and q close a picker; <Esc> only leaves insert mode.
+      win = {
+        input = {
+          keys = {
+            ["<C-c>"] = { "cancel", mode = { "i", "n" } },
+            ["<Esc>"] = false,
+          },
+        },
+        list = {
+          keys = {
+            ["<C-c>"] = "cancel",
+            ["<Esc>"] = false,
+          },
+        },
+        preview = {
+          keys = {
+            ["<C-c>"] = "cancel",
+            ["<Esc>"] = false,
+          },
+        },
+      },
+    },
   },
 }
