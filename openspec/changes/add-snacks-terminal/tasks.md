@@ -8,10 +8,10 @@
 
 ## 2. Snacks terminal
 
-- [ ] 2.1 Create `lua/plugins/snacks.lua`: `folke/snacks.nvim`, `opts = { terminal = {} }` (no other module enabled), lazy-loaded through `keys` for `<leader>tt`, `<leader>tr` and `<leader>tb` (normal mode, each with a `desc`). `<leader>tt` calls `Snacks.terminal.focus(nil, { win = { position = position } })` (design decisions 1 and 2)
-- [ ] 2.2 Add the local move helper for `<leader>tr`/`<leader>tb`: set the session `position`, then hide and re-show every terminal in `Snacks.terminal.list()` at that position, keeping focus where it was (design decision 4, including the `show()`/`opts.position` check)
-- [ ] 2.3 Install snacks (`:Lazy sync` headless) and commit the updated `lazy-lock.json`. Verify headless that startup does not load snacks (`package.loaded.snacks == nil` after `VimEnter`), and that every config mapping still has a `desc`
-- [ ] 2.4 Docs: `AGENTS.md`, including the plugin table row, the directory tree entry, and a "Terminal" keymap section (`<leader>tt` / `N<leader>tt`, `<leader>tr`, `<leader>tb`, double `<Esc>`, `q`, and the one-terminal-per-cwd note). Tick the readme TODO "Terminal plugin for running scripts and projects". `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 2.1 Create `lua/plugins/snacks.lua`: `folke/snacks.nvim`, `opts = { terminal = {} }` (no other module enabled), lazy-loaded through `keys` for `<leader>tt`, `<leader>tr` and `<leader>tb` (normal mode, each with a `desc`). `<leader>tt` calls `Snacks.terminal.focus(nil, { win = { position = position } })` (design decisions 1 and 2)
+- [x] 2.2 Add the local move helper for `<leader>tr`/`<leader>tb`: set the session `position`, then hide and re-show every terminal in `Snacks.terminal.list()` at that position, keeping focus where it was (design decision 4, including the `show()`/`opts.position` check)
+- [x] 2.3 Install snacks (`:Lazy sync` headless) and commit the updated `lazy-lock.json`. Verify headless that startup does not load snacks (`package.loaded.snacks == nil` after `VimEnter`), and that every config mapping still has a `desc`
+- [x] 2.4 Docs: `AGENTS.md`, including the plugin table row, the directory tree entry, and a "Terminal" keymap section (`<leader>tt` / `N<leader>tt`, `<leader>tr`, `<leader>tb`, double `<Esc>`, `q`, and the one-terminal-per-cwd note). Tick the readme TODO "Terminal plugin for running scripts and projects". `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 3. Human verification
 

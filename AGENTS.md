@@ -50,7 +50,8 @@ nvim/
     │   ├── telescope.lua           # Fuzzy finder
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   ├── cmp.lua                 # nvim-cmp autocompletion
-    │   └── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
+    │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
+    │   └── snacks.lua              # folke/snacks.nvim (terminal module only)
 ```
 
 ---
@@ -204,6 +205,24 @@ In the prompt: `<CR>` (normal) / `<S-CR>` sends, `@` mention, `/` slash commands
 
 ---
 
+### Terminal — `lua/plugins/snacks.lua`
+Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks terminal running `vim.o.shell`
+(pwsh, with the profile) in Neovim's cwd. Lazy-loaded on the keys below. Hiding keeps the process running.
+
+| Keys | Mode | Action |
+|------|------|--------|
+| `<leader>tt` | n | Focus terminal 1; hide it if already in it |
+| `N<leader>tt` | n | Same for terminal N (e.g. `2<leader>tt`) |
+| `<leader>tr` | n | Move all terminals to a right split (remembered for the session) |
+| `<leader>tb` | n | Move all terminals back to the bottom (default) |
+| `<Esc><Esc>` | t | Terminal → normal mode (a single `<Esc>` reaches the program) |
+| `q` | n (in terminal) | Hide the panel |
+
+A terminal belongs to the cwd it was opened in: after `:cd`, `<leader>tt` opens a new one; the old one
+keeps running and returns when you `:cd` back.
+
+---
+
 ### Completion (nvim-cmp) — `lua/plugins/cmp.lua`
 Insert/select mode. Sources: lazydev, LSP, path, buffer. LSP snippets expand via Neovim's built-in `vim.snippet`.
 
@@ -238,6 +257,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
+| `folke/snacks.nvim` | `snacks.lua` | Terminal panel only (`opts = { terminal = {} }`; lazy: `<leader>tt/tr/tb`) |
 
 ---
 

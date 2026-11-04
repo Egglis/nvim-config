@@ -7,5 +7,5 @@ Also a powershell $profile file!
 - [ ] Git tree/sidebar for simple git actions, probably some plugin
 - [ ] Simple file treeview with symbols and git tracking
 - [ ] Other UI improvements for a clean and simpler interface
-- [ ] Terminal plugin for running scripts and projects directly within the same session
+- [x] Terminal plugin for running scripts and projects directly within the same session
 - [ ] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
