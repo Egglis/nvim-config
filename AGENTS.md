@@ -269,10 +269,11 @@ Standalone only. Tells terminal windows apart without touching the colorscheme:
   list inside repos.
 - Lualine's `config` hands its opts to `repo_accent.attach_lualine()`, which owns `lualine.setup()` so the
   tinted theme (a copy of `lualine.themes.auto`) can be rebuilt on a repo change.
-- Outside a git repo: no block, untinted statusline, no top bar.
+- Outside a repo: no block, untinted statusline, no top bar.
 - The terminal title (`title`/`titlestring`) is the repo folder name — Windows Terminal shows it on the tab.
-- Repo = git root of Neovim's cwd (`vim.fs.root(cwd, ".git")`), re-evaluated on `VimEnter`/`DirChanged`;
-  opening a file from another repo does not change it.
+- Repo = git root of Neovim's cwd (`vim.fs.root(cwd, ".git")`), else the nearest folder with a `.vscode`
+  folder (never the home dir — `~/.vscode` is VSCode's data folder). Re-evaluated on
+  `VimEnter`/`DirChanged`; opening a file from another repo does not change it.
 - Accent source: the repo's `.vscode/settings.json` → `workbench.colorCustomizations` →
   `statusBar.background`, else `titleBar.activeBackground` (`#rrggbb`; comments/trailing commas OK).
   Otherwise a stable pick from 9 tokyonight colors by hash of the folder name.

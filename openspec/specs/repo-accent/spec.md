@@ -8,18 +8,24 @@ statusline and top bar and the terminal title, without changing the colorscheme.
 
 ### Requirement: Repo detection
 Standalone Neovim SHALL treat the nearest ancestor of the current working directory that contains `.git`
-as the current repo, and SHALL re-evaluate it whenever the working directory changes.
+as the current repo; if there is none, the nearest ancestor that contains a `.vscode` folder, other than
+the user's home directory. It SHALL re-evaluate the repo whenever the working directory changes.
 
 #### Scenario: Started inside a repo
 - **WHEN** standalone Neovim starts with its working directory inside a git repository
 - **THEN** the current repo is that repository's root directory
+
+#### Scenario: VSCode folder without git
+- **WHEN** the working directory is not inside a git repository but an ancestor other than the home
+  directory contains a `.vscode` folder
+- **THEN** the current repo is the nearest such ancestor
 
 #### Scenario: Directory change
 - **WHEN** the working directory changes to a different repository with `:cd`
 - **THEN** the current repo, accent and title update to the new repository
 
 #### Scenario: Not in a repo
-- **WHEN** the working directory is not inside any git repository
+- **WHEN** the working directory is inside neither a git repository nor a folder with `.vscode`
 - **THEN** there is no current repo, no accent is shown, and the title is the folder name
 
 ### Requirement: Accent color from VSCode settings
@@ -77,7 +83,7 @@ Outside a repo, the statusline SHALL use the plain theme and the top bar SHALL N
 - **THEN** `showtabline` is 2 and the tabline is a full-width bar on the accent color with the repo name
 
 #### Scenario: Leaving a repo
-- **WHEN** the working directory changes to a folder outside any git repository
+- **WHEN** the working directory changes to a folder outside any repo
 - **THEN** the statusline uses the untinted theme and `showtabline` is back to 1
 
 ### Requirement: Terminal title names the repo

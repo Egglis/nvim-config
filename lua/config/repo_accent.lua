@@ -123,9 +123,23 @@ function M.blend(color, base, alpha)
   return "#" .. table.concat(out)
 end
 
--- Computes { root, name, accent, fg } for a directory; root/accent are nil outside a git repo.
-function M.resolve(dir)
+-- Nearest git root, else nearest folder with a `.vscode` folder (except the home dir, whose
+-- `~/.vscode` is VSCode's own data folder).
+function M.find_root(dir)
   local root = vim.fs.root(dir, ".git")
+  if root then
+    return root
+  end
+  root = vim.fs.root(dir, ".vscode")
+  local home = vim.fs.normalize(vim.uv.os_homedir() or "")
+  if root and vim.fs.normalize(root):lower() ~= home:lower() then
+    return root
+  end
+end
+
+-- Computes { root, name, accent, fg } for a directory; root/accent are nil outside a repo.
+function M.resolve(dir)
+  local root = M.find_root(dir)
   if not root then
     return { name = vim.fs.basename(vim.fs.normalize(dir)) }
   end
