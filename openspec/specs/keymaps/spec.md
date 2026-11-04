@@ -36,10 +36,3 @@ Every mapping defined by this config outside VSCode mode SHALL have a non-empty 
 #### Scenario: Descriptions present
 - **WHEN** standalone Neovim has started and the mappings defined by this config are listed with `nvim_get_keymap`
 - **THEN** each has a non-empty `desc`
-
-### Requirement: Standalone search pickers
-In standalone Neovim, the config SHALL provide fuzzy pickers for files, live grep, open buffers and help tags.
-
-#### Scenario: Picker mappings
-- **WHEN** standalone Neovim has started
-- **THEN** `<leader>ff` finds files, `<leader>fa` live-greps the project, `<leader>fb` lists buffers and `<leader>fh` searches help tags
