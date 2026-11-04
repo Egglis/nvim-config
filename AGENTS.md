@@ -250,6 +250,7 @@ LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., 
 | Server | Notes |
 |--------|-------|
 | `lua_ls` | Lua Language Server; configured for Neovim API awareness via lazydev |
+| `roslyn_ls` | C# (Roslyn). Mason package `roslyn-language-server`, so `cmd` is overridden to that binary. Needs the .NET SDK; roots at the nearest `.sln`, else `.csproj` |
 
 To add a new language server:
 1. Add an entry to `lua/lsp/servers.lua`.

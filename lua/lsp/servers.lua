@@ -9,4 +9,15 @@ return {
       },
     },
   },
+  -- C#. Mason's package installs the server as `roslyn-language-server`, not lspconfig's default binary name.
+  roslyn_ls = {
+    cmd = {
+      "roslyn-language-server",
+      "--logLevel",
+      "Information",
+      "--extensionLogDirectory",
+      vim.fs.joinpath(vim.uv.os_tmpdir(), "roslyn_ls/logs"),
+      "--stdio",
+    },
+  },
 }
