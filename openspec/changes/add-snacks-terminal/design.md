@@ -37,10 +37,16 @@ across Neovim restarts.
 2. **`<leader>tt` calls `Snacks.terminal.focus()`, not `toggle()`.** `focus` jumps into a terminal
    that is visible but unfocused, and hides it only when you're already in it. That matches VSCode's
    terminal toggle. A count picks terminal N, because snacks reads `vim.v.count1`.
-3. **No `<leader>` mapping in terminal mode.** Space would wait `timeoutlen` on every keystroke (the
-   same issue noted in `opencode.lua` for insert mode). To get out of a terminal: double `<Esc>`, then
-   `<leader>tt` or `q`. No `<C-\>`-style terminal-mode toggle for now. If one is wanted later, it's a
-   small follow-up.
+3. **No `<leader>` mapping in terminal mode; `<C-t>` toggles instead.** Space would wait `timeoutlen`
+   on every keystroke (the same issue noted in `opencode.lua` for insert mode). The user found double
+   `<Esc>` + `<leader>tt` too slow, so `<C-t>` (normal + terminal mode) does the same as `<leader>tt`.
+   pwsh/PSReadLine has no default Ctrl+t binding. It replaces Vim's normal-mode `<C-t>` (tag stack pop),
+   which this config doesn't use (`<C-o>` still jumps back).
+   Both keys share one toggle: if the current buffer is a snacks terminal and no count is given, hide
+   *that* terminal. Otherwise call `focus()`. Without this, `<C-t>` in terminal 2 would jump to terminal
+   1 (count1 = 1) instead of hiding.
+   *Alternatives rejected:* single `<Esc>` (breaks Esc for programs like PSReadLine, vim, fzf),
+   `<C-h/j/k/l>` (clash with pwsh clear screen/backspace), Alt keys (Windows Terminal swallows some).
 4. **Moving = a session-wide position for the panel.** A module-level `position` (`"bottom"` by
    default) is passed as `win.position` when a terminal is created. `<leader>tr`/`<leader>tb` set it,
    then for every terminal in `Snacks.terminal.list()`: remember whether it was visible, `hide()`, set

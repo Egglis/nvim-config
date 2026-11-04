@@ -61,6 +61,17 @@ Inside the terminal panel, pressing `<Esc>` twice in quick succession SHALL swit
 - **WHEN** the terminal panel is in normal mode and the user presses `q`
 - **THEN** the panel is hidden and the shell keeps running
 
+### Requirement: One-key toggle from terminal mode
+In standalone Neovim, `<C-t>` SHALL work in both normal and terminal mode. In a terminal window it SHALL hide that terminal, and the shell SHALL keep running. Anywhere else it SHALL behave like `<leader>tt`, including the count.
+
+#### Scenario: Hide from terminal mode
+- **WHEN** the user is typing in terminal 2 (terminal mode) and presses `<C-t>`
+- **THEN** terminal 2 is hidden, its process keeps running, and terminal 1 is not opened
+
+#### Scenario: Open from the editor
+- **WHEN** no terminal is visible and the user presses `<C-t>` in normal mode
+- **THEN** terminal 1 opens at the current panel position and is focused in terminal mode
+
 ### Requirement: Terminal is loaded on demand
 The terminal plugin SHALL NOT be loaded and no terminal process SHALL be started during Neovim startup; it SHALL load the first time a terminal key is used.
 

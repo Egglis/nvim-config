@@ -35,16 +35,24 @@ local function move_terminals(to)
   vim.cmd.stopinsert()
 end
 
+local function toggle_terminal()
+  if vim.v.count == 0 and vim.b.snacks_terminal then
+    local buf = vim.api.nvim_get_current_buf()
+    for _, term in ipairs(Snacks.terminal.list()) do
+      if term.buf == buf then
+        term:hide()
+        return
+      end
+    end
+  end
+  Snacks.terminal.focus(nil, { win = { position = position } })
+end
+
 return {
   "folke/snacks.nvim",
   keys = {
-    {
-      "<leader>tt",
-      function()
-        Snacks.terminal.focus(nil, { win = { position = position } })
-      end,
-      desc = "[T]erminal [T]oggle",
-    },
+    { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
+    { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
     {
       "<leader>tr",
       function()

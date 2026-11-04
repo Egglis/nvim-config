@@ -212,6 +212,7 @@ Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks termin
 | Keys | Mode | Action |
 |------|------|--------|
 | `<leader>tt` | n | Focus terminal 1; hide it if already in it |
+| `<C-t>` | n, t | Same as `<leader>tt`, but also works while typing in the terminal (hides the current one). Replaces Vim's tag-pop `<C-t>` |
 | `N<leader>tt` | n | Same for terminal N (e.g. `2<leader>tt`) |
 | `<leader>tr` | n | Move all terminals to a right split (remembered for the session) |
 | `<leader>tb` | n | Move all terminals back to the bottom (default) |
@@ -257,7 +258,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Terminal panel only (`opts = { terminal = {} }`; lazy: `<leader>tt/tr/tb`) |
+| `folke/snacks.nvim` | `snacks.lua` | Terminal panel only (`opts = { terminal = {} }`; lazy: `<leader>tt/tr/tb`, `<C-t>`) |
 
 ---
 
