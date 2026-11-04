@@ -8,3 +8,4 @@ Also a powershell $profile file!
 - [ ] Simple file treeview with symbols and git tracking
 - [ ] Other UI improvements for a clean and simpler interface
 - [ ] Terminal plugin for running scripts and projects directly within the same session
+- [ ] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
