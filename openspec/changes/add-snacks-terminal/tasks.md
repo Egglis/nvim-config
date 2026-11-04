@@ -2,9 +2,9 @@
 
 ## 1. pwsh as Neovim's shell
 
-- [ ] 1.1 In `lua/config/options.lua`'s standalone block, set `shell` (`pwsh`, else `powershell`), `shellcmdflag` (`:h shell-powershell` flags plus `-NoProfile`), `shellredir`, `shellpipe`, `shellquote=""` and `shellxquote=""` (design decision 6). Verify headless: `nvim --headless "+lua io.write(vim.o.shell, ' ', tostring(vim.o.shellcmdflag:find('-NoProfile', 1, true) ~= nil))" +q` prints `pwsh true`
-- [ ] 1.2 Check the `editor-options` scenarios headless: `vim.fn.system('$PSVersionTable.PSVersion.Major')` returns `7` with no oh-my-posh output; `vim.fn.system('exit 3')` leaves `vim.v.shell_error == 3`; with `--cmd "let g:vscode=1"`, `shell` is still Neovim's default
-- [ ] 1.3 Docs: add `shell` to the "Standalone only" line of the Options section in `AGENTS.md`, and add "runtime shell for standalone Neovim" to the PowerShell row's "Why" in `docs/dependencies.md`. `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 1.1 In `lua/config/options.lua`'s standalone block, set `shell` (`pwsh`, else `powershell`), `shellcmdflag` (`:h shell-powershell` flags plus `-NoProfile`), `shellredir`, `shellpipe`, `shellquote=""` and `shellxquote=""` (design decision 6). Verify headless: `nvim --headless "+lua io.write(vim.o.shell, ' ', tostring(vim.o.shellcmdflag:find('-NoProfile', 1, true) ~= nil))" +q` prints `pwsh true`
+- [x] 1.2 Check the `editor-options` scenarios headless: `vim.fn.system('$PSVersionTable.PSVersion.Major')` returns `7` with no oh-my-posh output; `vim.fn.system('exit 3')` leaves `vim.v.shell_error == 3`; with `--cmd "let g:vscode=1"`, `shell` is still Neovim's default
+- [x] 1.3 Docs: add `shell` to the "Standalone only" line of the Options section in `AGENTS.md`, and add "runtime shell for standalone Neovim" to the PowerShell row's "Why" in `docs/dependencies.md`. `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 2. Snacks terminal
 

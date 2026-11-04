@@ -298,7 +298,9 @@ Standalone only. Tells terminal windows apart without touching the colorscheme:
 | `ignorecase` + `smartcase` | true |
 | `termguicolors` | true |
 
-Standalone only (not in VSCode): `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`.
+Standalone only (not in VSCode): `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
+and `shell=pwsh` (falls back to `powershell`) with the `:h shell-powershell` flags. `:!`/`system()` run with
+`-NoProfile`; an interactive terminal loads the PowerShell profile.
 
 ---
 
