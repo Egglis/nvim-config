@@ -187,8 +187,14 @@ nothing.
 | `<leader>fa` | Live grep across the project (needs `rg`) |
 | `<leader>fb` | Open buffers |
 | `<leader>fh` | Help tags |
+| `<leader>fr` | Recent files |
+| `<leader>fw` | Grep the word under the cursor (n) or the selection (x) |
+| `<leader>fd` | Diagnostics |
+| `<leader>fg` | Git status (changed files) |
+| `<leader>fR` | Resume the last picker with its query |
+| `<leader>fP` | Recent projects: confirming one does a **global** `:cd` there (repo accent follows) and opens the file picker |
 
-> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. These are separate code paths (not a runtime conflict) but be aware of the semantic difference.
+> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. `<leader>fd` is diagnostics here but **format document** in VSCode, and `<leader>fg` is git status here but **focus Source Control** in VSCode. These are separate code paths (not a runtime conflict) but be aware of the semantic difference.
 
 ---
 

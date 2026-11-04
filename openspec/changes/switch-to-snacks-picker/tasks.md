@@ -11,8 +11,8 @@
 
 ## 2. More find keys
 
-- [ ] 2.1 Add `keys` `<leader>fr` recent, `<leader>fw` grep_word (modes `n` and `x`), `<leader>fd` diagnostics, `<leader>fg` git_status, `<leader>fR` resume and `<leader>fP` projects, each with a `desc` (design decision 9). Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
-- [ ] 2.2 Docs: add the six keys to the `AGENTS.md` Pickers section, including that `<leader>fP` changes the cwd (global) and opens the file picker. Tick the readme TODO "open recent projects". Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 2.1 Add `keys` `<leader>fr` recent, `<leader>fw` grep_word (modes `n` and `x`), `<leader>fd` diagnostics, `<leader>fg` git_status, `<leader>fR` resume and `<leader>fP` projects, each with a `desc` (design decision 9). Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
+- [x] 2.2 Docs: add the six keys to the `AGENTS.md` Pickers section, including that `<leader>fP` changes the cwd (global) and opens the file picker. Tick the readme TODO "open recent projects". Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 3. Command palette
 

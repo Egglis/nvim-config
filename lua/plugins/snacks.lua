@@ -85,6 +85,49 @@ return {
       end,
       desc = "[F]ind [H]elp",
     },
+    {
+      "<leader>fr",
+      function()
+        Snacks.picker.recent()
+      end,
+      desc = "[F]ind [R]ecent files",
+    },
+    {
+      "<leader>fw",
+      function()
+        Snacks.picker.grep_word()
+      end,
+      mode = { "n", "x" },
+      desc = "[F]ind [W]ord (or selection)",
+    },
+    {
+      "<leader>fd",
+      function()
+        Snacks.picker.diagnostics()
+      end,
+      desc = "[F]ind [D]iagnostics",
+    },
+    {
+      "<leader>fg",
+      function()
+        Snacks.picker.git_status()
+      end,
+      desc = "[F]ind [G]it changes",
+    },
+    {
+      "<leader>fR",
+      function()
+        Snacks.picker.resume()
+      end,
+      desc = "[F]ind [R]esume last picker",
+    },
+    {
+      "<leader>fP",
+      function()
+        Snacks.picker.projects()
+      end,
+      desc = "[F]ind [P]rojects",
+    },
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
     {
