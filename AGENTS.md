@@ -145,7 +145,13 @@ Only active when running inside VSCode via vscode-neovim. All mappings delegate 
 ---
 
 ### Standalone Neovim — `lua/keymaps/regular.lua`
-Active only in standalone Neovim. Currently empty; most bindings come from `shared.lua` and plugin files.
+Active only in standalone Neovim.
+
+| Keys | Mode | Action |
+|------|------|--------|
+| `<M-q>` (Alt+Q) | n | Go back to the last buffer (`:b#`). Windows Terminal's own `alt+q` (Close pane) binding was removed so the key reaches Neovim |
+| `<leader>bd` | n | Close the current buffer, keeping the window (`Snacks.bufdelete`; defined in `plugins/snacks.lua`) |
+| `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
 
 `clipboard = unnamedplus` is set in `config/options.lua`, standalone only.
 
@@ -276,7 +282,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Terminal panel and pickers (`opts = { terminal, picker }`; lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Terminal panel, pickers and buffer delete (`opts = { terminal, picker }`; lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 
 ---
 

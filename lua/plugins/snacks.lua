@@ -84,6 +84,20 @@ return {
   end,
   keys = {
     {
+      "<leader>bd",
+      function()
+        Snacks.bufdelete()
+      end,
+      desc = "[B]uffer [D]elete (keep window)",
+    },
+    {
+      "<leader>bo",
+      function()
+        Snacks.bufdelete.other()
+      end,
+      desc = "[B]uffer delete [O]thers",
+    },
+    {
       "<leader>ff",
       function()
         Snacks.picker.files()

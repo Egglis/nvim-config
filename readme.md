@@ -9,3 +9,4 @@ Also a powershell $profile file!
 - [ ] Other UI improvements for a clean and simpler interface
 - [x] Terminal plugin for running scripts and projects directly within the same session
 - [x] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
+- [ ] Show open buffers: buffer list in the repo-accent top bar (lualine `buffers` component), plus Harpoon 2 with the same `<leader>h…` keys as VSCode
