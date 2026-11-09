@@ -55,6 +55,7 @@ $targets = [ordered]@{
         Check 'MISSING openspec — npm i -g @fission-ai/openspec' { openspec --version }
         Check 'MISSING pwsh — winget install Microsoft.PowerShell' { pwsh --version }
         Check 'MISSING rg - winget install BurntSushi.ripgrep.MSVC' { rg --version }
+        Check 'MISSING fd - scoop install fd' { fd --version }
         Check 'MISSING opencode - npm i -g opencode-ai' { opencode --version }
         Write-Host "DEPS_EXIT:$($script:depFail)"; $script:depFail
     }

@@ -12,7 +12,7 @@
 
 ## 3. Human verification
 
-- [ ] 3.1 User checks in real Neovim, following a recipe the agent provides:
+- [x] 3.1 User checks in real Neovim, following a recipe the agent provides:
   - `nvim` in this repo: the start screen shows, the header is the repo name in its accent color, recent files are only from this repo, and up to 10 projects are listed.
   - `nvim` from `~`: the header is "Neovim" in the normal color and recent files are global.
   - `f`, `g`, `r`, `p` open the same pickers as `<leader>ff/fa/fr/fP`; `n` gives an empty buffer in insert mode; `L` opens Lazy; `q` quits.
@@ -21,3 +21,8 @@
   - `nvim init.lua` and `nvim .`: no start screen, opened as before; `<leader>ff` still loads the picker on first use.
   - `<leader>tt` from the start screen opens a terminal normally (no shell existed before).
   - Inside VSCode: no change.
+
+## 4. Review fixes: fd for the projects picker
+
+- [x] 4.1 `fd` installed (`scoop install fd`); add its row to `docs/dependencies.md` and a `deps` check to `gates.ps1`. Found in 3.1: the `p` key and `<leader>fP` warned "No supported finder found: `fd`" before listing projects, because snacks' projects finder scans with `fd`. Verify: `pwsh ./gates.ps1 deps` → `DEPS_EXIT:0`, and a headless `Snacks.picker.projects()` emits no warning
+- [ ] 4.2 User re-checks `p` on the start screen and `<leader>fP`: no warning, projects listed.
