@@ -74,6 +74,67 @@ local function toggle_terminal()
   Snacks.terminal.focus(nil, { win = { position = position } })
 end
 
+-- Global :cd (the repo accent follows on DirChanged), then the file picker: what <leader>fP does.
+local function open_project(dir)
+  vim.cmd.cd(vim.fn.fnameescape(dir))
+  Snacks.picker.files()
+end
+
+local function start_header()
+  local repo = require("config.repo_accent").state
+  if not repo.accent then
+    return { header = "Neovim", padding = 2 }
+  end
+  vim.api.nvim_set_hl(0, "StartScreenRepo", { fg = repo.accent, bold = true })
+  return { align = "center", text = { { repo.name, hl = "StartScreenRepo" } }, padding = 2 }
+end
+
+local start_keys = {
+  {
+    icon = " ",
+    key = "f",
+    desc = "Find file",
+    action = function()
+      Snacks.picker.files()
+    end,
+  },
+  {
+    icon = " ",
+    key = "g",
+    desc = "Grep",
+    action = function()
+      Snacks.picker.grep()
+    end,
+  },
+  {
+    icon = " ",
+    key = "r",
+    desc = "Recent files",
+    action = function()
+      Snacks.picker.recent()
+    end,
+  },
+  {
+    icon = " ",
+    key = "p",
+    desc = "Projects",
+    action = function()
+      Snacks.picker.projects()
+    end,
+  },
+  { icon = " ", key = "n", desc = "New file", action = ":ene | startinsert" },
+  {
+    icon = " ",
+    key = "c",
+    desc = "Config",
+    action = function()
+      open_project(vim.fn.stdpath("config"))
+    end,
+  },
+  { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
+  { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+}
+
 return {
   "folke/snacks.nvim",
   -- Plain `nvim` loads snacks at startup to draw the start screen; with a file or folder it stays lazy.
@@ -213,6 +274,40 @@ return {
     },
   },
   opts = {
+    -- Start screen on a plain `nvim`; snacks skips it by itself when Neovim gets a file or folder.
+    dashboard = {
+      sections = {
+        start_header,
+        { gap = 1, padding = 2, start_keys },
+        {
+          title = "Recent files",
+          icon = " ",
+          indent = 2,
+          padding = 1,
+          -- Built at render time: the repo root comes from repo_accent; nil outside a repo = global.
+          function()
+            local root = require("config.repo_accent").state.root
+            return {
+              section = "recent_files",
+              limit = 5,
+              cwd = root,
+              -- `nvim .` leaves the folder itself in v:oldfiles.
+              filter = function(file)
+                return vim.fn.isdirectory(file) == 0
+              end,
+            }
+          end,
+        },
+        {
+          title = "Projects",
+          icon = " ",
+          indent = 2,
+          padding = 1,
+          { section = "projects", limit = 10, action = open_project },
+        },
+        { section = "startup" },
+      },
+    },
     terminal = {},
     picker = {
       -- Ctrl+c and q close a picker; <Esc> only leaves insert mode.

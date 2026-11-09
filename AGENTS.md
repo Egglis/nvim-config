@@ -50,7 +50,7 @@ nvim/
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   ├── cmp.lua                 # nvim-cmp autocompletion
     │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
-    │   └── snacks.lua              # folke/snacks.nvim (terminal + picker)
+    │   └── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker)
 ```
 
 ---
@@ -178,6 +178,32 @@ User command `:Format` → `vim.lsp.buf.format()`.
 
 ---
 
+### Start screen — `lua/plugins/snacks.lua`
+Standalone only. snacks dashboard, shown when Neovim starts with **no** file or folder argument (plain
+`nvim`); `nvim file` and `nvim .` open as before. Snacks loads at startup only in that case.
+
+- **Header:** the repo name in the repo's accent color (same repo as the top bar), or "Neovim" outside a
+  repo.
+- **Recent files:** 5, only from the current repo when inside one, otherwise from anywhere (folders left
+  by `nvim .` are skipped).
+- **Projects:** 10, git roots of recent files. Confirming one does a **global** `:cd` there (the accent
+  follows) and opens the file picker, like `<leader>fP` (whose list can differ a little).
+- Recent files and projects get keys `1`–`9`, `0`, then letters; never a menu key or `h j k l q`.
+  `j`/`k` + `<CR>` work too.
+
+| Key | Action |
+|-----|--------|
+| `f` | Find files (`<leader>ff`) |
+| `g` | Live grep (`<leader>fa`) |
+| `r` | Recent files picker (`<leader>fr`) |
+| `p` | Projects picker (`<leader>fP`) |
+| `n` | New empty buffer, in insert mode |
+| `c` | Global `:cd` to the Neovim config, then the file picker |
+| `L` | `:Lazy` |
+| `q` | Quit (`:qa`) |
+
+---
+
 ### Pickers — `lua/plugins/snacks.lua`
 Standalone only. snacks.nvim picker. On a plain `nvim` (no file or folder argument) snacks loads at
 startup for the start screen; otherwise it's lazy-loaded on the keys below, the LSP list keys, or the
@@ -285,7 +311,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Terminal panel, pickers and buffer delete (`opts = { terminal, picker }`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers and buffer delete (`opts = { dashboard, terminal, picker }`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 
 ---
 

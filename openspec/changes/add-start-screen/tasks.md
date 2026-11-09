@@ -7,8 +7,8 @@
 
 ## 2. Start screen
 
-- [ ] 2.1 Add `opts.dashboard` with explicit `sections`: the header function section (design decision 3), the menu entries `f g r p n c L q` (decision 4, with `c` and `p` sharing an `open_project(dir)` helper per decision 6), recent files (`limit = 5`, `cwd` = repo root or nil, decision 5), projects (`limit = 10`, `action = open_project`) and the startup line. Check `repo_accent.state` covers what the header needs; change `repo_accent.lua` only if it doesn't. Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`, and a headless run with no arguments reports `Snacks.config.dashboard.enabled` true without errors
-- [ ] 2.2 Docs: add a "Start screen — `lua/plugins/snacks.lua`" section to `AGENTS.md` (when it shows, header, the menu-key table, recent files/projects and their number/letter keys, that `c`/`p` do a global `:cd`), and mention the dashboard in the snacks plugin-table row. In `readme.md`, leave "Other UI improvements" unticked and add a sub-bullet noting the start screen is done. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 2.1 Add `opts.dashboard` with explicit `sections`: the header function section (design decision 3), the menu entries `f g r p n c L q` (decision 4, with `c` and `p` sharing an `open_project(dir)` helper per decision 6), recent files (`limit = 5`, `cwd` = repo root or nil, decision 5), projects (`limit = 10`, `action = open_project`) and the startup line. Check `repo_accent.state` covers what the header needs; change `repo_accent.lua` only if it doesn't. Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`, and a headless run with no arguments reports `Snacks.config.dashboard.enabled` true without errors
+- [x] 2.2 Docs: add a "Start screen — `lua/plugins/snacks.lua`" section to `AGENTS.md` (when it shows, header, the menu-key table, recent files/projects and their number/letter keys, that `c`/`p` do a global `:cd`), and mention the dashboard in the snacks plugin-table row. In `readme.md`, leave "Other UI improvements" unticked and add a sub-bullet noting the start screen is done. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 3. Human verification
 
