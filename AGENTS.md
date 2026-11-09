@@ -50,7 +50,7 @@ nvim/
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   ├── cmp.lua                 # nvim-cmp autocompletion
     │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
-    │   └── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker)
+    │   └── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker + lazygit)
 ```
 
 ---
@@ -275,7 +275,27 @@ running.
 | `q` | n (in terminal) | Hide the panel |
 
 A terminal belongs to the cwd it was opened in: after `:cd`, `<leader>tt` opens a new one; the old one
-keeps running and returns when you `:cd` back.
+keeps running and returns when you `:cd` back. `<leader>tr`/`<leader>tb` move only these shell
+terminals, not the lazygit float.
+
+---
+
+### Git — `lua/plugins/snacks.lua`
+Standalone only. `<leader>gd`/`gr`/`gi` stay the LSP keys (see LSP); the git keys use the other letters,
+so none of them waits on `timeoutlen`. Lazy-loaded on the keys, like the pickers. Needs `lazygit`.
+
+| Keys | Action |
+|------|--------|
+| `<leader>gg` | lazygit in a float (`Snacks.lazygit()`), themed from the colorscheme, for Neovim's cwd repo |
+
+In lazygit, `q` quits and closes the float. `e` on a file closes the float and opens the file in **this**
+Neovim (at the line, from the staging view); lazygit keeps running, so the next `<leader>gg` returns to
+the same session. `<C-t>` inside lazygit hides it (the terminal toggle sees a snacks terminal), so
+lazygit's own `ctrl+t` (external diff tool) is not reachable.
+
+On Windows, snacks' `nvim-remote` edit preset uses POSIX shell syntax that lazygit's `cmd /s /c` can't
+run, so `opts.lazygit.config.os` replaces it with cmd commands (`nvim --server %NVIM% --remote …`);
+snacks writes them into `stdpath("cache")/lazygit-theme.yml`.
 
 ---
 
@@ -311,7 +331,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers and buffer delete (`opts = { dashboard, terminal, picker }`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 
 ---
 

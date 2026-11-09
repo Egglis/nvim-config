@@ -13,3 +13,4 @@ Every tool this repo needs. `pwsh ./gates.ps1 deps` checks each row.
 | OpenCode CLI | 1.x or 2.x | Server behind the `opencode.nvim` panel (`<leader>o…` in standalone Neovim) | `npm i -g opencode-ai` | `opencode --version` | provider connected: run `opencode`, then `/connect` (manual) |
 | ripgrep | any | snacks picker grep (`<leader>fa`/`<leader>fw` in standalone Neovim); files picker fallback when `fd` is missing | `winget install BurntSushi.ripgrep.MSVC` | `rg --version` | — |
 | fd | any | snacks projects picker (`<leader>fP`, `p` on the start screen) scans for projects with it; the files picker (`<leader>ff`) prefers it over `rg` | `scoop install fd` | `fd --version` | — |
+| lazygit | any | Git panel (`<leader>gg` in standalone Neovim, through snacks) | `winget install JesseDuffield.lazygit` | `lazygit --version` | — |

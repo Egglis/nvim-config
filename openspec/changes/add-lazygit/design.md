@@ -18,10 +18,10 @@ Snacks facts, from the installed source (`882c996`):
   `git_branches` (confirm = checkout, `<C-a>` add, `<C-x>` delete). `Snacks.git.blame_line()` shows the
   current line's commit in a float. `Snacks.gitbrowse()` opens the file on the remote's website.
 
-lazygit fact: on Windows it runs edit commands through `cmd /c`. Its `nvim-remote` preset writes POSIX
+lazygit fact: on Windows it runs edit commands through cmd. Its `nvim-remote` preset writes POSIX
 shell syntax (`[ -z "$NVIM" ] && …`), which cmd can't parse, so `e` fails with "'[' is not recognized"
-(lazygit issues #3467 and #5696, both open). lazygit also escapes `%`, so a cmd `%NVIM%` workaround
-fails too.
+(lazygit issues #3467 and #5696, both open). Older lazygit versions also escaped `%`; 0.66.1 (installed)
+hands cmd the command line as is.
 
 ## Goals / Non-Goals
 
@@ -45,19 +45,21 @@ generates; lazygit keybinding changes; gitsigns or other gutter markers; `<leade
    `[G]it …` style of the existing keys. `<leader>fg` is unchanged.
    *Alternative:* `Snacks.lazygit.log()`/`log_file()` instead of pickers for `gl`/`gf`. Rejected: the
    pickers are faster to search and preview, and lazygit is one key away.
-3. **Fix `e` on Windows by replacing the preset with a pwsh command.** In `opts.lazygit.config.os`,
-   clear `editPreset` and set `edit` and `editAtLine` to a `pwsh -NoProfile -Command` line that uses
-   `$env:NVIM` (no `%` for lazygit to escape). The line first sends `<C-\><C-n><cmd>close<CR>` to the
-   parent Neovim to close the lazygit float, then `nvim --server $env:NVIM --remote {{filename}}`, and
-   for `editAtLine` it also jumps to `{{line}}`. Set `editInTerminal = false`, so lazygit doesn't suspend
-   itself. Closing the float keeps the lazygit process alive, so the next `<leader>gg` brings back the
-   same session. The exact quoting is checked by reading the generated `lazygit-theme.yml` and by
-   pressing `e`; keep the Windows-only override behind `vim.fn.has("win32") == 1`, so the snacks
+3. **Fix `e` on Windows by replacing the preset with cmd commands.** lazygit 0.66 runs edits as a raw
+   `cmd /s /c "<command>"`, with no extra escaping, so cmd syntax works and `%NVIM%` expands. In
+   `opts.lazygit.config.os`, clear `editPreset` and set `edit`, `editAtLine` and `openDirInEditor` to
+   `nvim --server %NVIM% --remote-send "<C-\><C-n><cmd>close<CR>" && nvim --server %NVIM% --remote
+   <file>`; `editAtLine` then also sends `:{{line}}<CR>`. The first part closes the lazygit float in the
+   parent Neovim, the second opens the file there. lazygit passes absolute, quoted paths, so files with
+   spaces work. `editAtLineAndWait` (lazygit waits for the editor to exit) stays a nested
+   `nvim +{{line}} {{filename}}`, as in the upstream preset. Set `editInTerminal = false`, so lazygit
+   doesn't suspend itself. Closing the float keeps the lazygit process alive, so the next `<leader>gg`
+   brings back the same session. Keep the override behind `vim.fn.has("win32") == 1`, so the snacks
    default stays on other systems.
-   *Alternatives:* `editPreset = "nvim"` (opens a nested Neovim inside the float, which breaks the spec);
-   `nvr`/neovim-remote (an extra Python tool); a Git Bash shell (lazygit can't be told to use it for
-   edits, and it isn't a listed dependency). If no quoting works, that is a stop: ask the user rather
-   than shipping a nested editor.
+   *Alternatives:* a `pwsh -NoProfile -Command …` line using `$env:NVIM` (the original plan): tested
+   and rejected, because cmd still sees the `<` in `'<C-\>…'` as a redirect, since single quotes mean
+   nothing to cmd. `editPreset = "nvim"` (opens a nested Neovim inside the float, which breaks the
+   spec). `nvr`/neovim-remote (an extra Python tool).
 4. **lazygit is a dependency installed with winget** (`JesseDuffield.lazygit`). Its row goes in
    `docs/dependencies.md`, and `gates.ps1 deps` gets
    `Check 'MISSING lazygit - winget install JesseDuffield.lazygit' { lazygit --version }`.
@@ -73,13 +75,15 @@ generates; lazygit keybinding changes; gitsigns or other gutter markers; `<leade
 
 ## Risks / Trade-offs
 
-- [`<C-t>` is mapped in terminal mode for the terminal toggle, so inside lazygit it toggles a terminal
-  instead of reaching lazygit (lazygit uses `ctrl+t` for its external diff tool)] → Rarely used here.
-  Accepted; noted in `AGENTS.md`.
+- [`<C-t>` is mapped in terminal mode for the terminal toggle; the lazygit float is a snacks terminal, so
+  inside lazygit `<C-t>` hides it, and lazygit's own `ctrl+t` (external diff tool) is unreachable] →
+  Rarely used here. Accepted; noted in `AGENTS.md`.
+- [`<leader>tr`/`<leader>tb` move every snacks terminal, which would turn the lazygit float into a split]
+  → `move_terminals` only moves shell terminals (no `cmd`), found while building §1.
 - [Snacks' terminal keys such as `<Esc><Esc>` (leave terminal mode) may also apply in the lazygit float,
   so a double `<Esc>` leaves lazygit's input] → Checked by hand; if it gets in the way, set
   `opts.lazygit.win.keys` to drop it.
-- [The pwsh edit command depends on lazygit's quoting rules, which change between versions] → The
+- [The cmd edit commands depend on lazygit passing the command line to cmd unchanged, as 0.66 does] → The
   human check covers `e`; the lazygit version is in `docs/dependencies.md` only as "any", so a future
   break shows up as a broken `e`, not a startup error.
 - [`<leader>go` assumes a remote snacks gitbrowse knows (GitHub, GitLab, …)] → Fine for this repo

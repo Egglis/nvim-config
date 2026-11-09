@@ -4,7 +4,10 @@ local function move_terminals(to)
   position = to
   local vertical = to == "left" or to == "right"
   local current = vim.api.nvim_get_current_win()
-  local terminals = Snacks.terminal.list()
+  -- Only the shell terminals from <leader>tt (no cmd); lazygit is a snacks terminal too and stays a float.
+  local terminals = vim.tbl_filter(function(term)
+    return vim.b[term.buf].snacks_terminal.cmd == nil
+  end, Snacks.terminal.list())
   table.sort(terminals, function(a, b)
     return vim.b[a.buf].snacks_terminal.id < vim.b[b.buf].snacks_terminal.id
   end)
@@ -78,6 +81,24 @@ end
 local function open_project(dir)
   vim.cmd.cd(vim.fn.fnameescape(dir))
   Snacks.picker.files()
+end
+
+-- lazygit runs edits through `cmd /s /c "…"` on Windows, where snacks' default "nvim-remote" preset (POSIX
+-- shell syntax) fails. These close the lazygit float in the parent Neovim, then open the file there.
+local function lazygit_os()
+  if vim.fn.has("win32") == 0 then
+    return { editPreset = "nvim-remote" }
+  end
+  local hide = 'nvim --server %NVIM% --remote-send "<C-\\><C-n><cmd>close<CR>"'
+  local open = hide .. " && nvim --server %NVIM% --remote {{filename}}"
+  return {
+    editPreset = "",
+    edit = open,
+    editAtLine = open .. ' && nvim --server %NVIM% --remote-send ":{{line}}<CR>"',
+    editAtLineAndWait = "nvim +{{line}} {{filename}}",
+    openDirInEditor = hide .. " && nvim --server %NVIM% --remote {{dir}}",
+    editInTerminal = false,
+  }
 end
 
 local function start_header()
@@ -256,6 +277,13 @@ return {
       end,
       desc = "[F]ind [C]ommands",
     },
+    {
+      "<leader>gg",
+      function()
+        Snacks.lazygit()
+      end,
+      desc = "[G]it: lazy[G]it",
+    },
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
     {
@@ -309,6 +337,7 @@ return {
       },
     },
     terminal = {},
+    lazygit = { config = { os = lazygit_os() } },
     picker = {
       -- Ctrl+c and q close a picker; <Esc> only leaves insert mode.
       win = {

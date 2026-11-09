@@ -57,6 +57,7 @@ $targets = [ordered]@{
         Check 'MISSING rg - winget install BurntSushi.ripgrep.MSVC' { rg --version }
         Check 'MISSING fd - scoop install fd' { fd --version }
         Check 'MISSING opencode - npm i -g opencode-ai' { opencode --version }
+        Check 'MISSING lazygit - winget install JesseDuffield.lazygit' { lazygit --version }
         Write-Host "DEPS_EXIT:$($script:depFail)"; $script:depFail
     }
 }
