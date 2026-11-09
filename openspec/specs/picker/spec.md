@@ -71,11 +71,15 @@ Lists that Neovim or a plugin shows through `vim.ui.select` (for example code ac
 - **THEN** the actions are listed in the picker, and `Ctrl+c` closes it without applying one
 
 ### Requirement: Pickers load on demand
-The picker plugin SHALL NOT be loaded during Neovim startup; it SHALL load the first time a picker key, an LSP list key or a selection list is used.
+The picker plugin SHALL NOT be loaded during Neovim startup, unless the start screen is shown; it SHALL load the first time a picker key, an LSP list key or a selection list is used. When Neovim is started with a file or directory argument, the picker plugin SHALL stay unloaded until then.
 
 #### Scenario: Plain startup
-- **WHEN** standalone Neovim starts and no picker has been used
+- **WHEN** standalone Neovim starts with a file argument and no picker has been used
 - **THEN** the picker plugin is not loaded
+
+#### Scenario: Start screen startup
+- **WHEN** standalone Neovim starts with no arguments, so the start screen is shown
+- **THEN** the picker plugin may be loaded, and every picker key works as usual
 
 ### Requirement: Pickers are absent in VSCode mode
 When `vim.g.vscode` is set, the config SHALL NOT load the picker plugin, and the `<leader>f…` keys SHALL keep their VSCode mappings.
