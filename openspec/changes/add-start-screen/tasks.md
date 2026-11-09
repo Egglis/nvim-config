@@ -25,4 +25,4 @@
 ## 4. Review fixes: fd for the projects picker
 
 - [x] 4.1 `fd` installed (`scoop install fd`); add its row to `docs/dependencies.md` and a `deps` check to `gates.ps1`. Found in 3.1: the `p` key and `<leader>fP` warned "No supported finder found: `fd`" before listing projects, because snacks' projects finder scans with `fd`. Verify: `pwsh ./gates.ps1 deps` → `DEPS_EXIT:0`, and a headless `Snacks.picker.projects()` emits no warning
-- [ ] 4.2 User re-checks `p` on the start screen and `<leader>fP`: no warning, projects listed.
+- [x] 4.2 User re-checks `p` on the start screen and `<leader>fP`: no warning, projects listed.

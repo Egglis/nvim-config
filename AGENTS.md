@@ -225,7 +225,7 @@ nothing.
 | `<leader>fd` | Diagnostics |
 | `<leader>fg` | Git status (changed files) |
 | `<leader>fR` | Resume the last picker with its query |
-| `<leader>fP` | Recent projects: confirming one does a **global** `:cd` there (repo accent follows) and opens the file picker |
+| `<leader>fP` | Recent projects (needs `fd`): confirming one does a **global** `:cd` there (repo accent follows) and opens the file picker |
 | `<leader>fp` | Command palette: normal-mode key mappings + `:` commands in one list |
 | `<leader>fk` | Key mappings (all modes) |
 | `<leader>fc` | `:` commands |
