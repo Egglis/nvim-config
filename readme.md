@@ -5,7 +5,6 @@ Also a powershell $profile file!
 
 - [x] Custom color theming based on which repo/workspace I am within should maybe use the .vscode/settings that already exists
 - [x] Git tree/sidebar for simple git actions, probably some plugin
-  - Done as lazygit in a float (`<leader>gg`) plus git pickers under `<leader>g`. Gutter signs (gitsigns) still open
 - [ ] Simple file treeview with symbols and git tracking
 - [ ] Other UI improvements for a clean and simpler interface
   - [x] Start screen on a plain `nvim`: repo name, quick keys, recent files and projects
