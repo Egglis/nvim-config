@@ -14,6 +14,7 @@ Also a powershell $profile file!
   - [ ] Nicer notifications/messages: `snacks.notifier` for `vim.notify` (maybe `noice` for the cmdline, but it's heavier)
   - [ ] Editor visuals: indent guides (`snacks.indent`) and highlight other uses of the word under the cursor (`snacks.words`). Git signs in the gutter belong to the git TODO
   - [ ] Completion polish: kind icons, borders and ghost text in nvim-cmp
+  - [ ] Harmonize lazygit with the rest: it looks very different from the pickers/floats (border, colors, icons, layout), make it match the tokyonight/snacks look and the repo accent
 - [x] Terminal plugin for running scripts and projects directly within the same session
 - [x] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
 - [ ] Better search in the current file than the standard `/`
