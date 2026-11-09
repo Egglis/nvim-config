@@ -18,6 +18,7 @@ Also a powershell $profile file!
 - [x] Terminal plugin for running scripts and projects directly within the same session
 - [x] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
 - [ ] Better search in the current file than the standard `/`
+- [ ] Easier macros: simpler record/replay keys than `q{reg}`/`@{reg}`, a visible "recording @q" indicator (lualine, needed if `cmdheight=0`), and a way to view/edit/pick saved macros
 - [x] .NET user secrets: jump from a `.csproj` straight to its `secrets.json` (by `UserSecretsId`), like the VSCode extension (`<leader>ns`)
 - [ ] Continue where I left off: `nvim --continue` (or similar) reopens the last session as it was at `:qa!` — auto `:mksession` on exit + a pwsh wrapper/alias and a start-screen key. Global vs per-folder session undecided; maybe tmux-style (psmux/WezTerm/Windows Terminal) persistence on Windows instead
 - [ ] Show open buffers: buffer list in the repo-accent top bar (lualine `buffers` component), plus Harpoon 2 with the same `<leader>h…` keys as VSCode
