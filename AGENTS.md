@@ -235,7 +235,7 @@ by their keys. Confirming a mapping replays its keys. Confirming a command (pale
 if it's a user/plugin command that needs no argument (e.g. `:Lazy`); anything else, including built-ins
 like `:edit`, is typed on the command line for you to finish.
 
-> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. `<leader>fd` is diagnostics here but **format document** in VSCode, and `<leader>fg` is git status here but **focus Source Control** in VSCode. These are separate code paths (not a runtime conflict) but be aware of the semantic difference.
+> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. `<leader>fd` is diagnostics here but **format document** in VSCode, and `<leader>fg` is git status here but **focus Source Control** in VSCode. These are separate code paths (not a runtime conflict) but be aware of the semantic difference. `<leader>g…` is git here (see Git), except `<leader>gd/gr/gi`, which are LSP keys; in VSCode `<leader>gr` is Go to References.
 
 ---
 
@@ -287,6 +287,15 @@ so none of them waits on `timeoutlen`. Lazy-loaded on the keys, like the pickers
 | Keys | Action |
 |------|--------|
 | `<leader>gg` | lazygit in a float (`Snacks.lazygit()`), themed from the colorscheme, for Neovim's cwd repo |
+| `<leader>gs` | Git status picker (same as `<leader>fg`): `<Tab>` stages/unstages, `<C-r>` restores |
+| `<leader>gl` | Git log picker, with each commit's diff in the preview |
+| `<leader>gf` | Commits that changed the current file (follows renames) |
+| `<leader>gb` | Branches: `<CR>` checks out, `<C-a>` adds, `<C-x>` deletes |
+| `<leader>gB` | Blame for the current line (commit, author, message) in a float |
+| `<leader>go` | Open the current file at the cursor line on the remote (GitHub) in the browser |
+
+Outside a git repo the pickers show a "Command failed"/"No results" notification and `<leader>go` says
+"Not in a git repo" (snacks' gitbrowse would otherwise raise its internal `__ignore__` error).
 
 In lazygit, `q` quits and closes the float. `e` on a file closes the float and opens the file in **this**
 Neovim (at the line, from the staging view); lazygit keeps running, so the next `<leader>gg` returns to

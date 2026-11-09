@@ -8,8 +8,8 @@
 
 ## 2. Git lookup keys
 
-- [ ] 2.1 Add `<leader>gs`, `<leader>gl`, `<leader>gf`, `<leader>gb`, `<leader>gB`, `<leader>go` to the snacks `keys` with `desc`s (decision 2). Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`; headless in this repo, each key's function runs without a Lua error (pickers closed straight after); headless with cwd set to an empty temp folder, `Snacks.picker.git_log()` raises no Lua error; `<leader>fg` still maps to `git_status`
-- [ ] 2.2 Docs: extend the `AGENTS.md` Git section with a table of the lookup keys (incl. `<Tab>`/`<C-r>` in status and `<CR>`/`<C-a>`/`<C-x>` in branches) and note that `<leader>gd/gr/gi` stay LSP keys; in the Pickers note, mention that `<leader>g…` is git here and LSP/VSCode-references elsewhere. In `readme.md`, tick "Git tree/sidebar for simple git actions". Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 2.1 Add `<leader>gs`, `<leader>gl`, `<leader>gf`, `<leader>gb`, `<leader>gB`, `<leader>go` to the snacks `keys` with `desc`s (decision 2). Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`; headless in this repo, each key's function runs without a Lua error (pickers closed straight after); headless with cwd set to an empty temp folder, `Snacks.picker.git_log()` raises no Lua error; `<leader>fg` still maps to `git_status`
+- [x] 2.2 Docs: extend the `AGENTS.md` Git section with a table of the lookup keys (incl. `<Tab>`/`<C-r>` in status and `<CR>`/`<C-a>`/`<C-x>` in branches) and note that `<leader>gd/gr/gi` stay LSP keys; in the Pickers note, mention that `<leader>g…` is git here and LSP/VSCode-references elsewhere. In `readme.md`, tick "Git tree/sidebar for simple git actions". Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 3. Human verification
 

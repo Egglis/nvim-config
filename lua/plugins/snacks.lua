@@ -284,6 +284,52 @@ return {
       end,
       desc = "[G]it: lazy[G]it",
     },
+    {
+      "<leader>gs",
+      function()
+        Snacks.picker.git_status()
+      end,
+      desc = "[G]it [S]tatus",
+    },
+    {
+      "<leader>gl",
+      function()
+        Snacks.picker.git_log()
+      end,
+      desc = "[G]it [L]og",
+    },
+    {
+      "<leader>gf",
+      function()
+        Snacks.picker.git_log_file()
+      end,
+      desc = "[G]it [F]ile history",
+    },
+    {
+      "<leader>gb",
+      function()
+        Snacks.picker.git_branches()
+      end,
+      desc = "[G]it [B]ranches",
+    },
+    {
+      "<leader>gB",
+      function()
+        Snacks.git.blame_line()
+      end,
+      desc = "[G]it [B]lame line",
+    },
+    {
+      "<leader>go",
+      function()
+        -- Outside a repo snacks' gitbrowse raises its internal "__ignore__" error; say so instead.
+        if not Snacks.git.get_root() then
+          return Snacks.notify.warn("Not in a git repo", { title = "gitbrowse" })
+        end
+        Snacks.gitbrowse()
+      end,
+      desc = "[G]it [O]pen on remote",
+    },
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
     {
