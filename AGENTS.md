@@ -150,6 +150,7 @@ Active only in standalone Neovim.
 | Keys | Mode | Action |
 |------|------|--------|
 | `<M-q>` (Alt+Q) | n | Go back to the last buffer (`:b#`). Windows Terminal's own `alt+q` (Close pane) binding was removed so the key reaches Neovim |
+| `<leader>ns` | n | Open the .NET user secrets (`%APPDATA%\Microsoft\UserSecrets\<UserSecretsId>\secrets.json`) of the current `.csproj`, else the nearest one above the current file/cwd. Creates the file as `{}` if missing; warns if there's no `.csproj` or no `<UserSecretsId>` |
 | `<leader>bd` | n | Close the current buffer, keeping the window (`Snacks.bufdelete`; defined in `plugins/snacks.lua`) |
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
 
