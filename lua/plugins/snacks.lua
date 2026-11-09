@@ -76,6 +76,8 @@ end
 
 return {
   "folke/snacks.nvim",
+  -- Plain `nvim` loads snacks at startup to draw the start screen; with a file or folder it stays lazy.
+  lazy = vim.fn.argc(-1) > 0,
   init = function()
     -- Load snacks on the first vim.ui.select; its picker setup then replaces this stub.
     vim.ui.select = function(...)

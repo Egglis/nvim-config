@@ -179,8 +179,9 @@ User command `:Format` → `vim.lsp.buf.format()`.
 ---
 
 ### Pickers — `lua/plugins/snacks.lua`
-Standalone only. snacks.nvim picker, lazy-loaded on the keys below, the LSP list keys, or the first
-`vim.ui.select` (e.g. code actions): an `init` stub loads snacks, whose picker then replaces
+Standalone only. snacks.nvim picker. On a plain `nvim` (no file or folder argument) snacks loads at
+startup for the start screen; otherwise it's lazy-loaded on the keys below, the LSP list keys, or the
+first `vim.ui.select` (e.g. code actions): an `init` stub loads snacks, whose picker then replaces
 `vim.ui.select`. opencode.nvim uses it too (`preferred_picker = "snacks"`).
 
 Closing: `Ctrl+c` closes a picker while typing and in normal mode; `q` closes it in normal mode. `<Esc>`
@@ -233,7 +234,9 @@ In the prompt: `<CR>` (normal) / `<S-CR>` sends, `@` mention, `/` slash commands
 
 ### Terminal — `lua/plugins/snacks.lua`
 Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks terminal running `vim.o.shell`
-(pwsh, with the profile) in Neovim's cwd. Lazy-loaded on the keys below. Hiding keeps the process running.
+(pwsh, with the profile) in Neovim's cwd. Lazy-loaded on the keys below (on a plain `nvim` snacks is
+already loaded for the start screen, but no shell starts until a key is used). Hiding keeps the process
+running.
 
 | Keys | Mode | Action |
 |------|------|--------|
@@ -282,7 +285,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Terminal panel, pickers and buffer delete (`opts = { terminal, picker }`; lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Terminal panel, pickers and buffer delete (`opts = { terminal, picker }`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 
 ---
 

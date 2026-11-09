@@ -2,8 +2,8 @@
 
 ## 1. Load snacks on a plain start
 
-- [ ] 1.1 In `lua/plugins/snacks.lua`, set `lazy = vim.fn.argc(-1) > 0` on the spec (design decision 1). Verify: `nvim --headless "+lua io.stdout:write(tostring(package.loaded.snacks ~= nil))" +qa` prints `true`, and the same with `init.lua` as a file argument prints `false`; `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
-- [ ] 1.2 Docs: in `AGENTS.md`, update the Pickers and Terminal intros and the snacks plugin-table row to say snacks loads at startup only on a plain `nvim` (start screen) and stays lazy when a file or folder is given. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 1.1 In `lua/plugins/snacks.lua`, set `lazy = vim.fn.argc(-1) > 0` on the spec (design decision 1). Verify: `nvim --headless "+lua io.stdout:write(tostring(package.loaded.snacks ~= nil))" +qa` prints `true`, and the same with `init.lua` as a file argument prints `false`; `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`
+- [x] 1.2 Docs: in `AGENTS.md`, update the Pickers and Terminal intros and the snacks plugin-table row to say snacks loads at startup only on a plain `nvim` (start screen) and stays lazy when a file or folder is given. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 2. Start screen
 
