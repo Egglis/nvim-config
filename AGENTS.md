@@ -50,7 +50,8 @@ nvim/
     │   ├── lsp.lua                 # mason, mason-lspconfig, nvim-lspconfig, fidget, lazydev
     │   ├── cmp.lua                 # nvim-cmp autocompletion
     │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
-    │   └── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker + lazygit)
+    │   ├── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker + lazygit)
+    │   └── treesitter.lua          # nvim-treesitter (main): parsers + tree-sitter highlighting
 ```
 
 ---
@@ -342,6 +343,23 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
 | `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
+
+---
+
+## Syntax Highlighting (`lua/plugins/treesitter.lua`)
+
+Standalone only. Tree-sitter highlighting for `cs`, `xml` (`.csproj` etc.), `json`, `ps1` and `python`
+buffers, started from a `FileType` autocmd. Lua, Markdown, Vimscript and help use the parsers Neovim
+ships, as before. Other filetypes keep regex `syntax`.
+
+- Parsers (`c_sharp`, `xml` + `dtd`, `json`, `powershell`, `python`) install in the background on start,
+  only the missing ones, into `stdpath("data")/site`. This needs the tree-sitter CLI and MSVC (see
+  `docs/dependencies.md`); without the CLI nothing installs. `:TSUpdate` runs when the plugin updates.
+- A file opened before its parser exists keeps regex highlighting without an error; `:e` picks up
+  tree-sitter once the install has finished.
+- The language and filetype lists sit at the top of `treesitter.lua`. To add a language, add its parser
+  name and filetype there.
 
 ---
 

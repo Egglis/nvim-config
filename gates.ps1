@@ -61,6 +61,15 @@ $targets = [ordered]@{
         Check 'MISSING fd - scoop install fd' { fd --version }
         Check 'MISSING opencode - npm i -g opencode-ai' { opencode --version }
         Check 'MISSING lazygit - winget install JesseDuffield.lazygit' { lazygit --version }
+        Check 'MISSING tree-sitter 0.26.1+ - scoop install tree-sitter' {
+            $v = [version]((tree-sitter --version | Select-Object -First 1) -replace '^tree-sitter ([\d.]+).*$', '$1')
+            if ($v -lt [version]'0.26.1') { throw "tree-sitter $v is older than 0.26.1" }
+        }
+        Check 'MISSING C compiler (MSVC) - winget install Microsoft.VisualStudio.2022.BuildTools, with the C++ workload' {
+            $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+            $p = & $vswhere -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+            if (-not $p) { throw 'no Visual Studio install with the VC tools' }
+        }
         Write-Host "DEPS_EXIT:$($script:depFail)"; $script:depFail
     }
 }

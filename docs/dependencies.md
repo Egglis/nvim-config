@@ -14,3 +14,5 @@ Every tool this repo needs. `pwsh ./gates.ps1 deps` checks each row.
 | ripgrep | any | snacks picker grep (`<leader>fa`/`<leader>fw` in standalone Neovim); files picker fallback when `fd` is missing | `winget install BurntSushi.ripgrep.MSVC` | `rg --version` | — |
 | fd | any | snacks projects picker (`<leader>fP`, `p` on the start screen) scans for projects with it; the files picker (`<leader>ff`) prefers it over `rg` | `scoop install fd` | `fd --version` | — |
 | lazygit | any | Git panel (`<leader>gg` in standalone Neovim, through snacks) | `winget install JesseDuffield.lazygit` | `lazygit --version` | — |
+| tree-sitter CLI | 0.26.1+ | nvim-treesitter (`main`) builds the C#, XML, JSON, PowerShell and Python parsers with it | `scoop install tree-sitter` | `tree-sitter --version` (≥ 0.26.1) | — |
+| C compiler (MSVC) | VS Build Tools with VC tools | The tree-sitter CLI compiles parsers with it (found through the VS installer; `cl` needn't be on `PATH`) | `winget install Microsoft.VisualStudio.2022.BuildTools`, with the "Desktop development with C++" workload | `vswhere -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64` prints a path | — |
