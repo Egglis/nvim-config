@@ -242,8 +242,8 @@ like `:edit`, is typed on the command line for you to finish.
 ---
 
 ### File explorer — `lua/plugins/snacks.lua`
-Standalone only (in VSCode `<leader>fe` focuses VSCode's explorer). snacks' explorer, a picker source, so
-it follows the picker conventions. Lazy-loaded on `<leader>fe`; no new plugin, plain snacks glyphs (no
+Standalone only (in VSCode `<leader>fe` focuses VSCode's explorer and `<leader>fE` is unmapped). snacks' explorer, a picker source, so
+it follows the picker conventions. Lazy-loaded on `<leader>fe`/`<leader>fE`; no new plugin, plain snacks glyphs (no
 icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as before.
 
 - `<leader>fe` toggles a **centred float laid out like the git pickers**: the tree of Neovim's cwd (with
@@ -252,10 +252,16 @@ icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as b
   diagnostics are marked.
 - Opening a file (`<CR>`/`l`) opens it and **closes the float**, like the other pickers; `<leader>fe`
   reopens it at that file. `<CR>` on a folder expands/collapses it. Moving out of the float closes it.
+- **`<leader>fE`** toggles the same tree as the **sidebar** instead (kept as an alternative to the float):
+  40 columns on the right, stays open when a file is opened (`<C-w>h`/`<C-w>l` move between it and the
+  editor). Its preview is on by default and is laid over the **editor window** (a sidebar has no preview
+  pane); it hides while you're in the editor and comes back in the tree. Both keys open the one
+  explorer, so either key closes whichever tree is open.
 - Config: `opts.picker.sources.explorer` sets the pickers' layout rule with `preview = true`,
   `jump = { close = true }`, `auto_close = true`, and overrides two of snacks' tree keys: `<c-c>` →
   `cancel` (snacks: `tcd`) and `<c-t>` → `false` (snacks: open a terminal), so the global terminal toggle
-  applies.
+  applies. `<leader>fE` passes call-level opts (they beat the source's): `preset = "sidebar"`,
+  `preview = "main"`, `position = "right"`, `jump = { close = false }`, `auto_close = false`.
 
 | Keys (in the tree) | Action |
 |------|--------|
@@ -375,7 +381,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`/`fE`), `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---

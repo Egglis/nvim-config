@@ -285,6 +285,18 @@ return {
       desc = "[F]ile [E]xplorer (toggle)",
     },
     {
+      "<leader>fE",
+      function()
+        -- Call opts beat opts.picker.sources.explorer: the right sidebar, preview in the editor window.
+        Snacks.explorer({
+          layout = { preset = "sidebar", preview = "main", layout = { position = "right" } },
+          jump = { close = false },
+          auto_close = false,
+        })
+      end,
+      desc = "[F]ile [E]xplorer sidebar (toggle)",
+    },
+    {
       "<leader>gg",
       function()
         Snacks.lazygit()
