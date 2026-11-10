@@ -278,6 +278,13 @@ return {
       desc = "[F]ind [C]ommands",
     },
     {
+      "<leader>fe",
+      function()
+        Snacks.explorer()
+      end,
+      desc = "[F]ile [E]xplorer (toggle)",
+    },
+    {
       "<leader>gg",
       function()
         Snacks.lazygit()
@@ -403,6 +410,21 @@ return {
           keys = {
             ["<C-c>"] = "cancel",
             ["<Esc>"] = false,
+          },
+        },
+      },
+      sources = {
+        -- The explorer's own <c-c> (tcd) and <c-t> (terminal) beat the global keys above; only a
+        -- source-level override wins. <c-t> = false lets the global terminal toggle through.
+        explorer = {
+          layout = { layout = { position = "right" } },
+          win = {
+            list = {
+              keys = {
+                ["<c-c>"] = "cancel",
+                ["<c-t>"] = false,
+              },
+            },
           },
         },
       },
