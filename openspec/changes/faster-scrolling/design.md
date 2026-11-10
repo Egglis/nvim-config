@@ -46,8 +46,7 @@ See proposal.md (Why). Facts found while researching, on this machine (Windows, 
 ## Goals / Non-Goals
 
 **Goals:** the three spec deltas; tree-sitter highlighting for C#, XML, JSON, PowerShell and Python on
-the maintained plugin branch; a benchmark that gives numbers before and after; nothing new at startup;
-nothing in VSCode mode.
+the maintained plugin branch; numbers before and after; nothing new at startup; nothing in VSCode mode.
 
 **Non-Goals:** tree-sitter folds, indentation, incremental selection or text objects; more languages;
 Roslyn semantic tokens or a big-file mode; changing `relativenumber`/`cursorline` without the user's
@@ -73,7 +72,7 @@ decision; the Windows key repeat rate or terminal settings; updating plugins tha
      `vswhere -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64`. Install hint: `winget install
      Microsoft.VisualStudio.2022.BuildTools` with the C++ workload.
    *Alternative:* zig as the compiler (`CC="zig cc"`). Kept only as the fallback if the MSVC route fails
-   in §3 (see Risks); that would be a devlog decision and a different deps row.
+   in §2 (see Risks); that would be a devlog decision and a different deps row.
 4. **One new spec file, `lua/plugins/treesitter.lua`.**
    `{ "nvim-treesitter/nvim-treesitter", branch = "main", lazy = false, build = ":TSUpdate", config = … }`.
    `config`:
@@ -100,32 +99,25 @@ decision; the Windows key repeat rate or terminal settings; updating plugins tha
    and only in regex-highlighted filetypes.
    *Alternative:* `NoMatchParen` (no bracket highlight at all); the spike showed matchparen is a small
    part of the cost.
-7. **Benchmark: `scripts/scrollbench.lua` and a `bench` target.** The target writes a 6,000-line C#
-   file and a 7,500-line Lua file (same shape as the spike) to `$env:TEMP\nvim-scrollbench\`. For each
-   file it starts `conhost.exe nvim -u init.lua <file> -c "luafile scripts/scrollbench.lua"`, with the
-   results file and step count in environment variables, and waits for it to exit. The script sets
-   `lines=40 columns=160` so runs are comparable, waits 5 s for plugins/LSP to settle, then for each
-   setting (defaults, `syntax off` or `vim.treesitter.stop()`, `norelativenumber`, `nocursorline`,
-   `NoMatchParen`) resets the buffer, does 300 × `normal! j` + `doautocmd CursorMoved` + `redraw`,
-   and writes one line: setting, ms per step, filetype, highlighter (tree-sitter or regex), attached
-   LSP clients. Errors are written as an `ERROR` line, and the target fails if it sees one or no
-   results. It prints `BENCH_EXIT:<n>`, and is not part of `gates`. The format gate also checks
-   `scripts/`.
-   *Alternatives:* a UI attached over RPC (fails, see Context); Windows Terminal (`wt.exe` can't be
-   waited on); manual `:syntime` (regex only, no totals).
+7. **Measuring: a throwaway script, not part of the repo.** The user doesn't want a benchmark in
+   `gates.ps1`. The agent keeps the spike's script in `$env:TEMP\opencode\` (generated C#/Lua files,
+   `conhost.exe nvim -u init.lua <file> -c "luafile …"`, `lines=40 columns=160`, 5 s settle, then
+   300 × `normal! j` + `doautocmd CursorMoved` + `redraw` per setting) and pastes the outputs into the
+   devlog: a baseline before the upgrade (1.1), and the result after §3. Nothing from it is committed.
+   *Alternatives:* a `bench` gate target (rejected by the user: annoying); a UI attached over RPC (fails,
+   see Context); manual `:syntime` (regex only, no totals).
 8. **`relativenumber`/`cursorline`: measure, then ask.** The spike shows `cursorline` mattering with
-   regex highlighting. After tree-sitter, the bench is run again, and the user gets the numbers and
+   regex highlighting. After tree-sitter the measurement is repeated, and the user gets the numbers and
    chooses: keep both, or change them in a follow-up.
-9. **Order: bench first, then the upgrade, then tree-sitter, then the settings.** Each later section can
-   be compared with the baseline from §1, and the upgrade is checked on its own before a new plugin
-   depends on it.
+9. **Order: baseline, then the upgrade, then tree-sitter, then the settings.** Each later section can be
+   compared with the baseline, and the upgrade is checked on its own before a new plugin depends on it.
 
 ## Risks / Trade-offs
 
 - [Plugins pinned in `lazy-lock.json` may break on 0.12] → After the upgrade, the `build` gate and a
   headless check of the LSP/cmp/snacks/opencode setups. Update only the plugin that fails (`:Lazy update
   <name>`), and commit the lockfile change in that section.
-- [tree-sitter CLI might not find MSVC from a plain pwsh] → §3 starts with a manual
+- [tree-sitter CLI might not find MSVC from a plain pwsh] → §2 starts with a manual
   `tree-sitter build` check; if it fails, fall back to `CC`/zig or a VS developer shell. That is
   recorded as a devlog decision and changes the deps row; if neither works, stop and ask.
 - [The 0.12 shell defaults change `:!` and filter behaviour] → Re-run the `editor-options` shell
@@ -136,8 +128,8 @@ decision; the Windows key repeat rate or terminal settings; updating plugins tha
 - [Parser installs run in the background on the first start after this change; a file opened before they
   finish keeps regex highlighting] → Accepted (spec: quiet fallback); reopening the file (`:e`) picks up
   tree-sitter.
-- [The bench opens a console window for a few seconds per file and measures conhost, not Windows
-  Terminal] → Only on demand (`bench`); the numbers are for before/after comparison, not absolute
-  truth.
+- [The measurement opens a console window for a few seconds per run and measures conhost, not Windows
+  Terminal] → Only run by the agent at two points; the numbers are for before/after comparison, not
+  absolute truth.
 - [`synmaxcol=300` stops colour on long lines in regex filetypes] → Only for filetypes without
   tree-sitter; long lines are rare in code.

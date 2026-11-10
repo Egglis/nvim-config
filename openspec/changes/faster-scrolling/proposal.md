@@ -23,19 +23,19 @@ Neovim is 0.11.0, and the current stable release is 0.12.6.
 - **Cheaper cursor moves**: bracket matching (`matchparen`) gives up after 20 ms instead of the defaults
   (300 ms in normal mode, 60 ms in insert mode), and regex highlighting stops at column 300
   (`synmaxcol`, default 3000) for the languages that still use it.
-- **A scroll benchmark**, `pwsh ./gates.ps1 bench`. It opens a real console window, scrolls a generated
-  C# and Lua file with each knob on and off, and prints ms per step. It is used to check the result, and
-  to decide about `relativenumber` and `cursorline` with numbers.
-- `relativenumber` and `cursorline` **stay on**. If the benchmark still shows a clear cost from either
+- **Before/after numbers**: the agent measures with a throwaway script outside the repo (nothing is
+  added to `gates.ps1`) and records the results in the devlog, to check the result and to decide about
+  `relativenumber` and `cursorline` with numbers.
+- `relativenumber` and `cursorline` **stay on**. If the measurement still shows a clear cost from either
   after tree-sitter, the user decides whether to change them; this change doesn't decide it.
 - New tools: **tree-sitter CLI** (0.26.1+, `scoop install tree-sitter`) and a **C compiler**, which the
   parser install needs. The machine already has Visual Studio Build Tools 2019 with the C++ tools. Both
   go in `docs/dependencies.md` and the `deps` gate. Neovim's row becomes `0.12+`.
 
-Out of scope: Roslyn semantic tokens and a "big file" mode (nothing measured points at them yet; the
-benchmark can show it later), tree-sitter folding, indentation and text objects, other languages, the
-Windows keyboard repeat rate and Windows Terminal settings, and VSCode mode, which loads no plugins and
-is unchanged.
+Out of scope: a benchmark in the repo or in `gates.ps1`, Roslyn semantic tokens and a "big file" mode
+(nothing measured points at them yet), tree-sitter folding, indentation and text objects, other
+languages, the Windows keyboard repeat rate and Windows Terminal settings, and VSCode mode, which loads
+no plugins and is unchanged.
 
 ## Capabilities
 
@@ -47,8 +47,7 @@ is unchanged.
 ### Modified Capabilities
 - `editor-options`: new requirement for cursor-move cost (bracket matching time limit, `synmaxcol`). The
   display requirement (`relativenumber`, `cursorline`) is unchanged.
-- `config-health`: new requirements that the config targets Neovim 0.12+, and that a scroll benchmark
-  can be run on demand.
+- `config-health`: new requirement that the config targets Neovim 0.12+.
 
 ## Impact
 
@@ -56,6 +55,5 @@ is unchanged.
 - New plugin `nvim-treesitter/nvim-treesitter` (`main`) in a new `lua/plugins/treesitter.lua`;
   `lazy-lock.json` changes. Plugins may need `:Lazy update` if one breaks on 0.12.
 - Changed: `lua/config/options.lua` (matchparen, `synmaxcol`, filetype for `.props`/`.targets`).
-- New: `scripts/scrollbench.lua`, a `bench` target in `gates.ps1`.
 - Dependencies: tree-sitter CLI and a C compiler in `docs/dependencies.md` and `gates.ps1 deps`.
-- Docs: `AGENTS.md` (plugins table, options, a short "Performance" note), `readme.md`.
+- Docs: `AGENTS.md` (plugins table, options, a short "Syntax highlighting" note), `readme.md`.
