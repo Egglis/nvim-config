@@ -23,9 +23,9 @@
 
 ## 4. Measure and check
 
-- [ ] 4.1 Repeat the measurement from 1.1 twice on the finished change, and put the outputs and a before/after table in the devlog note. Verify: the C# default line is clearly lower than the baseline and shows tree-sitter
-- [ ] 4.2 **Stop for the user** with the numbers: does `relativenumber` or `cursorline` still cost enough to change? Record the answer in a devlog note; a change to either becomes a new section or a TODO, not part of this one unless agreed. Verify: the answer is in the devlog
-- [ ] 4.3 **Human check**, following a recipe the agent provides: hold `j`/`k` in a big real C# file and in a Lua file (smooth?); C#, `.csproj`, `appsettings.json`, a `.ps1` and a `.py` file look correctly coloured; bracket highlight still shows on `(`/`{`; `:!` and the terminal still work; VSCode with vscode-neovim starts and the shared keys (`<leader>y`, `<C-d>`, `Ø`) work. Verify: the user's answers recorded in the devlog
+- [x] 4.1 Repeat the measurement from 1.1 twice on the finished change, and put the outputs and a before/after table in the devlog note. Verify: the C# default line is clearly lower than the baseline and shows tree-sitter
+- [x] 4.2 **Stop for the user** with the numbers: does `relativenumber` or `cursorline` still cost enough to change? Record the answer in a devlog note; a change to either becomes a new section or a TODO, not part of this one unless agreed. Verify: the answer is in the devlog
+- [x] 4.3 **Human check**, following a recipe the agent provides: hold `j`/`k` in a big real C# file and in a Lua file (smooth?); C#, `.csproj`, `appsettings.json`, a `.ps1` and a `.py` file look correctly coloured; bracket highlight still shows on `(`/`{`; `:!` and the terminal still work; VSCode with vscode-neovim starts and the shared keys (`<leader>y`, `<C-d>`, `Ø`) work. Verify: the user's answers recorded in the devlog
 
 ## Workflow follow-up
 
