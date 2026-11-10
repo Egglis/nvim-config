@@ -5,7 +5,7 @@ Also a powershell $profile file!
 
 - [x] Custom color theming based on which repo/workspace I am within should maybe use the .vscode/settings that already exists
 - [x] Git tree/sidebar for simple git actions, probably some plugin
-- [x] Simple file treeview with symbols and git tracking: snacks explorer on `<leader>fe`, a right sidebar with git and diagnostic marks and add/rename/move/copy/delete (to the Recycle Bin). Plain snacks glyphs, no icon plugin
+- [x] Simple file treeview with symbols and git tracking: snacks explorer on `<leader>fe`, a centred float with a preview (like the git pickers), git and diagnostic marks and add/rename/move/copy/delete (to the Recycle Bin). Plain snacks glyphs, no icon plugin
 - [ ] Other UI improvements for a clean and simpler interface
   - [x] Start screen on a plain `nvim`: repo name, quick keys, recent files and projects
   - [ ] Less clutter: trim lualine (drop `encoding`/`fileformat`), `cmdheight=0`, no `showmode` (lualine shows it), hide the `~` end-of-buffer markers

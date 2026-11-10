@@ -417,7 +417,15 @@ return {
         -- The explorer's own <c-c> (tcd) and <c-t> (terminal) beat the global keys above; only a
         -- source-level override wins. <c-t> = false lets the global terminal toggle through.
         explorer = {
-          layout = { layout = { position = "right" } },
+          -- A centred float like the other pickers, preview on; opening a file or leaving it closes it.
+          layout = {
+            preset = function()
+              return vim.o.columns >= 120 and "default" or "vertical"
+            end,
+            preview = true,
+          },
+          jump = { close = true },
+          auto_close = true,
           win = {
             list = {
               keys = {

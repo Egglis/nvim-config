@@ -246,12 +246,16 @@ Standalone only (in VSCode `<leader>fe` focuses VSCode's explorer). snacks' expl
 it follows the picker conventions. Lazy-loaded on `<leader>fe`; no new plugin, plain snacks glyphs (no
 icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as before.
 
-- `<leader>fe` toggles a 40-column sidebar on the **right** with the tree of Neovim's cwd, the cursor in
-  it, expanded to the current file. Git status and diagnostics are marked.
-- Opening a file (`<CR>`/`l`) keeps the tree open, like VSCode. `<CR>` on a folder expands/collapses it.
-- Config: `opts.picker.sources.explorer` sets `position = "right"` and overrides two of snacks' tree keys:
-  `<c-c>` → `cancel` (snacks: `tcd`) and `<c-t>` → `false` (snacks: open a terminal), so the global
-  terminal toggle applies.
+- `<leader>fe` toggles a **centred float laid out like the git pickers**: the tree of Neovim's cwd (with
+  a filter line) on the left, a **preview** of the file under the cursor on the right (stacked when the
+  screen is under 120 columns). The cursor starts in the tree, on the current file. Git status and
+  diagnostics are marked.
+- Opening a file (`<CR>`/`l`) opens it and **closes the float**, like the other pickers; `<leader>fe`
+  reopens it at that file. `<CR>` on a folder expands/collapses it. Moving out of the float closes it.
+- Config: `opts.picker.sources.explorer` sets the pickers' layout rule with `preview = true`,
+  `jump = { close = true }`, `auto_close = true`, and overrides two of snacks' tree keys: `<c-c>` →
+  `cancel` (snacks: `tcd`) and `<c-t>` → `false` (snacks: open a terminal), so the global terminal toggle
+  applies.
 
 | Keys (in the tree) | Action |
 |------|--------|
@@ -260,13 +264,13 @@ icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as b
 | `m` / `c` | Move / copy |
 | `d` | Delete: asks first, then sends it to the Recycle Bin |
 | `y` / `p` | Yank / paste files |
-| `P` | Toggle a preview of the file under the cursor (in the editor window) |
+| `P` | Hide / show the preview (shown by default) |
 | `H` / `I` | Show hidden / ignored files |
 | `<BS>` / `h` | Go up to the parent folder / close a folder |
+| `i` or `/` | Jump to the filter line |
+| `?` | All keys |
 | `Ctrl+c`, `q` | Close the tree (`<Esc>` doesn't) |
 | `<C-t>` | Terminal toggle, as everywhere else |
-
-The opencode panel also opens on the right; with both open they sit side by side.
 
 ---
 
