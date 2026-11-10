@@ -32,7 +32,7 @@ See proposal.md (Why). Facts at the pinned snacks.nvim (`882c996`):
 **Goals:** the `file-explorer` spec with snacks' explorer, configured in `lua/plugins/snacks.lua` only,
 keeping the existing picker and terminal keys.
 
-**Non-Goals:** changing snacks' other explorer keys, a custom layout beyond the position, opening the
+**Non-Goals:** changing snacks' other explorer keys, a custom layout beyond snacks' presets, opening the
 tree automatically, and netrw replacement or `nvim .` behaviour.
 
 ## Decisions
@@ -56,6 +56,15 @@ tree automatically, and netrw replacement or `nvim .` behaviour.
    - *Revision:* §1 built `layout = { layout = { position = "right" } }`, a 40-column right sidebar that
      stayed open on file open. After trying it the user chose the float with the preview on, and
      opening a file closing it.
+7. **Sidebar on `<leader>fE`** (added after the §3 check; the user prefers the float but wants the
+   sidebar available): a second `keys` entry calling `Snacks.explorer()` with call-level opts, which
+   merge last and so beat `opts.picker.sources.explorer`: `layout = { preset = "sidebar", preview =
+   "main", layout = { position = "right" } }`, `jump = { close = false }`, `auto_close = false`. The key
+   overrides in the source apply to both. `preview = "main"` is snacks' sidebar mode (the preview takes
+   the editor window; with `auto_close = false` snacks hides it when you leave the tree and brings it
+   back when you return). Right side as in §1, preview on (the user's choices). *Alternatives:* a config
+   switch or a runtime style toggle for `<leader>fe`; the user chose a second key. Both keys open the
+   same `explorer` source, so either one closes whichever tree is open.
 4. **No `opts.explorer`**, so netrw replacement stays off and `nvim .` opens as before. The explorer
    module's defaults (including `trash = true`) apply when the picker uses it. Verify in §1 that delete
    really uses the Recycle Bin without `opts.explorer`. If it doesn't, set `opts.explorer =

@@ -19,6 +19,10 @@ already has its explorer on `<leader>fe` through vscode-neovim.
 - Opening a file closes the float, like the other pickers; `<leader>fe` reopens it at that file.
 - History: §1 built a right sidebar that stayed open on file open; after trying it, the user asked for
   the float with the preview on instead.
+- **Sidebar alternative on `<leader>fE`**, kept so the user can switch later: the same tree as a
+  sidebar on the right that stays open when a file is opened. Its preview is on by default and shows in
+  the editor window (a sidebar has no preview pane). Both keys toggle the one explorer: either key closes
+  whichever is open. Not in VSCode mode.
 - Simple file operations from the tree, with snacks' default keys: add a file (`a`; a name ending in `/`
   makes a folder), rename (`r`), delete (`d`, asks first and uses the Recycle Bin), move (`m`), copy
   (`c`), yank and paste (`y`/`p`).

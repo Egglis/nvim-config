@@ -14,7 +14,17 @@
 
 ## 3. Human check
 
-- [ ] 3.1 **Stop for the user** with a recipe: `<leader>fe` opens the tree in a centred float with the preview showing, and toggles it closed; `P` hides/shows the preview and the preview follows the cursor; `<CR>` on a file opens it and closes the float, and `<leader>fe` reopens at that file; `a` → `test.md` and `a` → `testdir/` create a file and a folder; `r` renames; `d` asks, then the file is in the Recycle Bin; a changed file shows a git mark; `Ctrl+c` and `q` close it, `<Esc>` doesn't; `<C-t>` toggles the terminal from the tree; in VSCode `<leader>fe` still focuses VSCode's explorer. Verify: the user's answers recorded in the devlog; any failure becomes a fix section agreed with the user
+- [x] 3.1 **Stop for the user** with a recipe: `<leader>fe` opens the tree in a centred float with the preview showing, and toggles it closed; `P` hides/shows the preview and the preview follows the cursor; `<CR>` on a file opens it and closes the float, and `<leader>fe` reopens at that file; `a` → `test.md` and `a` → `testdir/` create a file and a folder; `r` renames; `d` asks, then the file is in the Recycle Bin; a changed file shows a git mark; `Ctrl+c` and `q` close it, `<Esc>` doesn't; `<C-t>` toggles the terminal from the tree; in VSCode `<leader>fe` still focuses VSCode's explorer. Verify: the user's answers recorded in the devlog; any failure becomes a fix section agreed with the user
+
+## 4. Sidebar on `<leader>fE`
+
+- [ ] 4.1 In `lua/plugins/snacks.lua` (design decision 7): a `<leader>fE` entry in `keys` calling `Snacks.explorer({ layout = { preset = "sidebar", preview = "main", layout = { position = "right" } }, jump = { close = false }, auto_close = false })` with a `desc`. Verify: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0` and `pwsh ./gates.ps1 format` → `FORMAT_EXIT:0`
+- [ ] 4.2 Headless checks, with `lua/config/options.lua` open: `<leader>fE` opens the explorer whose list window is not a float and is right of the editor window, cursor in it on `options.lua`; the editor window shows the preview of `options.lua`, and after `j` the preview of the next file; `P` hides/shows the preview; `<CR>` on a file opens it in the editor window and the sidebar stays open; `<C-c>` buffer-local cancel, no buffer-local `<C-t>`; `<leader>fE` closes it; `<leader>fe` while the sidebar is open closes it; the §2 float script still passes. Verify: the output quoted in a devlog note
+- [ ] 4.3 Docs: `AGENTS.md` "File explorer" section (`<leader>fE` sidebar: right, preview in the editor window by default, opening keeps it open, either key closes either tree, standalone only) and the snacks plugin row's key list; `readme.md` line. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+
+## 5. Human check: sidebar
+
+- [ ] 5.1 **Stop for the user** with a recipe: `<leader>fE` opens the sidebar on the right with the editor window previewing the file under the cursor; moving updates it; `P` hides/shows it; `<CR>` on a file opens it and the sidebar stays; `<C-w>h` back to the editor (the preview gives way to your file) and `<C-w>l` back into the tree; `<leader>fE` closes it; `<leader>fe` still opens the float. Verify: the user's answers recorded in the devlog; any failure becomes a fix section agreed with the user
 
 ## Workflow follow-up
 

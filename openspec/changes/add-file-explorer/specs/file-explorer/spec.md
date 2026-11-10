@@ -73,6 +73,28 @@ The tree SHALL mark files and folders that have git changes, and files that have
 - **WHEN** a file in a git repo has uncommitted changes and the tree is open
 - **THEN** the file is marked with its git status in the tree
 
+### Requirement: Sidebar alternative
+In standalone Neovim, `<leader>fE` SHALL open the same file tree as a sidebar on the right side of the screen, with the cursor in it. Confirming a file SHALL open it in the editor window and keep the sidebar open. The other tree requirements (file operations, marks, picker and terminal keys) SHALL apply to it. `<leader>fE` or `<leader>fe` SHALL close an open tree.
+
+#### Scenario: Open the sidebar
+- **WHEN** no file tree is open and the user presses `<leader>fE` in normal mode
+- **THEN** a sidebar opens on the right showing the cwd's tree with the cursor on the current file
+
+#### Scenario: Opening a file keeps the sidebar
+- **WHEN** the cursor is on a file in the sidebar and the user presses `<CR>`
+- **THEN** the file opens in the editor window and the sidebar stays open
+
+#### Scenario: Close the sidebar
+- **WHEN** the sidebar is open and the user presses `<leader>fE`
+- **THEN** the sidebar closes
+
+### Requirement: Sidebar preview in the editor window
+In the sidebar, the preview of the file under the cursor SHALL be shown by default in the main editor window and follow the cursor, and `P` SHALL hide and show it.
+
+#### Scenario: Preview on open
+- **WHEN** the user opens the sidebar with `<leader>fE`
+- **THEN** the editor window shows the preview of the file under the cursor, and moving the cursor updates it
+
 ### Requirement: The tree keeps the picker and terminal keys
 In the tree, `Ctrl+c` and `q` SHALL close it, `<Esc>` SHALL NOT close it, and `<C-t>` SHALL toggle the terminal panel as it does elsewhere.
 
