@@ -48,7 +48,10 @@ $targets = [ordered]@{
             try { & $Cmd *> $null; $ok = $LASTEXITCODE -eq 0 } catch { $ok = $false }
             if (-not $ok) { Write-Host $Msg; $script:depFail = 1 }
         }
-        Check 'MISSING nvim — winget install Neovim.Neovim' { nvim --version }
+        Check 'MISSING nvim 0.12+ — winget upgrade Neovim.Neovim' {
+            $v = [version]((nvim --version | Select-Object -First 1) -replace '^NVIM v([\d.]+).*$', '$1')
+            if ($v -lt [version]'0.12') { throw "nvim $v is older than 0.12" }
+        }
         Check 'MISSING stylua — winget install JohnnyMorganz.StyLua' { stylua --version }
         Check 'MISSING git — winget install Git.Git' { git --version }
         Check 'MISSING node — winget install OpenJS.NodeJS.LTS' { node --version }

@@ -2,12 +2,12 @@
 
 ## 1. Neovim 0.12
 
-- [ ] 1.1 Record the **baseline** on Neovim 0.11.0 with the throwaway measurement script in `$env:TEMP\opencode\` (design decision 7; nothing committed): a generated C# and Lua file, each with defaults, highlighting off, `norelativenumber`, `nocursorline` and `NoMatchParen`, run twice. Verify: both runs' output, verbatim, in a devlog note
-- [ ] 1.2 `deps` gate: the `nvim` check fails below 0.12 (design decision 2); `docs/dependencies.md` Neovim row → `0.12+`, install hint `winget upgrade Neovim.Neovim`. Verify on 0.11.0: `pwsh ./gates.ps1 deps` prints the "nvim 0.12+" message and not `DEPS_EXIT:0`
-- [ ] 1.3 **Stop for the user** (design decision 1): close every Neovim (including VSCode windows), run `winget upgrade Neovim.Neovim`, reopen. Verify: `nvim --version` → `NVIM v0.12.6` (or a later 0.12.x), and `pwsh ./gates.ps1 deps` no longer reports nvim
-- [ ] 1.4 Check the config on 0.12: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`; headless, a `.lua` buffer gets `lua_ls` attached and the LSP keymaps are set; snacks, lualine and opencode setups raise no error; `:messages` after startup holds nothing from the config. Update only a plugin that fails (`:Lazy update <name>`), and commit `lazy-lock.json` with this section. Verify: the listed checks pass, quoted in the devlog note
-- [ ] 1.5 Re-check the pwsh shell on 0.12 (design: Risks): `:!$PSVersionTable.PSVersion.Major` prints 7 with no profile output; `vim.fn.system("exit 3")` gives `v:shell_error` 3; `:%!sort` on a 3-line buffer sorts it. If one fails, adjust `lua/config/options.lua` following 0.12's `:h shell-pwsh` and record why in a devlog note. Verify: all three pass headless
-- [ ] 1.6 Docs: `AGENTS.md` mentions of "Neovim 0.11" (LSP section) → 0.12 where it's about the installed version. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 1.1 Record the **baseline** on Neovim 0.11.0 with the throwaway measurement script in `$env:TEMP\opencode\` (design decision 7; nothing committed): a generated C# and Lua file, each with defaults, highlighting off, `norelativenumber`, `nocursorline` and `NoMatchParen`, run twice. Verify: both runs' output, verbatim, in a devlog note
+- [x] 1.2 `deps` gate: the `nvim` check fails below 0.12 (design decision 2); `docs/dependencies.md` Neovim row → `0.12+`, install hint `winget upgrade Neovim.Neovim`. Verify on 0.11.0: `pwsh ./gates.ps1 deps` prints the "nvim 0.12+" message and not `DEPS_EXIT:0`
+- [x] 1.3 **Stop for the user** (design decision 1): close every Neovim (including VSCode windows), run `winget upgrade Neovim.Neovim`, reopen. Verify: `nvim --version` → `NVIM v0.12.6` (or a later 0.12.x), and `pwsh ./gates.ps1 deps` no longer reports nvim
+- [x] 1.4 Check the config on 0.12: `pwsh ./gates.ps1 build` → `BUILD_EXIT:0`; headless, a `.lua` buffer gets `lua_ls` attached and the LSP keymaps are set; snacks, lualine and opencode setups raise no error; `:messages` after startup holds nothing from the config. Update only a plugin that fails (`:Lazy update <name>`), and commit `lazy-lock.json` with this section. Verify: the listed checks pass, quoted in the devlog note
+- [x] 1.5 Re-check the pwsh shell on 0.12 (design: Risks): `:!$PSVersionTable.PSVersion.Major` prints 7 with no profile output; `vim.fn.system("exit 3")` gives `v:shell_error` 3; `:%!sort` on a 3-line buffer sorts it. If one fails, adjust `lua/config/options.lua` following 0.12's `:h shell-pwsh` and record why in a devlog note. Verify: all three pass headless
+- [x] 1.6 Docs: `AGENTS.md` mentions of "Neovim 0.11" (LSP section) → 0.12 where it's about the installed version. Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 2. Tree-sitter highlighting
 

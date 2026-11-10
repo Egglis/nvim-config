@@ -347,7 +347,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 
 ## LSP Configuration
 
-LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., filetypes = ... }`). The `lsp.lua` plugin spec reads it inside `config` and uses Neovim 0.11's native API: `vim.lsp.config("*", { capabilities })` for shared settings, `vim.lsp.config(name, server)` per server, and mason-lspconfig v2 to install and `vim.lsp.enable` them. Buffer keymaps come from `lua/lsp/keymaps.lua`. Diagnostics are configured in `lsp.lua`'s `config` (inline virtual text, severity-sorted, rounded float).
+LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., filetypes = ... }`). The `lsp.lua` plugin spec reads it inside `config` and uses Neovim's native LSP API (added in 0.11; the config itself needs 0.12+, see `docs/dependencies.md`): `vim.lsp.config("*", { capabilities })` for shared settings, `vim.lsp.config(name, server)` per server, and mason-lspconfig v2 to install and `vim.lsp.enable` them. Buffer keymaps come from `lua/lsp/keymaps.lua`. Diagnostics are configured in `lsp.lua`'s `config` (inline virtual text, severity-sorted, rounded float).
 
 **Currently configured servers:**
 

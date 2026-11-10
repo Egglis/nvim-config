@@ -4,7 +4,7 @@ Every tool this repo needs. `pwsh ./gates.ps1 deps` checks each row.
 
 | Tool | Version | Why | Install | Check | Auth check |
 |------|---------|-----|---------|-------|------------|
-| Neovim | 0.11+ | The config itself; `build` gate (headless startup) | `winget install Neovim.Neovim` | `nvim --version` | — |
+| Neovim | 0.12+ | The config itself; `build` gate (headless startup); nvim-treesitter's `main` branch needs 0.12 | `winget install Neovim.Neovim` (upgrade: `winget upgrade Neovim.Neovim`) | `nvim --version` (first line ≥ `NVIM v0.12`) | — |
 | StyLua | 2.x | `format` gate (`stylua --check`) | `winget install JohnnyMorganz.StyLua` | `stylua --version` | — |
 | Git | any | lazy.nvim plugin bootstrap, version control | `winget install Git.Git` | `git --version` | — |
 | Node.js | 20+ | Runs the OpenSpec CLI | `winget install OpenJS.NodeJS.LTS` | `node --version` | — |
