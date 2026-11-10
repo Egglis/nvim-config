@@ -2,17 +2,17 @@
 
 ## Purpose
 
-Defines the file tree sidebar in standalone Neovim: how it opens and closes, what it shows, the simple
+Defines the file tree float in standalone Neovim: how it opens and closes, what it shows, the simple
 file and folder operations it offers, and how it fits the picker and terminal keys.
 
 ## ADDED Requirements
 
 ### Requirement: Toggle the file tree
-In standalone Neovim, `<leader>fe` SHALL open a file tree sidebar on the right side of the screen, showing the tree of Neovim's current working directory with the cursor in it. Pressing `<leader>fe` while the tree is open SHALL close it.
+In standalone Neovim, `<leader>fe` SHALL open a file tree in a centred float laid out like the other pickers (the tree with its filter line on one side, a preview on the other), showing the tree of Neovim's current working directory with the cursor in it. Pressing `<leader>fe` while the tree is open SHALL close it.
 
 #### Scenario: Open
 - **WHEN** no file tree is open and the user presses `<leader>fe` in normal mode
-- **THEN** a sidebar opens on the right showing the files and folders of the cwd, and the cursor is in it
+- **THEN** a centred float opens showing the files and folders of the cwd, and the cursor is in the tree
 
 #### Scenario: Close with the same key
 - **WHEN** the file tree is open and the user presses `<leader>fe`
@@ -22,16 +22,16 @@ In standalone Neovim, `<leader>fe` SHALL open a file tree sidebar on the right s
 - **WHEN** a file inside the cwd is open and the user opens the tree
 - **THEN** the tree expands to that file and puts the cursor on it
 
-### Requirement: Opening a file keeps the tree
-Confirming a file in the tree SHALL open it in the main editor window and SHALL keep the tree open. Confirming a folder SHALL expand or collapse it.
+### Requirement: Opening a file closes the tree
+Confirming a file in the tree SHALL open it in the main editor window and SHALL close the tree, like the other pickers. Confirming a folder SHALL expand or collapse it and keep the tree open.
 
 #### Scenario: Open a file
 - **WHEN** the cursor is on a file in the tree and the user presses `<CR>`
-- **THEN** the file opens in the editor window and the tree stays visible
+- **THEN** the file opens in the editor window and the tree closes
 
 #### Scenario: Expand a folder
 - **WHEN** the cursor is on a collapsed folder and the user presses `<CR>`
-- **THEN** the folder expands to show its contents
+- **THEN** the folder expands to show its contents and the tree stays open
 
 ### Requirement: Create files and folders
 From the tree, the user SHALL be able to create a file or a folder in the folder under the cursor by typing its name; a name ending in `/` SHALL create a folder.
@@ -56,11 +56,15 @@ From the tree, the user SHALL be able to rename (`r`), move (`m`), copy (`c`) an
 - **THEN** a confirmation is shown, and only after confirming is the file moved to the Recycle Bin
 
 ### Requirement: Preview from the tree
-The user SHALL be able to preview the file under the cursor without leaving the tree: `P` SHALL toggle a preview that follows the cursor.
+The tree SHALL show a preview of the file under the cursor as soon as it opens, following the cursor while it stays in the tree. `P` SHALL hide and show the preview.
 
-#### Scenario: Preview a file
-- **WHEN** the user presses `P` in the tree and moves the cursor onto a file
+#### Scenario: Preview on open
+- **WHEN** the user opens the tree and moves the cursor onto a file
 - **THEN** that file's content is shown in the preview while the cursor stays in the tree
+
+#### Scenario: Toggle the preview
+- **WHEN** the preview is shown and the user presses `P`
+- **THEN** the preview is hidden, and pressing `P` again shows it
 
 ### Requirement: The tree shows git and diagnostic status
 The tree SHALL mark files and folders that have git changes, and files that have diagnostics.

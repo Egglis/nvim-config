@@ -9,14 +9,19 @@ already has its explorer on `<leader>fe` through vscode-neovim.
 
 ## What Changes
 
-- **File tree sidebar** in standalone Neovim, using the explorer that comes with snacks.nvim (already
+- **File tree float** in standalone Neovim, using the explorer that comes with snacks.nvim (already
   installed for the pickers, terminal and start screen). No new plugin.
 - `<leader>fe` toggles it, the same key that focuses the explorer in VSCode mode.
-- It sits on the **right**, shows the tree of Neovim's cwd with git status and diagnostics, and follows
-  the current file. Opening a file from it keeps the tree open, like VSCode.
+- It opens as a **centred float laid out like the git pickers** (tree and filter on one side, a preview
+  of the file under the cursor on the other; stacked on narrow screens). It shows the tree of Neovim's cwd
+  with git status and diagnostics, and follows the current file. The **preview is on by default**; `P`
+  hides or shows it.
+- Opening a file closes the float, like the other pickers; `<leader>fe` reopens it at that file.
+- History: §1 built a right sidebar that stayed open on file open; after trying it, the user asked for
+  the float with the preview on instead.
 - Simple file operations from the tree, with snacks' default keys: add a file (`a`; a name ending in `/`
   makes a folder), rename (`r`), delete (`d`, asks first and uses the Recycle Bin), move (`m`), copy
-  (`c`), yank and paste (`y`/`p`), and a preview of the file under the cursor (`P`).
+  (`c`), yank and paste (`y`/`p`).
 - It follows the existing picker and terminal conventions. `Ctrl+c` and `q` close it, and `<Esc>` doesn't.
   `<C-t>` stays the terminal toggle. snacks binds both `Ctrl+c` (change directory) and `<C-t>` (open a
   terminal) in the tree by default, and the config overrides those two.
@@ -29,7 +34,7 @@ its own explorer.
 ## Capabilities
 
 ### New Capabilities
-- `file-explorer`: the file tree sidebar in standalone Neovim: how it opens and closes, where it sits,
+- `file-explorer`: the file tree float in standalone Neovim: how it opens and closes, where it sits,
   what it shows, the file operations it offers, and how it fits the picker and terminal keys.
 
 ### Modified Capabilities

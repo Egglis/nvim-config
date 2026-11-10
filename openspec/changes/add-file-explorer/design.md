@@ -23,7 +23,9 @@ See proposal.md (Why). Facts at the pinned snacks.nvim (`882c996`):
 - netrw replacement (`opts.explorer.replace_netrw`) only runs when the explorer module is set up through
   `opts.explorer`. snacks is lazy when Neovim gets a file or folder (`lazy = vim.fn.argc(-1) > 0`).
 - In VSCode mode, `vscode.lua` already maps `<leader>fe` to `workbench.files.action.focusFilesExplorer`.
-- The opencode panel also opens on the right (40%), and `<leader>tr` can move terminals to the right.
+- The other pickers (e.g. the git ones) use snacks' default layout rule: preset `default` at 120+ columns
+  (a centred 80% float: input and list on the left, preview on the right), else `vertical` (stacked).
+  Their defaults are `auto_close = true` and close-on-jump.
 
 ## Goals / Non-Goals
 
@@ -41,31 +43,37 @@ tree automatically, and netrw replacement or `nvim .` behaviour.
 2. **`<leader>fe` in the snacks spec's `keys`**, calling `Snacks.explorer()`. It toggles (see Context),
    and as a lazy key it loads snacks on first use. The key matches VSCode's explorer key. *Alternative:*
    `<leader>e`; the user chose `<leader>fe`.
-3. **Source options in `opts.picker.sources.explorer`:**
-   - `layout = { layout = { position = "right" } }` (the user's choice). Width stays snacks' 40 columns.
+3. **Source options in `opts.picker.sources.explorer`** (revised after §1, see below):
+   - `layout = { preset = <columns >= 120 and "default" or "vertical">, preview = true }`: the same
+     centred float as the git pickers, with the preview on when it opens (the user's choice).
+   - `jump = { close = true }` and `auto_close = true`: opening a file closes the float, and moving out of
+     it closes it, like every other picker. A float left open would cover the file just opened.
    - `win.list.keys`: `["<c-c>"] = "cancel"`, so Ctrl+c closes it like every other picker (picker spec)
      instead of `tcd`; `["<c-t>"] = false`, so the buffer-local `terminal` action is removed and the
      global `<C-t>` terminal toggle applies (terminal spec).
-   - Everything else stays at snacks' defaults: stays open on file open, follows the current file, git
-     and diagnostics on, trash on delete, preview off until `P`.
+   - Everything else stays at snacks' defaults: follows the current file, git and diagnostics on, trash
+     on delete.
+   - *Revision:* §1 built `layout = { layout = { position = "right" } }`, a 40-column right sidebar that
+     stayed open on file open. After trying it the user chose the float with the preview on, and
+     opening a file closing it.
 4. **No `opts.explorer`**, so netrw replacement stays off and `nvim .` opens as before. The explorer
    module's defaults (including `trash = true`) apply when the picker uses it. Verify in §1 that delete
    really uses the Recycle Bin without `opts.explorer`. If it doesn't, set `opts.explorer =
    { replace_netrw = false }` (`trash` defaults to true there), and record the reason.
 5. **No icon plugin.** snacks falls back to its own file and folder glyphs, which the start screen
    already uses (the terminal font has the Nerd Font glyphs). The user chose plain.
-6. **Tests:** headless checks for what can be checked without a UI: that the tree opens on the right,
-   the list buffer's keys (`<c-c>` → cancel, no buffer-local `<c-t>`, `<Esc>` not mapped to close),
-   toggle-closes, follows the current file, the cwd is unchanged after `<c-c>`, a startup with no
-   messages, and VSCode mode. Create, rename, delete and preview go to a human check with a recipe:
-   they prompt through snacks' input and confirm windows, and the Recycle Bin can't be checked
-   headless.
+6. **Tests:** headless checks for what can be checked without a UI: that the tree opens as a float with
+   the preview showing the file under the cursor, `P` toggles the preview, `<CR>` on a file opens it
+   and closes the tree while `<CR>` on a folder keeps it, the list buffer's keys (`<c-c>` → cancel, no
+   buffer-local `<c-t>`, `<Esc>` not mapped to close), toggle-closes, follows the current file, the cwd
+   is unchanged after `<c-c>`, a startup with no messages, and VSCode mode. Create, rename and delete go
+   to a human check with a recipe: they prompt through snacks' input and confirm windows, and the
+   Recycle Bin can't be checked headless.
 
 ## Risks / Trade-offs
 
-- [The opencode panel and the tree are both on the right] → They stack side by side on the right
-  (tree 40 columns, panel 40%). That's acceptable for now. If it feels crowded, moving the tree is a
-  one-line change, and the user can ask.
+- [The float covers the editor] → It closes on opening a file and on leaving it, like the other
+  pickers; `<leader>fe` reopens it at the current file.
 - [`<leader>fe` toggles here but only focuses in VSCode] → Documented in AGENTS.md's note on keys that
   mean different things in the two environments.
 - [A snacks update changes the explorer's default keys] → The overrides are only for `<c-c>`/`<c-t>`.
