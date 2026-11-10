@@ -24,7 +24,7 @@
 
 ## 5. Human check: sidebar
 
-- [ ] 5.1 **Stop for the user** with a recipe: `<leader>fE` opens the sidebar on the right with the editor window previewing the file under the cursor; moving updates it; `P` hides/shows it; `<CR>` on a file opens it and the sidebar stays; `<C-w>h` back to the editor (the preview gives way to your file) and `<C-w>l` back into the tree; `<leader>fE` closes it; `<leader>fe` still opens the float. Verify: the user's answers recorded in the devlog; any failure becomes a fix section agreed with the user
+- [x] 5.1 **Stop for the user** with a recipe: `<leader>fE` opens the sidebar on the right with the editor window previewing the file under the cursor; moving updates it; `P` hides/shows it; `<CR>` on a file opens it and the sidebar stays; `<C-w>h` back to the editor (the preview gives way to your file) and `<C-w>l` back into the tree; `<leader>fE` closes it; `<leader>fe` still opens the float. Verify: the user's answers recorded in the devlog; any failure becomes a fix section agreed with the user
 
 ## Workflow follow-up
 
