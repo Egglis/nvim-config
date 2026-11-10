@@ -421,7 +421,9 @@ Standalone only. Tells terminal windows apart without touching the colorscheme:
 | `termguicolors` | true |
 
 Standalone only (not in VSCode): `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
-and `shell=pwsh` (falls back to `powershell`) with the `:h shell-powershell` flags. `:!`/`system()` run with
+`synmaxcol=300` (regex highlighting stops at column 300), `g:matchparen_timeout`/`g:matchparen_insert_timeout`
+= 20 ms (bracket matching gives up sooner; Neovim's defaults are 300/60), `.props`/`.targets` files → `xml`
+filetype, and `shell=pwsh` (falls back to `powershell`) with the `:h shell-powershell` flags. `:!`/`system()` run with
 `-NoProfile`; an interactive terminal loads the PowerShell profile.
 
 ---

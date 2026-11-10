@@ -22,3 +22,4 @@ Also a powershell $profile file!
 - [x] .NET user secrets: jump from a `.csproj` straight to its `secrets.json` (by `UserSecretsId`), like the VSCode extension (`<leader>ns`)
 - [ ] Continue where I left off: `nvim --continue` (or similar) reopens the last session as it was at `:qa!` — auto `:mksession` on exit + a pwsh wrapper/alias and a start-screen key. Global vs per-folder session undecided; maybe tmux-style (psmux/WezTerm/Windows Terminal) persistence on Windows instead
 - [ ] Show open buffers: buffer list in the repo-accent top bar (lualine `buffers` component), plus Harpoon 2 with the same `<leader>h…` keys as VSCode
+- [x] Faster scrolling in big C# files: Neovim 0.12, tree-sitter highlighting for C#/XML/JSON/PowerShell/Python instead of regex syntax, and cheaper cursor moves (bracket matching capped at 20 ms, regex highlighting stops at column 300)

@@ -35,6 +35,15 @@ if not vim.g.vscode then
   opt.splitright = true
   opt.splitbelow = true
 
+  -- Cheaper cursor moves: bracket matching gives up after 20 ms, regex highlighting stops at column 300.
+  -- matchparen reads these when it runs, after init.lua.
+  vim.g.matchparen_timeout = 20
+  vim.g.matchparen_insert_timeout = 20
+  opt.synmaxcol = 300
+
+  -- MSBuild files (.csproj and Directory.Build.* are already xml).
+  vim.filetype.add({ extension = { props = "xml", targets = "xml" } })
+
   -- PowerShell as the shell (:h shell-powershell). -NoProfile keeps :! and system() fast; an
   -- interactive :terminal runs bare 'shell' (no shellcmdflag), so it still loads the profile.
   opt.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"

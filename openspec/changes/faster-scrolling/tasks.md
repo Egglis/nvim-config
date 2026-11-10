@@ -18,8 +18,8 @@
 
 ## 3. Cursor-move settings
 
-- [ ] 3.1 In `lua/config/options.lua`'s standalone block (design decisions 5 and 6): `vim.g.matchparen_timeout = 20`, `vim.g.matchparen_insert_timeout = 20`, `opt.synmaxcol = 300`, and `vim.filetype.add({ extension = { props = "xml", targets = "xml" } })`. Verify: headless standalone shows the three values; `vim.filetype.match({ filename = "Common.props" })` and `"x.targets"` → `xml`; with `vim.g.vscode = true` (`nvim --headless --cmd "let g:vscode=1" -u init.lua`) the values are Neovim's defaults (300, 60, 3000); bracket matching still highlights the pair on a `(` in a C# buffer (a `MatchParen` match exists in `getmatches()` after `CursorMoved`)
-- [ ] 3.2 Docs: `AGENTS.md` Options table (`synmaxcol`, matchparen limits, `.props`/`.targets` → xml) and `readme.md` (performance TODO with the result). Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
+- [x] 3.1 In `lua/config/options.lua`'s standalone block (design decisions 5 and 6): `vim.g.matchparen_timeout = 20`, `vim.g.matchparen_insert_timeout = 20`, `opt.synmaxcol = 300`, and `vim.filetype.add({ extension = { props = "xml", targets = "xml" } })`. Verify: headless standalone shows the three values; `vim.filetype.match({ filename = "Common.props" })` and `"x.targets"` → `xml`; with `vim.g.vscode = true` (`nvim --headless --cmd "let g:vscode=1" -u init.lua`) the values are Neovim's defaults (300, 60, 3000); bracket matching still highlights the pair on a `(` in a C# buffer (a `MatchParen` match exists in `getmatches()` after `CursorMoved`)
+- [x] 3.2 Docs: `AGENTS.md` Options table (`synmaxcol`, matchparen limits, `.props`/`.targets` → xml) and `readme.md` (performance TODO with the result). Verify: `pwsh ./gates.ps1 gates` → `GATES_EXIT:0`
 
 ## 4. Measure and check
 
