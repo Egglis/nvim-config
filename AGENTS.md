@@ -36,7 +36,8 @@ nvim/
     ├── config/
     │   ├── options.lua             # All vim options (clipboard only in standalone)
     │   ├── lazy.lua                # lazy.nvim bootstrap + setup
-    │   └── repo_accent.lua         # Per-repo accent color (statusline block + terminal title)
+    │   ├── repo_accent.lua         # Per-repo accent color (statusline block + terminal title)
+    │   └── session.lua             # Per-project session: saved on exit, restored on demand
     ├── keymaps/
     │   ├── shared.lua              # Active in BOTH Neovim and VSCode
     │   ├── vscode.lua              # VSCode-only (calls vscode.action())
@@ -67,6 +68,7 @@ init.lua
   └── else:
         ├── keymaps/regular.lua
         ├── config/repo_accent.lua  (setup: title + autocmds)
+        ├── config/session.lua      (setup: sessionoptions, :SessionRestore, save on VimLeavePre)
         └── config/lazy.lua         (loads all plugins)
 ```
 
@@ -154,6 +156,7 @@ Active only in standalone Neovim.
 | `<leader>ns` | n | Open the .NET user secrets (`%APPDATA%\Microsoft\UserSecrets\<UserSecretsId>\secrets.json`) of the current `.csproj`, else the nearest one above the current file/cwd. Creates the file as `{}` if missing; warns if there's no `.csproj` or no `<UserSecretsId>` |
 | `<leader>bd` | n | Close the current buffer, keeping the window (`Snacks.bufdelete`; defined in `plugins/snacks.lua`) |
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
+| `<leader>qs` | n | Restore this project's session (see Sessions) |
 
 `clipboard = unnamedplus` is set in `config/options.lua`, standalone only.
 
@@ -195,6 +198,7 @@ Standalone only. snacks dashboard, shown when Neovim starts with **no** file or 
 
 | Key | Action |
 |-----|--------|
+| `s` | Restore this project's session (only shown when one is saved; see Sessions) |
 | `f` | Find files (`<leader>ff`) |
 | `g` | Live grep (`<leader>fa`) |
 | `r` | Recent files picker (`<leader>fr`) |
@@ -242,8 +246,8 @@ like `:edit`, is typed on the command line for you to finish.
 ---
 
 ### File explorer — `lua/plugins/snacks.lua`
-Standalone only (in VSCode `<leader>fe` focuses VSCode's explorer and `<leader>fE` is unmapped). snacks' explorer, a picker source, so
-it follows the picker conventions. Lazy-loaded on `<leader>fe`/`<leader>fE`; no new plugin, plain snacks glyphs (no
+Standalone only (in VSCode `<leader>fe` focuses VSCode's explorer and `<leader>e` is unmapped). snacks' explorer, a picker source, so
+it follows the picker conventions. Lazy-loaded on `<leader>fe`/`<leader>e`; no new plugin, plain snacks glyphs (no
 icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as before.
 
 - `<leader>fe` toggles a **centred float laid out like the git pickers**: the tree of Neovim's cwd (with
@@ -252,7 +256,7 @@ icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as b
   diagnostics are marked.
 - Opening a file (`<CR>`/`l`) opens it and **closes the float**, like the other pickers; `<leader>fe`
   reopens it at that file. `<CR>` on a folder expands/collapses it. Moving out of the float closes it.
-- **`<leader>fE`** toggles the same tree as the **sidebar** instead (kept as an alternative to the float):
+- **`<leader>e`** toggles the same tree as the **sidebar** instead (kept as an alternative to the float):
   40 columns on the right, stays open when a file is opened (`<C-w>h`/`<C-w>l` move between it and the
   editor). Its preview is on by default and is laid over the **editor window** (a sidebar has no preview
   pane); it hides while you're in the editor and comes back in the tree. Both keys open the one
@@ -260,7 +264,7 @@ icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as b
 - Config: `opts.picker.sources.explorer` sets the pickers' layout rule with `preview = true`,
   `jump = { close = true }`, `auto_close = true`, and overrides two of snacks' tree keys: `<c-c>` →
   `cancel` (snacks: `tcd`) and `<c-t>` → `false` (snacks: open a terminal), so the global terminal toggle
-  applies. `<leader>fE` passes call-level opts (they beat the source's): `preset = "sidebar"`,
+  applies. `<leader>e` passes call-level opts (they beat the source's): `preset = "sidebar"`,
   `preview = "main"`, `position = "right"`, `jump = { close = false }`, `auto_close = false`.
 
 | Keys (in the tree) | Action |
@@ -310,14 +314,16 @@ running.
 | `<leader>tt` | n | Focus terminal 1; hide it if already in it |
 | `<C-t>` | n, t | Same as `<leader>tt`, but also works while typing in the terminal (hides the current one). Replaces Vim's tag-pop `<C-t>` |
 | `N<leader>tt` | n | Same for terminal N (e.g. `2<leader>tt`) |
+| `<leader>tf` | n | Focus a terminal in the current file's folder (one per folder; Neovim's cwd for buffers with no file); in a terminal it hides it |
 | `<leader>tr` | n | Move all terminals to a right split (remembered for the session) |
 | `<leader>tb` | n | Move all terminals back to the bottom (default) |
-| `<Esc><Esc>` | t | Terminal → normal mode (a single `<Esc>` reaches the program) |
+| `<C-q>` | t | Terminal → normal mode, in every snacks terminal incl. lazygit (`opts.styles.terminal.keys`; replaces snacks' `<Esc><Esc>`, so `<Esc>` always reaches the program) |
 | `q` | n (in terminal) | Hide the panel |
 
 A terminal belongs to the cwd it was opened in: after `:cd`, `<leader>tt` opens a new one; the old one
-keeps running and returns when you `:cd` back. `<leader>tr`/`<leader>tb` move only these shell
-terminals, not the lazygit float.
+keeps running and returns when you `:cd` back. A `<leader>tf` terminal whose folder is the cwd is the
+same terminal as `<leader>tt`'s. `<leader>tr`/`<leader>tb` move only these shell terminals (including
+the `<leader>tf` ones), not the lazygit float.
 
 ---
 
@@ -381,7 +387,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`/`fE`), `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, styles, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---
@@ -418,6 +424,22 @@ To add a new language server:
 2. Mason will auto-install it and mason-lspconfig enables it; it picks up the shared capabilities and the `LspAttach` keymaps.
 
 No external formatter or linter plugins are currently configured. Formatting goes through `vim.lsp.buf.format()`.
+
+---
+
+## Sessions (`lua/config/session.lua`)
+
+Standalone only. Leaving Neovim (`:qa`, `:qa!`, closing the window) saves a session for the **project**:
+the repo root (same rule as the repo accent: git, else `.vscode`), otherwise Neovim's cwd. Files are
+`stdpath("state")/sessions/<path with \ / : as %>.vim`.
+
+- Saved: open file buffers, windows/splits, tabs, sizes, folds, cursor positions, cwd
+  (`sessionoptions = buffers,curdir,folds,tabpages,winsize`). Terminals, floats, the explorer sidebar and
+  other non-file windows are closed first and not saved.
+- Quitting with no file buffers open (e.g. from the start screen) keeps the previous session.
+- Restore it from that project: `s` on the start screen, `<leader>qs`, `:SessionRestore`, or `nvc` in
+  pwsh (`nvim +SessionRestore`, defined in the PowerShell profile). It refuses while a buffer has
+  unsaved changes.
 
 ---
 

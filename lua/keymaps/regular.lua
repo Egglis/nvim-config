@@ -40,4 +40,7 @@ end
 return function()
   vim.keymap.set("n", "<M-q>", "<cmd>b#<CR>", { desc = "Go back to the last buffer" })
   vim.keymap.set("n", "<leader>ns", open_user_secrets, { desc = ".[N]ET user [S]ecrets" })
+  vim.keymap.set("n", "<leader>qs", function()
+    require("config.session").restore()
+  end, { desc = "Restore this project's [S]ession" })
 end

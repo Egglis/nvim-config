@@ -29,4 +29,7 @@ Set-Alias -Name phelp -Value help
 Function nvim-ex {nvim .}
 Set-Alias -Name nvimf -Value nvim-ex
 
+<# Reopen Neovim as this folder's project was left (session saved on exit) #>
+Function nvc {nvim +SessionRestore}
+
 

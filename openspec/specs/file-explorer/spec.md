@@ -1,7 +1,7 @@
 # file-explorer Specification
 
 ## Purpose
-Defines the file tree in standalone Neovim (a float on `<leader>fe`, a sidebar on `<leader>fE`): how it
+Defines the file tree in standalone Neovim (a float on `<leader>fe`, a sidebar on `<leader>e`): how it
 opens and closes, what it shows, the simple file and folder operations it offers, and how it fits the
 picker and terminal keys.
 
@@ -74,10 +74,10 @@ The tree SHALL mark files and folders that have git changes, and files that have
 - **THEN** the file is marked with its git status in the tree
 
 ### Requirement: Sidebar alternative
-In standalone Neovim, `<leader>fE` SHALL open the same file tree as a sidebar on the right side of the screen, with the cursor in it. Confirming a file SHALL open it in the editor window and keep the sidebar open. The other tree requirements (file operations, marks, picker and terminal keys) SHALL apply to it. `<leader>fE` or `<leader>fe` SHALL close an open tree.
+In standalone Neovim, `<leader>e` SHALL open the same file tree as a sidebar on the right side of the screen, with the cursor in it. Confirming a file SHALL open it in the editor window and keep the sidebar open. The other tree requirements (file operations, marks, picker and terminal keys) SHALL apply to it. `<leader>e` or `<leader>fe` SHALL close an open tree.
 
 #### Scenario: Open the sidebar
-- **WHEN** no file tree is open and the user presses `<leader>fE` in normal mode
+- **WHEN** no file tree is open and the user presses `<leader>e` in normal mode
 - **THEN** a sidebar opens on the right showing the cwd's tree with the cursor on the current file
 
 #### Scenario: Opening a file keeps the sidebar
@@ -85,14 +85,14 @@ In standalone Neovim, `<leader>fE` SHALL open the same file tree as a sidebar on
 - **THEN** the file opens in the editor window and the sidebar stays open
 
 #### Scenario: Close the sidebar
-- **WHEN** the sidebar is open and the user presses `<leader>fE`
+- **WHEN** the sidebar is open and the user presses `<leader>e`
 - **THEN** the sidebar closes
 
 ### Requirement: Sidebar preview in the editor window
 In the sidebar, the preview of the file under the cursor SHALL be shown by default in the main editor window and follow the cursor, and `P` SHALL hide and show it.
 
 #### Scenario: Preview on open
-- **WHEN** the user opens the sidebar with `<leader>fE`
+- **WHEN** the user opens the sidebar with `<leader>e`
 - **THEN** the editor window shows the preview of the file under the cursor, and moving the cursor updates it
 
 ### Requirement: The tree keeps the picker and terminal keys

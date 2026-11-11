@@ -6,5 +6,6 @@ if vim.g.vscode then
 else
   require("keymaps.regular")()
   require("config.repo_accent").setup()
+  require("config.session").setup()
   require("config.lazy")
 end

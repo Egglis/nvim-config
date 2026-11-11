@@ -77,6 +77,19 @@ local function toggle_terminal()
   Snacks.terminal.focus(nil, { win = { position = position } })
 end
 
+-- A terminal per folder of the current file (snacks keys terminals by cwd); cwd for buffers with no file.
+local function toggle_file_terminal()
+  if vim.b.snacks_terminal then
+    return toggle_terminal()
+  end
+  local file = vim.api.nvim_buf_get_name(0)
+  local dir = vim.fs.dirname(file)
+  if file == "" or vim.bo.buftype ~= "" or vim.fn.isdirectory(dir) == 0 then
+    dir = vim.fn.getcwd()
+  end
+  Snacks.terminal.focus(nil, { cwd = dir, win = { position = position } })
+end
+
 -- Global :cd (the repo accent follows on DirChanged), then the file picker: what <leader>fP does.
 local function open_project(dir)
   vim.cmd.cd(vim.fn.fnameescape(dir))
@@ -111,6 +124,17 @@ local function start_header()
 end
 
 local start_keys = {
+  {
+    icon = " ",
+    key = "s",
+    desc = "Restore session",
+    enabled = function()
+      return require("config.session").exists()
+    end,
+    action = function()
+      require("config.session").restore()
+    end,
+  },
   {
     icon = " ",
     key = "f",
@@ -285,7 +309,7 @@ return {
       desc = "[F]ile [E]xplorer (toggle)",
     },
     {
-      "<leader>fE",
+      "<leader>e",
       function()
         -- Call opts beat opts.picker.sources.explorer: the right sidebar, preview in the editor window.
         Snacks.explorer({
@@ -351,6 +375,7 @@ return {
     },
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
+    { "<leader>tf", toggle_file_terminal, desc = "[T]erminal in the [F]ile's folder" },
     {
       "<leader>tr",
       function()
@@ -402,6 +427,15 @@ return {
       },
     },
     terminal = {},
+    styles = {
+      terminal = {
+        keys = {
+          -- <C-q> leaves terminal mode instead of snacks' double <Esc>, so a single <Esc> always reaches the program.
+          term_normal = false,
+          term_normal_cq = { "<C-q>", "<C-\\><C-n>", mode = "t", desc = "Terminal → normal mode" },
+        },
+      },
+    },
     lazygit = { config = { os = lazygit_os() } },
     picker = {
       -- Ctrl+c and q close a picker; <Esc> only leaves insert mode.
