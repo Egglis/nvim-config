@@ -46,7 +46,7 @@ See proposal.md (Why). What the research found, on Neovim 0.12.6 with the pinned
    "Less clutter" TODO can drop those later without touching it.
 4. **`<C-f>` as two lazy `keys` entries in `plugins/snacks.lua`**, next to the other picker keys, so
    snacks still loads on demand:
-   - `n`: `Snacks.picker.lines()`.
+   - `n`: `Snacks.picker.lines()` (since §4 a resume, see decision 6).
    - `x`: `Snacks.picker.lines({ pattern = function(picker) return picker:word() end })`. snacks captures
      the selection when the picker opens and leaves visual mode. A single key for both modes isn't
      possible: `word()` falls back to `<cword>` in normal mode, which would pre-fill a query the user
@@ -62,11 +62,22 @@ See proposal.md (Why). What the research found, on Neovim 0.12.6 with the pinned
 5. **The selection is passed as-is as the fuzzy query.** snacks' matcher scores exact substrings highest,
    so the lines containing the selection come first. Spaces split the query into terms and `^ $ ! '` are
    operators. That's acceptable for the identifiers this is used for.
-6. **`<leader><C-f>` → `Snacks.picker.resume({ source = "lines" })`**, a lazy key in `snacks.lua`. snacks
-   keeps one resume state per source, so other pickers in between don't affect it. With no state it
-   opens a fresh `lines` picker. It runs in the current window and buffer, so the old query is applied
-   to whichever file you're in. The user wanted a dedicated key over relying on `<leader>fR`, which
-   stays as the generic resume.
+6. **`<C-f>` (normal) → `Snacks.picker.resume({ source = "lines" })`; `<C-f>` inside it clears the
+   query** (changed after §3, user's call: "ctrl f should always return to the last search", like
+   VSCode's Ctrl+F). snacks keeps one resume state per source, so other pickers in between don't affect
+   it. With no state it opens a fresh `lines` picker (snacks' fallback). It runs in the current window
+   and buffer, so the old query is applied to whichever file you're in, and the list position is
+   restored too.
+   - Starting over: snacks' input maps `<C-u>` to list scrolling, so there's no quick "clear line". A
+     source-level `<c-f>` key (input `i`/`n`, list) runs a custom action: `picker.input:set("", "")`,
+     `picker:find()` and `startinsert!`. Pressing `<C-f>` twice is a new search. The cost is that
+     snacks' `<c-f>` preview-scroll-down is gone in this picker only; `<c-b>` still scrolls up.
+   - Visual `<C-f>` stays a fresh `lines` call with the selection as `pattern`. On close it becomes
+     the remembered query.
+   - `<leader><C-f>` (§3's separate resume key) is removed, because `<C-f>` now does that. `<leader>fR`
+     stays the generic resume.
+   - Rejected: resuming only in the same file (the user picked global, like VSCode), and keeping a fresh
+     `<C-f>` with a separate resume key (§3's version).
 
 ## Risks / Trade-offs
 

@@ -18,9 +18,14 @@
 - [x] 3.2 `<leader><C-f>` lazy key → `Snacks.picker.resume({ source = "lines" })` with `desc` (design decision 6). Verify headless: `<C-f>`, type `repo_accent`, close; `<leader>ff`, close; `<leader><C-f>` opens `lines` with pattern `repo_accent` and the centred layout; in a fresh Neovim `<leader><C-f>` opens `lines` with an empty pattern; `vim.g.vscode` start has no `<leader><C-f>` mapping
 - [x] 3.3 Docs: `AGENTS.md` Pickers table (`<C-f>` centred with a preview pane, new `<leader><C-f>` row) and the snacks plugin row's lazy keys. Verify: `./gates.sh gates` → `GATES_EXIT:0`
 
-## 4. Human check
+## 4. <C-f> remembers its query
 
-- [ ] 4.1 **Human check**, following a recipe the agent provides: in a real C# and Lua file, `/` + `n`/`N` (highlight stays, line centred, `[x/y]` in the statusline, `<Esc>` clears all three); `<C-f>` in normal and visual mode (centred float with a preview, `<CR>` jumps, `Ctrl+c` returns to the old spot, `<leader><C-f>` reopens the last search after another picker); VSCode with vscode-neovim: `/` has no lingering highlight and `<C-f>` behaves as before. Verify: the user's answers recorded in a devlog note
+- [x] 4.1 `lua/plugins/snacks.lua`: `<C-f>` (n) → `Snacks.picker.resume({ source = "lines" })`; remove `<leader><C-f>`; `opts.picker.sources.lines` gets a clear-query action on `<c-f>` (input `i`/`n`, list) (design decision 6). Verify headless: fresh Neovim `<C-f>` opens `lines` with an empty pattern; `<C-f>` + `repo_accent`, close, `<leader>ff`, close, `<C-f>` → pattern `repo_accent`; `<C-f>` inside → pattern empty, mode `i` in the input, item count = buffer lines; visual `<C-f>` on `attach_lualine` → that pattern, and the next normal `<C-f>` reopens with it; §2/§3 checks (centred layout, preview, confirm, `<C-c>` restores the cursor) still pass; no `<leader><C-f>` mapping; `vim.g.vscode` start has no `<C-f>`
+- [x] 4.2 Docs: `AGENTS.md` Pickers table (`<C-f>` row rewritten, `<leader><C-f>` row removed) and the snacks plugin row; `readme.md` TODO summary. Verify: `./gates.sh gates` → `GATES_EXIT:0`
+
+## 5. Human check
+
+- [ ] 5.1 **Human check**, following a recipe the agent provides: in a real C# and Lua file, `/` + `n`/`N` (highlight stays, line centred, `[x/y]` in the statusline, `<Esc>` clears all three); `<C-f>` (centred float with a preview, `<CR>` jumps, `Ctrl+c` returns to the old spot, reopening keeps the query even after another picker and in another file, `<C-f>` inside clears it, visual `<C-f>` uses the selection); VSCode with vscode-neovim: `/` has no lingering highlight and `<C-f>` behaves as before. Verify: the user's answers recorded in a devlog note
 
 ## Workflow follow-up
 

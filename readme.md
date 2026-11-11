@@ -19,7 +19,7 @@ Runs on Windows and in WSL (Fedora): see [docs/wsl.md](docs/wsl.md) for the WSL 
   - [ ] Harmonize lazygit with the rest: it looks very different from the pickers/floats (border, colors, icons, layout), make it match the tokyonight/snacks look and the repo accent
 - [x] Terminal plugin for running scripts and projects directly within the same session
 - [x] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
-- [x] Better search in the current file than the standard `/`: matches stay highlighted until `<Esc>`, `n`/`N` centred, `[3/7]` count in the statusline, and `<C-f>` fuzzy-searches the file's lines in a centred picker with a preview (selection as query in visual mode; `<leader><C-f>` reopens the last search)
+- [x] Better search in the current file than the standard `/`: matches stay highlighted until `<Esc>`, `n`/`N` centred, `[3/7]` count in the statusline, and `<C-f>` fuzzy-searches the file's lines in a centred picker with a preview; like VSCode it reopens with the last query, `<C-f>` again clears it, and in visual mode the selection is the query
 - [ ] Easier macros: simpler record/replay keys than `q{reg}`/`@{reg}`, a visible "recording @q" indicator (lualine, needed if `cmdheight=0`), and a way to view/edit/pick saved macros
 - [x] .NET user secrets: jump from a `.csproj` straight to its `secrets.json` (by `UserSecretsId`), like the VSCode extension (`<leader>ns`)
 - [x] Continue where I left off: per-project session saved on exit (also `:qa!`), restored with `s` on the start screen, `<leader>qs`, `:SessionRestore` or `nvc` in pwsh/zsh

@@ -257,9 +257,10 @@ return {
     {
       "<C-f>",
       function()
-        Snacks.picker.lines()
+        -- Like VSCode's Ctrl+F: reopens with the last query (a new search the first time).
+        Snacks.picker.resume({ source = "lines" })
       end,
-      desc = "Search lines in the current file",
+      desc = "Search the current file (last query)",
     },
     {
       "<C-f>",
@@ -273,13 +274,6 @@ return {
       end,
       mode = "x",
       desc = "Search the selection in the current file",
-    },
-    {
-      "<leader><C-f>",
-      function()
-        Snacks.picker.resume({ source = "lines" })
-      end,
-      desc = "Resume the last current-file search",
     },
     {
       "<leader>fd",
@@ -494,7 +488,22 @@ return {
       },
       sources = {
         -- <C-f>: centred like the other pickers instead of the source's ivy + preview in the editor window.
-        lines = { layout = { preset = centred_layout, preview = true } },
+        -- <C-f> again inside it clears the remembered query (snacks: preview scroll down; <c-b> still scrolls up).
+        lines = {
+          layout = { preset = centred_layout, preview = true },
+          actions = {
+            clear_query = function(picker)
+              picker.input:set("", "")
+              picker:find()
+              vim.api.nvim_set_current_win(picker.input.win.win)
+              vim.cmd("startinsert!")
+            end,
+          },
+          win = {
+            input = { keys = { ["<c-f>"] = { "clear_query", mode = { "i", "n" } } } },
+            list = { keys = { ["<c-f>"] = "clear_query" } },
+          },
+        },
         -- The explorer's own <c-c> (tcd) and <c-t> (terminal) beat the global keys above; only a
         -- source-level override wins. <c-t> = false lets the global terminal toggle through.
         explorer = {
