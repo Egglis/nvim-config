@@ -21,9 +21,10 @@ The same config repo is used for both. The entry point (`init.lua`) branches on 
 nvim/
 ├── init.lua                        # Entry point — conditional boot logic
 ├── AGENTS.md                       # This file
-├── gates.ps1                       # OpenSpec gate targets (build/format/validate/deps)
+├── gates.ps1                       # OpenSpec gate targets (build/format/validate/deps), Windows
+├── gates.sh                        # Same targets for Linux/WSL (bash); keep the two in step
 ├── stylua.toml                     # Lua formatting standard (used by the format gate)
-├── docs/dependencies.md            # Required tools, checked by `gates.ps1 deps`
+├── docs/dependencies.md            # Required tools per platform, checked by `gates.ps1 deps` / `gates.sh deps`
 ├── openspec/                       # OpenSpec specs and changes
 ├── .opencode/                      # OpenSpec /opsx-* commands and skills
 ├── readme.md                       # Minimal readme
@@ -535,16 +536,23 @@ Notes go in the change's `devlog/` folder via the `egg-devlog` skill.
 
 ### Gates
 
-Run through `gates.ps1` (`pwsh ./gates.ps1 <target>`); a gate passed only if you saw its
-`LABEL_EXIT:0`. Quote exit lines, never paraphrase them.
+Run through `gates.ps1` on Windows (`pwsh ./gates.ps1 <target>`) or `gates.sh` on Linux/WSL
+(`./gates.sh <target>`); a gate passed only if you saw its `LABEL_EXIT:0`. Quote exit lines, never
+paraphrase them. The commands below use the Windows form; `./gates.sh <target>` is the same target.
 
 - `pwsh ./gates.ps1 build` — starts Neovim headless with `init.lua`; fails on any startup error.
+  (`gates.sh` points `stdpath("config")` at its own checkout, so it also works from `/mnt/c/...`.)
 - `pwsh ./gates.ps1 format` — `stylua --check` over `init.lua` and `lua/`, using `stylua.toml`.
 - `pwsh ./gates.ps1 validate` — `openspec validate --strict` on every active change.
 - `pwsh ./gates.ps1 gates` — all of the above.
 
 `pwsh ./gates.ps1 deps` is separate: it checks that every tool and login in `docs/dependencies.md` is
-present.
+present (each script checks its own platform's rows).
+
+The two scripts mirror each other: a change to a gate or a `deps` check lands in **both** `gates.ps1`
+and `gates.sh`, plus the matching `docs/dependencies.md` row. Running Linux Neovim against the Windows
+checkout (`/mnt/c/...`) can rewrite `lazy-lock.json` with LF endings; `git checkout -- lazy-lock.json`
+if only the endings changed.
 
 ### Git
 
@@ -562,8 +570,8 @@ feature branches, no pull requests. (`origin/main` is an unrelated 2024 history;
 5. Read `proposal.md`, `design.md`, and the specs the change touches.
 
 A task that needs a tool, SDK, service or login not in `docs/dependencies.md` is a stop: ask before
-adding it. Once agreed, add its row there and its check to the `deps` target in `gates.ps1` in the same
-section commit, and say why in a devlog note.
+adding it. Once agreed, add its row there and its check to the `deps` target in `gates.ps1` and/or
+`gates.sh` (whichever platforms need it) in the same section commit, and say why in a devlog note.
 
 ### Each section (`## N.` in `tasks.md`), in order
 
