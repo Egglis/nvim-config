@@ -10,7 +10,7 @@ each row for their platform.
 | Git | any | all | lazy.nvim plugin bootstrap, version control | `winget install Git.Git` | `sudo dnf install git` | `git --version` | — |
 | Node.js | 20+ | all | Runs the OpenSpec CLI | `winget install OpenJS.NodeJS.LTS` | `sudo dnf install nodejs npm`, then `npm config set prefix ~/.local` (global installs without sudo) | `node --version` | — |
 | OpenSpec CLI | 1.x | all | Change tracking, `validate` gate | `npm i -g @fission-ai/openspec` | same | `openspec --version` | — |
-| OpenCode CLI | 1.x or 2.x | all | Server behind the `opencode.nvim` panel (`<leader>o…` in standalone Neovim) | `npm i -g opencode-ai` | same | `opencode --version` | provider connected: run `opencode`, then `/connect` (manual, once per platform) |
+| OpenCode CLI | 1.x or 2.x | all | Server behind the `opencode.nvim` panel (`<leader>o…` in standalone Neovim) | `npm i -g @opencode/cli` | same | `opencode --version` | provider connected: run `opencode`, then `/connect` (manual, once per platform) |
 | ripgrep | any | all | snacks picker grep (`<leader>fa`/`<leader>fw` in standalone Neovim); files picker fallback when `fd` is missing | `winget install BurntSushi.ripgrep.MSVC` | `sudo dnf install ripgrep` | `rg --version` | — |
 | fd | any | all | snacks projects picker (`<leader>fP`, `p` on the start screen) scans for projects with it; the files picker (`<leader>ff`) prefers it over `rg` | `scoop install fd` | `sudo dnf install fd-find` | `fd --version` | — |
 | lazygit | any | all | Git panel (`<leader>gg` in standalone Neovim, through snacks) | `winget install JesseDuffield.lazygit` | `sudo dnf copr enable atim/lazygit && sudo dnf install lazygit` (the COPR build is old, 0.47, but works) | `lazygit --version` | — |

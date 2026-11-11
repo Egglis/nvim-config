@@ -89,7 +89,7 @@ deps() {
   check 'openspec — npm i -g @fission-ai/openspec' openspec --version
   check 'rg — sudo dnf install ripgrep' rg --version
   check 'fd — sudo dnf install fd-find' fd --version
-  check 'opencode — npm i -g opencode-ai' opencode --version
+  check 'opencode — npm i -g @opencode/cli' opencode --version
   check 'lazygit — sudo dnf copr enable atim/lazygit && sudo dnf install lazygit' lazygit --version
   check 'tree-sitter 0.26.1+ — sudo dnf install tree-sitter-cli' ts_ok
   check 'gcc — sudo dnf install gcc' gcc --version

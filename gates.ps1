@@ -59,7 +59,7 @@ $targets = [ordered]@{
         Check 'MISSING pwsh — winget install Microsoft.PowerShell' { pwsh --version }
         Check 'MISSING rg - winget install BurntSushi.ripgrep.MSVC' { rg --version }
         Check 'MISSING fd - scoop install fd' { fd --version }
-        Check 'MISSING opencode - npm i -g opencode-ai' { opencode --version }
+        Check 'MISSING opencode - npm i -g @opencode/cli' { opencode --version }
         Check 'MISSING lazygit - winget install JesseDuffield.lazygit' { lazygit --version }
         Check 'MISSING tree-sitter 0.26.1+ - scoop install tree-sitter' {
             $v = [version]((tree-sitter --version | Select-Object -First 1) -replace '^tree-sitter ([\d.]+).*$', '$1')
