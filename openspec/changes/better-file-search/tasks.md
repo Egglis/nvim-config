@@ -25,7 +25,7 @@
 
 ## 5. Human check
 
-- [ ] 5.1 **Human check**, following a recipe the agent provides: in a real C# and Lua file, `/` + `n`/`N` (highlight stays, line centred, `[x/y]` in the statusline, `<Esc>` clears all three); `<C-f>` (centred float with a preview, `<CR>` jumps, `Ctrl+c` returns to the old spot, reopening keeps the query even after another picker and in another file, `<C-f>` inside clears it, visual `<C-f>` uses the selection); VSCode with vscode-neovim: `/` has no lingering highlight and `<C-f>` behaves as before. Verify: the user's answers recorded in a devlog note
+- [x] 5.1 **Human check**, following a recipe the agent provides: in a real C# and Lua file, `/` + `n`/`N` (highlight stays, line centred, `[x/y]` in the statusline, `<Esc>` clears all three); `<C-f>` (centred float with a preview, `<CR>` jumps, `Ctrl+c` returns to the old spot, reopening keeps the query even after another picker and in another file, `<C-f>` inside clears it, visual `<C-f>` uses the selection); VSCode with vscode-neovim: `/` has no lingering highlight and `<C-f>` behaves as before. Verify: the user's answers recorded in a devlog note
 
 ## Workflow follow-up
 
