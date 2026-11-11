@@ -44,16 +44,41 @@ if not vim.g.vscode then
   -- MSBuild files (.csproj and Directory.Build.* are already xml).
   vim.filetype.add({ extension = { props = "xml", targets = "xml" } })
 
-  -- PowerShell as the shell (:h shell-powershell). -NoProfile keeps :! and system() fast; an
+  -- Windows: PowerShell as the shell (:h shell-powershell). -NoProfile keeps :! and system() fast; an
   -- interactive :terminal runs bare 'shell' (no shellcmdflag), so it still loads the profile.
-  opt.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
-  opt.shellcmdflag = "-NoLogo -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -Command "
-    .. "[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();"
-    .. "$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
-    .. "$PSStyle.OutputRendering='plaintext';"
-    .. "Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
-  opt.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
-  opt.shellpipe = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
-  opt.shellquote = ""
-  opt.shellxquote = ""
+  -- Linux keeps Neovim's defaults ($SHELL with -c).
+  if vim.fn.has("win32") == 1 then
+    opt.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
+    opt.shellcmdflag = "-NoLogo -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -Command "
+      .. "[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();"
+      .. "$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
+      .. "$PSStyle.OutputRendering='plaintext';"
+      .. "Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
+    opt.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+    opt.shellpipe = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+    opt.shellquote = ""
+    opt.shellxquote = ""
+  end
+
+  if vim.fn.has("wsl") == 1 then
+    -- Windows clipboard via win32yank (Neovim would pick WSLg's wl-copy first, which drops updates).
+    if vim.fn.executable("win32yank.exe") == 1 then
+      vim.g.clipboard = "win32yank"
+    end
+
+    -- Open URLs/files with Windows' explorer.exe (no wslu on Fedora). explorer.exe exits 1 even on
+    -- success, so the launcher exits 0 itself; a path it can't convert still fails.
+    if vim.fn.executable("wslview") == 0 then
+      local ui_open = vim.ui.open
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.open = function(path, o)
+        if o and o.cmd then
+          return ui_open(path, o)
+        end
+        local target = path:match("%w+:") and '"$1"' or '"$(wslpath -w "$1")" || exit 1'
+        local script = "t=" .. target .. '; /mnt/c/Windows/explorer.exe "$t"; exit 0'
+        return ui_open(path, vim.tbl_extend("force", o or {}, { cmd = { "sh", "-c", script, "sh" } }))
+      end
+    end
+  end
 end

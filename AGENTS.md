@@ -13,6 +13,11 @@ This is a personal Neovim configuration that supports **two runtime environments
 
 The same config repo is used for both. The entry point (`init.lua`) branches on `vim.g.vscode` at startup.
 
+**Platforms:** the same `master` is checked out on Windows (`%LOCALAPPDATA%\nvim`) and in WSL (Fedora,
+`~/.config/nvim`). Platform checks are `has("win32")` and `has("wsl")`, kept in `config/options.lua` (shell,
+WSL clipboard, WSL URL opener) plus the few existing ones in `keymaps/regular.lua` and `plugins/snacks.lua`.
+Plugin specs don't branch on the OS otherwise.
+
 ---
 
 ## Directory Structure
@@ -273,7 +278,7 @@ icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as b
 | `a` | Add a file in the folder under the cursor; a name ending in `/` makes a folder |
 | `r` | Rename |
 | `m` / `c` | Move / copy |
-| `d` | Delete: asks first, then sends it to the Recycle Bin |
+| `d` | Delete: asks first, then sends it to the trash (Recycle Bin on Windows, freedesktop trash via `trash-cli` on Linux) |
 | `y` / `p` | Yank / paste files |
 | `P` | Hide / show the preview (shown by default) |
 | `H` / `I` | Show hidden / ignored files |
@@ -306,9 +311,9 @@ In the prompt: `<CR>` (normal) / `<S-CR>` sends, `@` mention, `/` slash commands
 
 ### Terminal — `lua/plugins/snacks.lua`
 Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks terminal running `vim.o.shell`
-(pwsh, with the profile) in Neovim's cwd. Lazy-loaded on the keys below (on a plain `nvim` snacks is
-already loaded for the start screen, but no shell starts until a key is used). Hiding keeps the process
-running.
+(pwsh with the profile on Windows, the login shell on Linux) in Neovim's cwd. Lazy-loaded on the keys
+below (on a plain `nvim` snacks is already loaded for the start screen, but no shell starts until a key is
+used). Hiding keeps the process running.
 
 | Keys | Mode | Action |
 |------|------|--------|
@@ -485,8 +490,19 @@ Standalone only. Tells terminal windows apart without touching the colorscheme:
 Standalone only (not in VSCode): `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
 `synmaxcol=300` (regex highlighting stops at column 300), `g:matchparen_timeout`/`g:matchparen_insert_timeout`
 = 20 ms (bracket matching gives up sooner; Neovim's defaults are 300/60), `.props`/`.targets` files → `xml`
-filetype, and `shell=pwsh` (falls back to `powershell`) with the `:h shell-powershell` flags. `:!`/`system()` run with
-`-NoProfile`; an interactive terminal loads the PowerShell profile.
+filetype.
+
+Shell, per platform (standalone only):
+- **Windows:** `shell=pwsh` (falls back to `powershell`) with the `:h shell-powershell` flags. `:!`/`system()`
+  run with `-NoProfile`; an interactive terminal loads the PowerShell profile.
+- **Linux/WSL:** Neovim's defaults (`$SHELL` with `-c`), so the login shell (zsh) is used.
+
+WSL only (`has("wsl")`, standalone):
+- **Clipboard:** `g:clipboard = "win32yank"` when `win32yank.exe` is on `PATH`, so `+`/`*` are the Windows
+  clipboard (Neovim would otherwise pick WSLg's `wl-copy`). Without it, Neovim chooses as usual.
+- **URL opener:** unless `wslview` exists, `vim.ui.open` is wrapped to open URLs and files (via `wslpath -w`)
+  with `/mnt/c/Windows/explorer.exe`, exiting 0 (explorer.exe exits 1 on success). Covers `gx`, `:Open`,
+  `<leader>go`. A caller's own `opt.cmd` is left alone.
 
 ---
 
