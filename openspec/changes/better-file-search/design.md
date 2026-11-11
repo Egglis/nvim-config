@@ -82,8 +82,9 @@ See proposal.md (Why). What the research found, on Neovim 0.12.6 with the pinned
 ## Risks / Trade-offs
 
 - [`<C-f>` no longer pages down in standalone Neovim] → `<C-d>`/`<C-u>` (centred) are the scroll keys
-  already in use. Insert, command-line and terminal `<C-f>` are untouched. Inside pickers, `<C-f>` still
-  scrolls the preview (picker-buffer keys win).
+  already in use. Insert, command-line and terminal `<C-f>` are untouched. Inside other pickers, `<C-f>`
+  still scrolls the preview (picker-buffer keys win); inside the current-file search it clears the query
+  (decision 6).
 - [Persistent highlight can be noisy after a broad search such as `/e`] → `<Esc>` clears it; that's the
   behaviour the user asked for.
 - [`searchcount()` in a huge file] → lualine caps it at 999 matches and 500 ms, and it only runs while
