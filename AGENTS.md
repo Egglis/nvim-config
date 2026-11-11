@@ -38,6 +38,8 @@ nvim/
 ├── .vscode/settings.json           # Tells VSCode Lua LSP to recognize `vim` global
 ├── powershell/
 │   └── Microsoft.PowerShell_profile.ps1  # PowerShell profile (aliases, oh-my-posh)
+├── shell/
+│   └── .zshrc                      # zsh profile for Linux/WSL (same aliases, oh-my-posh); ~/.zshrc links to it
 └── lua/
     ├── config/
     │   ├── options.lua             # All vim options (clipboard only in standalone)
@@ -444,8 +446,25 @@ the repo root (same rule as the repo accent: git, else `.vscode`), otherwise Neo
   other non-file windows are closed first and not saved.
 - Quitting with no file buffers open (e.g. from the start screen) keeps the previous session.
 - Restore it from that project: `s` on the start screen, `<leader>qs`, `:SessionRestore`, or `nvc` in
-  pwsh (`nvim +SessionRestore`, defined in the PowerShell profile). It refuses while a buffer has
+  the shell (`nvim +SessionRestore`, defined in both shell profiles). It refuses while a buffer has
   unsaved changes.
+
+---
+
+## Shell profiles
+
+The prompt and everyday aliases are kept in the repo for both platforms:
+
+- **Windows:** `powershell/Microsoft.PowerShell_profile.ps1`, a copy of the live pwsh profile (`sprofile`
+  copies the live one back into the repo; pwsh-only).
+- **Linux/WSL:** `shell/.zshrc`, used live through a link (`ln -s ~/.config/nvim/shell/.zshrc ~/.zshrc`), so
+  repo edits apply to the next shell. Puts `~/.local/bin` on `PATH`, `EDITOR=nvim`, history, `compinit`.
+- Same aliases in both: `nconfig` (config folder), `nvc` (`nvim +SessionRestore`), `nvimf` (`nvim .`),
+  `desk`/`doc` (Desktop/Documents), `phelp` (lists them). In WSL `desk`/`doc` go to the Windows user's
+  folders; `%USERPROFILE%` is looked up with `cmd.exe` on first use and cached, so shell startup starts no
+  Windows process.
+- Same prompt: oh-my-posh `ys`. zsh reads it from `~/.cache/oh-my-posh/themes/ys.omp.json` (the installer's
+  default); without oh-my-posh, zsh keeps its default prompt with no error.
 
 ---
 

@@ -96,7 +96,7 @@ deps() {
   check 'make — sudo dnf install make' make --version
   check 'trash — sudo dnf install trash-cli' command -v trash
   check 'zsh — sudo dnf install zsh' zsh --version
-  check 'oh-my-posh — curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin' oh-my-posh --version
+  check 'oh-my-posh — sudo dnf install gawk unzip && curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin' oh-my-posh --version
   if is_wsl; then
     check 'win32yank.exe — ln -s "/mnt/c/Program Files/Neovim/bin/win32yank.exe" ~/.local/bin/ (see docs/wsl.md)' \
       command -v win32yank.exe

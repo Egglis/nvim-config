@@ -20,5 +20,5 @@ each row for their platform.
 | gcc + make | any | Linux | The tree-sitter CLI compiles parsers with them | — | `sudo dnf install gcc make` | `gcc --version`, `make --version` | — |
 | trash-cli | any | Linux | Explorer delete (`d` in `<leader>fe`) goes to the freedesktop trash; without a trash tool snacks deletes permanently | — | `sudo dnf install trash-cli` | `command -v trash` | — |
 | zsh | 5.x | Linux | Login shell; runs `shell/.zshrc` (the aliases and prompt) and the terminal panel | — | `sudo dnf install zsh` | `zsh --version` | — |
-| oh-my-posh | any | Linux | Prompt in `shell/.zshrc` (Windows: installed separately for the pwsh profile) | — | `curl -s https://ohmyposh.dev/install.sh \| bash -s -- -d ~/.local/bin` | `oh-my-posh --version` | — |
+| oh-my-posh | any | Linux | Prompt in `shell/.zshrc` (Windows: installed separately for the pwsh profile) | — | `sudo dnf install gawk unzip`, then `curl -s https://ohmyposh.dev/install.sh \| bash -s -- -d ~/.local/bin` (the installer needs `awk`, which the Fedora WSL image lacks; themes go to `~/.cache/oh-my-posh/themes`) | `oh-my-posh --version` | — |
 | win32yank | any | WSL | The `+`/`*` registers use the Windows clipboard through it | — (ships with Windows Neovim) | `ln -s "/mnt/c/Program Files/Neovim/bin/win32yank.exe" ~/.local/bin/` | `command -v win32yank.exe` | — |

@@ -153,5 +153,5 @@ replayable setup guide covering:
 
 ## Open Questions
 
-- Where oh-my-posh's installer puts themes on Linux (`~/.cache/oh-my-posh/themes` vs elsewhere). Found
-  while installing it in §3, and only changes the path in `.zshrc`.
+- ~~Where oh-my-posh's installer puts themes on Linux~~ Resolved in §3: `~/.cache/oh-my-posh/themes` (the
+  installer's default; it needs `awk`, so `gawk` is part of the Fedora install command).
