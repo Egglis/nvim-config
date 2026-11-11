@@ -9,8 +9,8 @@
 
 ## 2. Search the current file picker
 
-- [ ] 2.1 `lua/plugins/snacks.lua`: `<C-f>` lazy keys, `n` → `Snacks.picker.lines()`, `x` → `lines` with `pattern` = `picker:word()`, each with `desc` (design decision 4). Verify headless: snacks is not loaded after a start with a file argument (picker spec on-demand rule); `<C-f>` in a file opens a picker with source `lines`; in visual mode on `attach_lualine` the picker's filter pattern is `attach_lualine` and its items include the line(s) containing it; confirming an item puts the cursor on the match in the original window; with `--cmd "let g:vscode=1"` `maparg("<C-f>", "n")` is empty; every config mapping still has a `desc`
-- [ ] 2.2 Docs: `AGENTS.md` Pickers table (`<C-f>`, both modes, live preview in the editor window, replaces page-down) and the snacks plugin row's lazy-key list; `readme.md` TODO "Better search in the current file" ticked with a one-line summary. Verify: `./gates.sh gates` → `GATES_EXIT:0`
+- [x] 2.1 `lua/plugins/snacks.lua`: `<C-f>` lazy keys, `n` → `Snacks.picker.lines()`, `x` → `lines` with `pattern` = `picker:word()`, each with `desc` (design decision 4). Verify headless: snacks is not loaded after a start with a file argument (picker spec on-demand rule); `<C-f>` in a file opens a picker with source `lines`; in visual mode on `attach_lualine` the picker's filter pattern is `attach_lualine` and its items include the line(s) containing it; confirming an item puts the cursor on the match in the original window; with `--cmd "let g:vscode=1"` `maparg("<C-f>", "n")` is empty; every config mapping still has a `desc`
+- [x] 2.2 Docs: `AGENTS.md` Pickers table (`<C-f>`, both modes, live preview in the editor window, replaces page-down) and the snacks plugin row's lazy-key list; `readme.md` TODO "Better search in the current file" ticked with a one-line summary. Verify: `./gates.sh gates` → `GATES_EXIT:0`
 
 ## 3. Human check
 

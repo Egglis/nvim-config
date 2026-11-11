@@ -249,6 +249,26 @@ return {
       desc = "[F]ind [W]ord (or selection)",
     },
     {
+      "<C-f>",
+      function()
+        Snacks.picker.lines()
+      end,
+      desc = "Search lines in the current file",
+    },
+    {
+      "<C-f>",
+      function()
+        -- word() is the selection snacks captured when the picker opened.
+        Snacks.picker.lines({
+          pattern = function(picker)
+            return picker:word()
+          end,
+        })
+      end,
+      mode = "x",
+      desc = "Search the selection in the current file",
+    },
+    {
       "<leader>fd",
       function()
         Snacks.picker.diagnostics()
