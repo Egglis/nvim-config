@@ -26,6 +26,7 @@ if command -v oh-my-posh >/dev/null 2>&1; then
 fi
 
 # Aliases
+cd..() { cd .. }
 nconfig() { cd "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"; }
 nvc() { nvim +SessionRestore; }
 nvimf() { nvim .; }
