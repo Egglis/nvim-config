@@ -46,6 +46,10 @@ In standalone Neovim, these normal-mode keys SHALL open git views of Neovim's cw
 - **WHEN** the user presses `<leader>go` in a tracked file of a repo whose remote is on GitHub
 - **THEN** the browser opens that file's page on GitHub
 
+#### Scenario: Open on the remote from WSL
+- **WHEN** Neovim runs inside WSL and the user presses `<leader>go` in a tracked file of a repo whose remote is on GitHub
+- **THEN** the Windows default browser opens that file's page on GitHub, and Neovim shows no error
+
 #### Scenario: LSP keys are kept
 - **WHEN** an LSP server is attached and the user presses `<leader>gd`, `<leader>gr` or `<leader>gi`
 - **THEN** the LSP definition, references or implementation picker opens, as before

@@ -10,7 +10,7 @@ In standalone Neovim, the config SHALL provide a normal-mode key `<leader>tt` th
 
 #### Scenario: Open the terminal
 - **WHEN** the user presses `<leader>tt` in normal mode with no terminal panel visible
-- **THEN** a terminal panel opens at the bottom of the editor, running pwsh in Neovim's cwd, and the cursor is in it in terminal mode
+- **THEN** a terminal panel opens at the bottom of the editor, running the configured shell (pwsh on Windows, the login shell on Linux) in Neovim's cwd, and the cursor is in it in terminal mode
 
 #### Scenario: Focus a visible terminal
 - **WHEN** the terminal panel is visible but the cursor is in an editor window, and the user presses `<leader>tt`
