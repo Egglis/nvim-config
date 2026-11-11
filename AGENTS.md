@@ -244,7 +244,8 @@ nothing.
 | `<leader>fp` | Command palette: normal-mode key mappings + `:` commands in one list |
 | `<leader>fk` | Key mappings (all modes) |
 | `<leader>fc` | `:` commands |
-| `<C-f>` (n, x) | Search the current file: fuzzy list of the buffer's lines at the bottom, the editor window scrolls to the selected line as a live preview, `<CR>` jumps to the match (`Snacks.picker.lines`). In visual mode the selection is the starting query. Replaces Vim's page-down `<C-f>` (use `<C-d>`); in VSCode `<C-f>` is untouched |
+| `<C-f>` (n, x) | Search the current file: fuzzy list of the buffer's lines in a centred float like the other pickers, with a preview pane of the file at the selected line; `<CR>` jumps to the match (`Snacks.picker.lines`, layout set in `opts.picker.sources.lines`). In visual mode the selection is the starting query. Replaces Vim's page-down `<C-f>` (use `<C-d>`); in VSCode `<C-f>` is untouched |
+| `<leader><C-f>` | Reopen the last `<C-f>` search with its query, in the current buffer, even after other pickers (a new search if there was none) |
 
 In the palette and `<leader>fk`, mappings are found by their `desc`; mappings without one are listed only
 by their keys. Confirming a mapping replays its keys. Confirming a command (palette, `<leader>fc`) runs it
@@ -397,7 +398,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, styles, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, styles, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader><C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---

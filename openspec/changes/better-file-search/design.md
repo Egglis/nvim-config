@@ -51,14 +51,22 @@ See proposal.md (Why). What the research found, on Neovim 0.12.6 with the pinned
      the selection when the picker opens and leaves visual mode. A single key for both modes isn't
      possible: `word()` falls back to `<cword>` in normal mode, which would pre-fill a query the user
      didn't ask for.
-   - The source's own layout is kept (ivy plus the main window as preview), even though the other
-     pickers are centred floats: seeing the real file move is the point. The global `<C-c>`/`q`/`<Esc>`
-     keys apply because they're set on `picker.win`.
+   - **Layout (changed after the first try, user's call):** a centred float like the other pickers,
+     list on the left, preview pane on the right (stacked under 120 columns). It is set on
+     `opts.picker.sources.lines.layout`, so every way of opening `lines` gets it, including resume. It uses
+     the same preset rule as the explorer float (snacks' own default), shared as one local function. The
+     source's default (ivy at the bottom, preview in the editor window) was tried first; the user preferred
+     the centred look.
    - Rejected: `<leader>/` or `<leader>fl` (the user chose `<C-f>`), and swapping `<leader>ff` to match
      VSCode, which would break the find-files habit and the spec.
 5. **The selection is passed as-is as the fuzzy query.** snacks' matcher scores exact substrings highest,
    so the lines containing the selection come first. Spaces split the query into terms and `^ $ ! '` are
    operators. That's acceptable for the identifiers this is used for.
+6. **`<leader><C-f>` → `Snacks.picker.resume({ source = "lines" })`**, a lazy key in `snacks.lua`. snacks
+   keeps one resume state per source, so other pickers in between don't affect it. With no state it
+   opens a fresh `lines` picker. It runs in the current window and buffer, so the old query is applied
+   to whichever file you're in. The user wanted a dedicated key over relying on `<leader>fR`, which
+   stays as the generic resume.
 
 ## Risks / Trade-offs
 

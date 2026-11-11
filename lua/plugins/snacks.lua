@@ -96,6 +96,12 @@ local function open_project(dir)
   Snacks.picker.files()
 end
 
+-- snacks' default picker layout rule (centred float, preview stacked on narrow screens), for sources
+-- that ship their own layout.
+local function centred_layout()
+  return vim.o.columns >= 120 and "default" or "vertical"
+end
+
 -- lazygit runs edits through `cmd /s /c "…"` on Windows, where snacks' default "nvim-remote" preset (POSIX
 -- shell syntax) fails. These close the lazygit float in the parent Neovim, then open the file there.
 local function lazygit_os()
@@ -267,6 +273,13 @@ return {
       end,
       mode = "x",
       desc = "Search the selection in the current file",
+    },
+    {
+      "<leader><C-f>",
+      function()
+        Snacks.picker.resume({ source = "lines" })
+      end,
+      desc = "Resume the last current-file search",
     },
     {
       "<leader>fd",
@@ -480,14 +493,14 @@ return {
         },
       },
       sources = {
+        -- <C-f>: centred like the other pickers instead of the source's ivy + preview in the editor window.
+        lines = { layout = { preset = centred_layout, preview = true } },
         -- The explorer's own <c-c> (tcd) and <c-t> (terminal) beat the global keys above; only a
         -- source-level override wins. <c-t> = false lets the global terminal toggle through.
         explorer = {
           -- A centred float like the other pickers, preview on; opening a file or leaving it closes it.
           layout = {
-            preset = function()
-              return vim.o.columns >= 120 and "default" or "vertical"
-            end,
+            preset = centred_layout,
             preview = true,
           },
           jump = { close = true },

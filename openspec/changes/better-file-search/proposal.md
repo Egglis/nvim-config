@@ -22,9 +22,10 @@ no new plugins.
 - **Match count in the statusline**: lualine shows `[3/7]` while search highlighting is active, so the
   count survives a future `cmdheight=0`.
 - **`<C-f>` searches the current file** (standalone, normal and visual mode): snacks' `lines` picker, a
-  fuzzy list of the buffer's lines at the bottom with the editor window scrolling to the selected line as
-  a live preview; confirming jumps to the match. In visual mode the selection is the starting query.
-  It follows the picker conventions (`Ctrl+c`/`q` close, `<leader>fR` resumes, lazy-loaded).
+  fuzzy list of the buffer's lines in a centred float like the other pickers, with a preview of the
+  selected line; confirming jumps to the match. In visual mode the selection is the starting query.
+  It follows the picker conventions (`Ctrl+c`/`q` close, lazy-loaded). **`<leader><C-f>`** reopens the
+  last current-file search with its query (`<leader>fR` still resumes any picker).
   This replaces Vim's `<C-f>` (page down) in standalone Neovim; `<C-d>` stays for scrolling. VSCode mode
   is unchanged.
 - Docs: `AGENTS.md` (options, keymaps, pickers, plugin row), readme TODO ticked.
@@ -42,7 +43,7 @@ None.
 
 - `editor-options`: "Search behaviour" changes (persistent highlighting in standalone Neovim, VSCode
   unchanged); adds centred `n`/`N` and the statusline match count.
-- `picker`: adds the "search the current file" picker on `<C-f>`.
+- `picker`: adds the "search the current file" picker on `<C-f>` and its resume key `<leader><C-f>`.
 
 ## Impact
 
