@@ -34,6 +34,8 @@ if not vim.g.vscode then
   opt.cursorline = true
   opt.splitright = true
   opt.splitbelow = true
+  -- Matches stay highlighted until <Esc> (:noh, keymaps/shared.lua); VSCode keeps the shared `false`.
+  opt.hlsearch = true
 
   -- Cheaper cursor moves: bracket matching gives up after 20 ms, regex highlighting stops at column 300.
   -- matchparen reads these when it runs, after init.lua.

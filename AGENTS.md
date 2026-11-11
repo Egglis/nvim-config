@@ -165,6 +165,7 @@ Active only in standalone Neovim.
 | `<leader>bd` | n | Close the current buffer, keeping the window (`Snacks.bufdelete`; defined in `plugins/snacks.lua`) |
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
 | `<leader>qs` | n | Restore this project's session (see Sessions) |
+| `n` / `N` | n | Next / previous search match, centred (`nzzzv`/`Nzzzv`: a count still applies, a closed fold around the match opens) |
 
 `clipboard = unnamedplus` is set in `config/options.lua`, standalone only.
 
@@ -501,12 +502,14 @@ Standalone only. Tells terminal windows apart without touching the colorscheme:
 | `tabstop` / `shiftwidth` / `softtabstop` | 2, `expandtab` on |
 | `scrolloff` | 8 |
 | `number` + `relativenumber` | true |
-| `hlsearch` | false |
+| `hlsearch` | false in VSCode; **true** in standalone (matches stay highlighted until `<Esc>`/`:noh`) |
 | `incsearch` | true |
 | `ignorecase` + `smartcase` | true |
 | `termguicolors` | true |
 
-Standalone only (not in VSCode): `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
+Standalone only (not in VSCode): `hlsearch` (see above; the statusline shows the match count, e.g.
+`[3/7]`, while matches are highlighted: lualine's `searchcount`, first in `lualine_x`),
+`clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
 `synmaxcol=300` (regex highlighting stops at column 300), `g:matchparen_timeout`/`g:matchparen_insert_timeout`
 = 20 ms (bracket matching gives up sooner; Neovim's defaults are 300/60), `.props`/`.targets` files → `xml`
 filetype.

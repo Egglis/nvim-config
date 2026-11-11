@@ -43,4 +43,6 @@ return function()
   vim.keymap.set("n", "<leader>qs", function()
     require("config.session").restore()
   end, { desc = "Restore this project's [S]ession" })
+  vim.keymap.set("n", "n", "nzzzv", { desc = "Next search match, centred" })
+  vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search match, centred" })
 end

@@ -11,7 +11,7 @@ return {
       },
       sections = {
         lualine_a = { require("config.repo_accent").component(), "mode" },
-        lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_x = { "searchcount", "encoding", "fileformat", "filetype" },
       },
     }
   end,
