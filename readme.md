@@ -10,6 +10,7 @@ Runs on Windows and in WSL (Fedora): see [docs/wsl.md](docs/wsl.md) for the WSL 
 - [x] Simple file treeview with symbols and git tracking: snacks explorer on `<leader>fe`, a centred float with a preview (like the git pickers), or a right sidebar on `<leader>e`, git and diagnostic marks and add/rename/move/copy/delete (to the Recycle Bin). Plain snacks glyphs, no icon plugin
 - [ ] Other UI improvements for a clean and simpler interface
   - [x] Start screen on a plain `nvim`: repo name, quick keys, recent files and projects
+  - [x] Smooth scrolling (`snacks.scroll`): `<C-d>`/`<C-u>`, `zz`, `n`/`N`, the mouse wheel animate instead of jumping
   - [ ] Less clutter: trim lualine (drop `encoding`/`fileformat`), `cmdheight=0`, no `showmode` (lualine shows it), hide the `~` end-of-buffer markers
   - [ ] Consistent floating windows: rounded borders on hover, signature help, the cmp menu/docs, `:Lazy` and `:Mason`
   - [ ] Key guidance: which-key popup with named `<leader>` groups (`f` find, `t` terminal, `o` opencode, `b` buffers, `h` harpoon …)
