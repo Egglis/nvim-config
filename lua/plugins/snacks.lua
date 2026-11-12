@@ -455,8 +455,14 @@ return {
         { section = "startup" },
       },
     },
-    -- Smooth scrolling for every view change (<C-d>/<C-u>, zz, n/N, mouse); held keys use a shorter animation.
-    scroll = { enabled = true },
+    -- Smooth scrolling for every view change (<C-d>/<C-u>, zz, n/N, mouse). Kept short (≤ 80 ms, eased out)
+    -- so it doesn't feel laggy; held/repeated scrolls are near instant. 60 fps is plenty in a terminal.
+    animate = { fps = 60 },
+    scroll = {
+      enabled = true,
+      animate = { duration = { step = 5, total = 80 }, easing = "outQuad" },
+      animate_repeat = { delay = 50, duration = { step = 2, total = 20 }, easing = "linear" },
+    },
     terminal = {},
     styles = {
       terminal = {

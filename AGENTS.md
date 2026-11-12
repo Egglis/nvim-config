@@ -166,6 +166,7 @@ Active only in standalone Neovim.
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
 | `<leader>qs` | n | Restore this project's session (see Sessions) |
 | `n` / `N` | n | Next / previous search match, centred (`nzzzv`/`Nzzzv`: a count still applies, a closed fold around the match opens) |
+| `<C-d>` / `<C-u>` | n | Shared's `<C-d>zz`/`<C-u>zz` mappings are deleted here: plain half-page scroll, so the smooth scroll animates once without jitter |
 
 `clipboard = unnamedplus` is set in `config/options.lua`, standalone only.
 
@@ -420,10 +421,11 @@ ships, as before. Other filetypes keep regex `syntax`.
 
 ## Smooth scrolling (`lua/plugins/snacks.lua`)
 
-Standalone only (VSCode has its own `editor.smoothScrolling` setting). `snacks.scroll`
-(`opts.scroll = { enabled = true }`, snacks defaults) animates every change of the view: `<C-d>`/`<C-u>`
-(and their `zz`), `zz`/`zt`/`zb`, `n`/`N`, `gg`/`G`, the mouse wheel. Held or repeated scrolls use a
-shorter animation. Terminal buffers aren't animated; `vim.g.snacks_scroll = false` (or
+Standalone only (VSCode has its own `editor.smoothScrolling` setting). `snacks.scroll` animates every
+change of the view: `<C-d>`/`<C-u>`, `zz`/`zt`/`zb`, `n`/`N`, `gg`/`G`, the mouse wheel. Tuned to be
+quick: at most 80 ms, `outQuad` easing; a scroll within 50 ms of the last one (a held key) takes at most
+20 ms; snacks animations run at 60 fps (`opts.animate.fps`). In standalone `<C-d>`/`<C-u>` are plain
+(no `zz`, see `regular.lua`), since the re-centre made the animation jitter. Terminal buffers aren't animated; `vim.g.snacks_scroll = false` (or
 `vim.b.snacks_scroll = false` for a single buffer) turns it off. Macros and `paste` aren't animated either.
 
 ---

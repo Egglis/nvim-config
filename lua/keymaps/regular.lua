@@ -45,4 +45,7 @@ return function()
   end, { desc = "Restore this project's [S]ession" })
   vim.keymap.set("n", "n", "nzzzv", { desc = "Next search match, centred" })
   vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search match, centred" })
+  -- Back to plain <C-d>/<C-u> (shared.lua adds zz): the extra zz made the smooth scroll (snacks.scroll) jitter.
+  vim.keymap.del("n", "<C-d>")
+  vim.keymap.del("n", "<C-u>")
 end
