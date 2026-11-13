@@ -1,4 +1,4 @@
-local position = "bottom"
+local position = "right"
 
 local function move_terminals(to)
   position = to

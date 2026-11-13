@@ -347,8 +347,8 @@ used). Hiding keeps the process running.
 | `<C-t>` | n, t | Same as `<leader>tt`, but also works while typing in the terminal (hides the current one). Replaces Vim's tag-pop `<C-t>` |
 | `N<leader>tt` | n | Same for terminal N (e.g. `2<leader>tt`) |
 | `<leader>tf` | n | Focus a terminal in the current file's folder (one per folder; Neovim's cwd for buffers with no file); in a terminal it hides it |
-| `<leader>tr` | n | Move all terminals to a right split (remembered for the session) |
-| `<leader>tb` | n | Move all terminals back to the bottom (default) |
+| `<leader>tr` | n | Move all terminals back to a right split (default) |
+| `<leader>tb` | n | Move all terminals to the bottom (remembered for the session) |
 | `<Esc><Esc>` | t | Terminal → normal mode (snacks' default: two `<Esc>` in quick succession; a single `<Esc>` reaches the program after a short delay). `<C-\><C-n>` (built-in) always works too |
 | `q` | n (in terminal) | Hide the panel |
 

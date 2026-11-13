@@ -6,11 +6,11 @@ Gives standalone Neovim a toggleable terminal panel for running project commands
 ## Requirements
 
 ### Requirement: Toggle a terminal panel
-In standalone Neovim, the config SHALL provide a normal-mode key `<leader>tt` that opens a terminal panel running the configured shell in Neovim's current working directory, docked at the bottom of the editor by default, and focuses it in terminal mode.
+In standalone Neovim, the config SHALL provide a normal-mode key `<leader>tt` that opens a terminal panel running the configured shell in Neovim's current working directory, docked on the right of the editor by default, and focuses it in terminal mode.
 
 #### Scenario: Open the terminal
 - **WHEN** the user presses `<leader>tt` in normal mode with no terminal panel visible
-- **THEN** a terminal panel opens at the bottom of the editor, running the configured shell (pwsh on Windows, the login shell on Linux) in Neovim's cwd, and the cursor is in it in terminal mode
+- **THEN** a terminal panel opens in a vertical split on the right of the editor, running the configured shell (pwsh on Windows, the login shell on Linux) in Neovim's cwd, and the cursor is in it in terminal mode
 
 #### Scenario: Focus a visible terminal
 - **WHEN** the terminal panel is visible but the cursor is in an editor window, and the user presses `<leader>tt`
@@ -35,19 +35,19 @@ A count before `<leader>tt` SHALL select a terminal by number, so separate termi
 - **THEN** a separate terminal 2 opens, and terminal 1's process keeps running
 
 ### Requirement: Move the terminal panel
-In standalone Neovim, `<leader>tr` SHALL move the terminal panel to a vertical split on the right and `<leader>tb` SHALL move it back to the bottom. The chosen position SHALL apply to later toggles in the same Neovim session.
+In standalone Neovim, `<leader>tb` SHALL move the terminal panel to the bottom of the editor and `<leader>tr` SHALL move it back to a vertical split on the right. The chosen position SHALL apply to later toggles in the same Neovim session.
 
-#### Scenario: Move right
-- **WHEN** the terminal panel is open at the bottom and the user presses `<leader>tr` in normal mode
-- **THEN** the same terminal, with its process and scrollback, is shown in a vertical split on the right
+#### Scenario: Move to the bottom
+- **WHEN** the terminal panel is open on the right and the user presses `<leader>tb` in normal mode
+- **THEN** the same terminal, with its process and scrollback, is shown at the bottom
 
 #### Scenario: Position is remembered
-- **WHEN** the user has moved the terminal to the right, hidden it, and presses `<leader>tt`
-- **THEN** it reopens on the right
+- **WHEN** the user has moved the terminal to the bottom, hidden it, and presses `<leader>tt`
+- **THEN** it reopens at the bottom
 
-#### Scenario: Move back to the bottom
-- **WHEN** the terminal panel is on the right and the user presses `<leader>tb`
-- **THEN** it is shown at the bottom
+#### Scenario: Move back to the right
+- **WHEN** the terminal panel is at the bottom and the user presses `<leader>tr`
+- **THEN** it is shown in a vertical split on the right
 
 ### Requirement: Leaving terminal mode
 Inside the terminal panel, pressing `<Esc>` twice in quick succession SHALL switch to normal mode, a single `<Esc>` SHALL still reach the running program, and `q` in normal mode SHALL hide the panel.
