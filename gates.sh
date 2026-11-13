@@ -97,6 +97,11 @@ deps() {
   check 'trash — sudo dnf install trash-cli' command -v trash
   check 'zsh — sudo dnf install zsh' zsh --version
   check 'oh-my-posh — sudo dnf install gawk unzip && curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin' oh-my-posh --version
+  check 'fzf — sudo dnf install fzf' fzf --version
+  check 'zsh-autosuggestions — sudo dnf install zsh-autosuggestions' \
+    test -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  check 'zsh-syntax-highlighting — sudo dnf install zsh-syntax-highlighting' \
+    test -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   if is_wsl; then
     check 'win32yank.exe — ln -s "/mnt/c/Program Files/Neovim/bin/win32yank.exe" ~/.local/bin/ (see docs/wsl.md)' \
       command -v win32yank.exe

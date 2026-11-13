@@ -7,12 +7,23 @@ case ":$PATH:" in
 esac
 export EDITOR=nvim
 
+# WSL appends the whole Windows PATH (~75 /mnt/c folders). Looking up a missing command then takes ~0.5 s,
+# which syntax highlighting does on every keystroke. Keep only C:\Windows and System32 (cmd.exe, clip.exe).
+if [[ -n $WSL_DISTRO_NAME ]]; then
+  path=(${path:#/mnt/*} /mnt/c/WINDOWS/system32 /mnt/c/WINDOWS)
+fi
+
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt share_history hist_ignore_dups hist_ignore_space
 
 autoload -Uz compinit && compinit
+
+# EDITOR=nvim makes zsh start in its vi keymap, where Ctrl+R is not history search. Bind it in both
+# insert keymaps; fzf (below) replaces it with its fuzzy history search when installed.
+bindkey -M viins '^R' history-incremental-search-backward
+bindkey -M emacs '^R' history-incremental-search-backward
 
 # Theme
 if command -v oh-my-posh >/dev/null 2>&1; then
@@ -60,3 +71,25 @@ phelp() {
   print "doc - Go to Documents"
   print "phelp - List these aliases"
 }
+
+# Plugins (Fedora packages), each skipped when not installed. syntax-highlighting must load last.
+# fzf: Ctrl+R fuzzy history, Ctrl+T insert a file path, Alt+C cd into a folder.
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+# Grey suggestion from history while typing; → accepts it.
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=100
+[[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
+  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_HIGHLIGHT_MAXLENGTH=300
+[[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Google Cloud SDK
+source "$HOME/google-cloud-sdk/path.zsh.inc"
+source "$HOME/google-cloud-sdk/completion.zsh.inc"
+
+# Remove the Rancher Desktop pathing
+path=(${path:#*Rancher Desktop*})
