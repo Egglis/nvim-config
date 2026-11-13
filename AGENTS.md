@@ -166,7 +166,6 @@ Active only in standalone Neovim.
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
 | `<leader>qs` | n | Restore this project's session (see Sessions) |
 | `n` / `N` | n | Next / previous search match, centred (`nzzzv`/`Nzzzv`: a count still applies, a closed fold around the match opens) |
-| `<C-d>` / `<C-u>` | n | Shared's `<C-d>zz`/`<C-u>zz` mappings are deleted here: plain half-page scroll, so the smooth scroll animates once without jitter |
 
 `clipboard = unnamedplus` is set in `config/options.lua`, standalone only.
 
@@ -195,8 +194,7 @@ User command `:Format` → `vim.lsp.buf.format()`.
 
 ### Start screen — `lua/plugins/snacks.lua`
 Standalone only. snacks dashboard, shown when Neovim starts with **no** file or folder argument (plain
-`nvim`); `nvim file` and `nvim .` open as before. Snacks loads at startup in that case, otherwise right
-after startup (`VeryLazy`) for smooth scrolling (see Smooth scrolling).
+`nvim`); `nvim file` and `nvim .` open as before. Snacks loads at startup only in that case.
 
 - **Header:** the repo name in the repo's accent color (same repo as the top bar), or "Neovim" outside a
   repo.
@@ -223,8 +221,8 @@ after startup (`VeryLazy`) for smooth scrolling (see Smooth scrolling).
 
 ### Pickers — `lua/plugins/snacks.lua`
 Standalone only. snacks.nvim picker. On a plain `nvim` (no file or folder argument) snacks loads at
-startup for the start screen; otherwise right after startup (`VeryLazy`), or earlier on the keys below,
-the LSP list keys, or the first `vim.ui.select` (e.g. code actions): an `init` stub loads snacks, whose picker then replaces
+startup for the start screen; otherwise it's lazy-loaded on the keys below, the LSP list keys, or the
+first `vim.ui.select` (e.g. code actions): an `init` stub loads snacks, whose picker then replaces
 `vim.ui.select`. opencode.nvim uses it too (`preferred_picker = "snacks"`).
 
 Closing: `Ctrl+c` closes a picker while typing and in normal mode; `q` closes it in normal mode. `<Esc>`
@@ -317,8 +315,9 @@ In the prompt: `<CR>` (normal) / `<S-CR>` sends, `@` mention, `/` slash commands
 
 ### Terminal — `lua/plugins/snacks.lua`
 Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks terminal running `vim.o.shell`
-(pwsh with the profile on Windows, the login shell on Linux) in Neovim's cwd. snacks is loaded at or
-right after startup, but no shell starts until one of the keys below is used. Hiding keeps the process running.
+(pwsh with the profile on Windows, the login shell on Linux) in Neovim's cwd. Lazy-loaded on the keys
+below (on a plain `nvim` snacks is already loaded for the start screen, but no shell starts until a key is
+used). Hiding keeps the process running.
 
 | Keys | Mode | Action |
 |------|------|--------|
@@ -398,7 +397,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float, buffer delete and smooth scrolling (`opts = { dashboard, scroll, terminal, styles, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup on a plain `nvim`, else on `VeryLazy` or earlier on its keys, the LSP list keys or `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, styles, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---
@@ -416,17 +415,6 @@ ships, as before. Other filetypes keep regex `syntax`.
   tree-sitter once the install has finished.
 - The language and filetype lists sit at the top of `treesitter.lua`. To add a language, add its parser
   name and filetype there.
-
----
-
-## Smooth scrolling (`lua/plugins/snacks.lua`)
-
-Standalone only (VSCode has its own `editor.smoothScrolling` setting). `snacks.scroll` animates every
-change of the view: `<C-d>`/`<C-u>`, `zz`/`zt`/`zb`, `n`/`N`, `gg`/`G`, the mouse wheel. Tuned to be
-quick: at most 80 ms, `outQuad` easing; a scroll within 50 ms of the last one (a held key) takes at most
-20 ms; snacks animations run at 60 fps (`opts.animate.fps`). In standalone `<C-d>`/`<C-u>` are plain
-(no `zz`, see `regular.lua`), since the re-centre made the animation jitter. Terminal buffers aren't animated; `vim.g.snacks_scroll = false` (or
-`vim.b.snacks_scroll = false` for a single buffer) turns it off. Macros and `paste` aren't animated either.
 
 ---
 

@@ -188,10 +188,8 @@ local start_keys = {
 
 return {
   "folke/snacks.nvim",
-  -- Plain `nvim` loads snacks at startup to draw the start screen; with a file or folder it loads right
-  -- after startup (VeryLazy), so smooth scrolling is on everywhere.
+  -- Plain `nvim` loads snacks at startup to draw the start screen; with a file or folder it stays lazy.
   lazy = vim.fn.argc(-1) > 0,
-  event = "VeryLazy",
   init = function()
     -- Load snacks on the first vim.ui.select; its picker setup then replaces this stub.
     vim.ui.select = function(...)
@@ -454,14 +452,6 @@ return {
         },
         { section = "startup" },
       },
-    },
-    -- Smooth scrolling for every view change (<C-d>/<C-u>, zz, n/N, mouse). Kept short (≤ 80 ms, eased out)
-    -- so it doesn't feel laggy; held/repeated scrolls are near instant. 60 fps is plenty in a terminal.
-    animate = { fps = 60 },
-    scroll = {
-      enabled = true,
-      animate = { duration = { step = 5, total = 80 }, easing = "outQuad" },
-      animate_repeat = { delay = 50, duration = { step = 2, total = 20 }, easing = "linear" },
     },
     terminal = {},
     styles = {
