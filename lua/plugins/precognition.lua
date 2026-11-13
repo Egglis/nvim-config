@@ -22,6 +22,16 @@ return {
     },
   },
   opts = function()
-    return { startVisible = key_hints.get("precognition") }
+    return {
+      startVisible = key_hints.get("precognition"),
+      -- shared.lua maps B to `0w` (first word) and E to `$`: label those spots with them, and hide the
+      -- WORD-motion B/E hints, whose keys no longer do that.
+      hints = {
+        Caret = { text = "B", prio = 2 },
+        Dollar = { text = "E", prio = 1 },
+        B = { text = "B", prio = 0 },
+        E = { text = "E", prio = 0 },
+      },
+    }
   end,
 }
