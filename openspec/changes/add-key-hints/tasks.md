@@ -13,7 +13,7 @@
 
 ## 3. Human check
 
-- [ ] 3.1 **Human check** with a recipe from the agent: `<Space>` popup and group names, `<leader>uw/up/uh` notifications, hardtime blocks `jjjj` in a file but not in pickers/explorer/terminal/lazygit, precognition hints visible, states kept after a restart, VSCode unchanged. Verify: answers recorded in a devlog note
+- [x] 3.1 **Human check** with a recipe from the agent: `<Space>` popup and group names, `<leader>uw/up/uh` notifications, hardtime blocks `jjjj` in a file but not in pickers/explorer/terminal/lazygit, precognition hints visible, states kept after a restart, VSCode unchanged. Verify: answers recorded in a devlog note
 
 ## Workflow follow-up
 
