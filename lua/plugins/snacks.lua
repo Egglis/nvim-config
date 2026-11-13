@@ -454,15 +454,6 @@ return {
       },
     },
     terminal = {},
-    styles = {
-      terminal = {
-        keys = {
-          -- <C-q> leaves terminal mode instead of snacks' double <Esc>, so a single <Esc> always reaches the program.
-          term_normal = false,
-          term_normal_cq = { "<C-q>", "<C-\\><C-n>", mode = "t", desc = "Terminal → normal mode" },
-        },
-      },
-    },
     lazygit = { config = { os = lazygit_os() } },
     picker = {
       -- Ctrl+c and q close a picker; <Esc> only leaves insert mode.

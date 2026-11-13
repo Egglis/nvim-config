@@ -327,7 +327,7 @@ used). Hiding keeps the process running.
 | `<leader>tf` | n | Focus a terminal in the current file's folder (one per folder; Neovim's cwd for buffers with no file); in a terminal it hides it |
 | `<leader>tr` | n | Move all terminals to a right split (remembered for the session) |
 | `<leader>tb` | n | Move all terminals back to the bottom (default) |
-| `<C-q>` | t | Terminal → normal mode, in every snacks terminal incl. lazygit (`opts.styles.terminal.keys`; replaces snacks' `<Esc><Esc>`, so `<Esc>` always reaches the program) |
+| `<Esc><Esc>` | t | Terminal → normal mode (snacks' default: two `<Esc>` in quick succession; a single `<Esc>` reaches the program after a short delay). `<C-\><C-n>` (built-in) always works too |
 | `q` | n (in terminal) | Hide the panel |
 
 A terminal belongs to the cwd it was opened in: after `:cd`, `<leader>tt` opens a new one; the old one
@@ -397,7 +397,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, styles, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---
