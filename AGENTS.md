@@ -45,7 +45,8 @@ nvim/
     │   ├── options.lua             # All vim options (clipboard only in standalone)
     │   ├── lazy.lua                # lazy.nvim bootstrap + setup
     │   ├── repo_accent.lua         # Per-repo accent color (statusline block + terminal title)
-    │   └── session.lua             # Per-project session: saved on exit, restored on demand
+    │   ├── session.lua             # Per-project session: saved on exit, restored on demand
+    │   └── key_hints.lua           # On/off state of which-key/precognition/hardtime, saved across restarts
     ├── keymaps/
     │   ├── shared.lua              # Active in BOTH Neovim and VSCode
     │   ├── vscode.lua              # VSCode-only (calls vscode.action())
@@ -60,7 +61,10 @@ nvim/
     │   ├── cmp.lua                 # nvim-cmp autocompletion
     │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
     │   ├── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker + file explorer + lazygit)
-    │   └── treesitter.lua          # nvim-treesitter (main): parsers + tree-sitter highlighting
+    │   ├── treesitter.lua          # nvim-treesitter (main): parsers + tree-sitter highlighting
+    │   ├── which-key.lua           # which-key popup of next keys, <leader> group names
+    │   ├── precognition.lua        # Motion hints in the buffer (toggle)
+    │   └── hardtime.lua            # Habit trainer: blocks repeated hjkl (toggle)
 ```
 
 ---
@@ -313,6 +317,23 @@ In the prompt: `<CR>` (normal) / `<S-CR>` sends, `@` mention, `/` slash commands
 
 ---
 
+### Key hints — `lua/plugins/which-key.lua`, `precognition.lua`, `hardtime.lua`
+Standalone only (none load in VSCode). Three helpers, each with a toggle key that flips it and shows an
+on/off notification. The state is saved in `stdpath("state")/key-hints.json` (`lua/config/key_hints.lua`)
+and used on the next start; a missing or broken file means the defaults (which-key on, the others off).
+
+| Keys | Action |
+|------|--------|
+| `<leader>uw` | which-key popup on/off. On: after a prefix like `<leader>` and 200 ms, a popup lists the next keys, with group names (`b` buffers, `f` find, `g` git, `n` .NET, `o` opencode, `q` session, `t` terminal, `u` toggles). Off: no popup, but which-key still holds the prefix, so after `<leader>` it waits for the next key instead of timing out |
+| `<leader>up` | precognition on/off: motion hints (`w`, `b`, `e`, `$`, …) around the cursor in the current buffer |
+| `<leader>uh` | hardtime on/off: pressing `h`/`j`/`k`/`l` (and similar) more than 3 times within a second is blocked with a hint; arrow keys are disabled. Not in snacks windows (pickers, explorer, terminals, lazygit) or the OpenCode panel; the mouse keeps working |
+
+which-key loads on `VeryLazy`; precognition and hardtime load on `VeryLazy` only when saved on, otherwise on
+their toggle key. hardtime's own setup runs 500 ms after it loads, so blocking starts then. Mappings with a
+`desc` show up in the popup by name; hardtime's mappings use `desc = "which_key_ignore"`.
+
+---
+
 ### Terminal — `lua/plugins/snacks.lua`
 Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks terminal running `vim.o.shell`
 (pwsh with the profile on Windows, the login shell on Linux) in Neovim's cwd. Lazy-loaded on the keys
@@ -397,6 +418,10 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |
 | `sudo-tee/opencode.nvim` | `opencode.lua` | OpenCode chat panel on the right (lazy: `<leader>og/oi/oI`, `:Opencode`) |
 | `MeanderingProgrammer/render-markdown.nvim` | `opencode.lua` | Renders markdown in OpenCode output (`ft` markdown/opencode_output) |
+| `folke/which-key.nvim` | `which-key.lua` | Next-key popup with `<leader>` group names (`VeryLazy`; `<leader>uw` toggles, see Key hints) |
+| `tris203/precognition.nvim` | `precognition.lua` | Motion hints in the buffer (`<leader>up`; loads at start only when saved on) |
+| `m4xshen/hardtime.nvim` | `hardtime.lua` | Habit trainer (`<leader>uh`; loads at start only when saved on) |
+| `MunifTanjim/nui.nvim` | `hardtime.lua` | hardtime's dependency (its `:Hardtime report` window) |
 | `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 

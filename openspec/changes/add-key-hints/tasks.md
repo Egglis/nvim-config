@@ -7,9 +7,9 @@
 
 ## 2. precognition and hardtime
 
-- [ ] 2.1 `lua/plugins/precognition.lua` with `<leader>up` (design 4, 7). Verify headless: off by default and not loaded; `<leader>up` loads and shows hints and saves `true`; a restart with `true` shows hints on start
-- [ ] 2.2 `lua/plugins/hardtime.lua` with `<leader>uh`, `disable_mouse = false`, snacks filetypes disabled (design 4, 6). Verify headless: off by default and not loaded; `<leader>uh` enables and saves; restart with `true` starts enabled; the description check still passes (design risk 1)
-- [ ] 2.3 Docs: `AGENTS.md` (new "Key hints" keymaps section, plugin rows, `lua/config/key_hints.lua` in the tree), `readme.md` tick "Key guidance" and "Remember less-used shortcuts". Verify: `./gates.sh gates` → `GATES_EXIT:0`
+- [x] 2.1 `lua/plugins/precognition.lua` with `<leader>up` (design 4, 7). Verify headless: off by default and not loaded; `<leader>up` loads and shows hints and saves `true`; a restart with `true` shows hints on start
+- [x] 2.2 `lua/plugins/hardtime.lua` with `<leader>uh`, `disable_mouse = false`, snacks filetypes disabled (design 4, 6). Verify headless: off by default and not loaded; `<leader>uh` enables and saves; restart with `true` starts enabled; the description check still passes (design risk 1)
+- [x] 2.3 Docs: `AGENTS.md` (new "Key hints" keymaps section, plugin rows, `lua/config/key_hints.lua` in the tree), `readme.md` tick "Key guidance" and "Remember less-used shortcuts". Verify: `./gates.sh gates` → `GATES_EXIT:0`
 
 ## 3. Human check
 
