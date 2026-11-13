@@ -182,6 +182,7 @@ These are only active in buffers where an LSP server has attached.
 |------|--------|
 | `<leader>rn` | Rename symbol |
 | `<leader>ca` | Code actions |
+| `<leader>cf` | Format the buffer with the attached server (`vim.lsp.buf.format()`; like VSCode's Format Document, e.g. JSON via `jsonls`) |
 | `<leader>gd` | Picker: go to definition |
 | `<leader>gr` | Picker: go to references |
 | `<leader>gi` | Picker: go to implementation |
@@ -192,7 +193,7 @@ These are only active in buffers where an LSP server has attached.
 | `<C-k>` | Signature help |
 | `gD` | Go to declaration |
 
-User command `:Format` → `vim.lsp.buf.format()`.
+User command `:Format` → `vim.lsp.buf.format()` (same as `<leader>cf`).
 
 ---
 
@@ -255,7 +256,7 @@ by their keys. Confirming a mapping replays its keys. Confirming a command (pale
 if it's a user/plugin command that needs no argument (e.g. `:Lazy`); anything else, including built-ins
 like `:edit`, is typed on the command line for you to finish.
 
-> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. `<leader>fd` is diagnostics here but **format document** in VSCode, and `<leader>fg` is git status here but **focus Source Control** in VSCode. `<leader>fe` **toggles** the file tree here but only **focuses** VSCode's explorer. These are separate code paths (not a runtime conflict) but be aware of the semantic difference. `<leader>g…` is git here (see Git), except `<leader>gd/gr/gi`, which are LSP keys; in VSCode `<leader>gr` is Go to References.
+> Note: `<leader>ff` means **find files** in Neovim and **search in current file** in VSCode. `<leader>fa` is a project-wide search in both. `<leader>fd` is diagnostics here but **format document** in VSCode (here: `<leader>cf`), and `<leader>fg` is git status here but **focus Source Control** in VSCode. `<leader>fe` **toggles** the file tree here but only **focuses** VSCode's explorer. These are separate code paths (not a runtime conflict) but be aware of the semantic difference. `<leader>g…` is git here (see Git), except `<leader>gd/gr/gi`, which are LSP keys; in VSCode `<leader>gr` is Go to References.
 
 ---
 
@@ -324,8 +325,8 @@ and used on the next start; a missing or broken file means the defaults (which-k
 
 | Keys | Action |
 |------|--------|
-| `<leader>uw` | which-key popup on/off. On: after a prefix like `<leader>` and 200 ms, a popup lists the next keys, with group names (`b` buffers, `f` find, `g` git, `n` .NET, `o` opencode, `q` session, `t` terminal, `u` toggles). Off: no popup, but which-key still holds the prefix, so after `<leader>` it waits for the next key instead of timing out |
-| `<leader>up` | precognition on/off: motion hints (`w`, `b`, `e`, `$`, …) around the cursor in the current buffer |
+| `<leader>uw` | which-key popup on/off. On: after a prefix like `<leader>` and 200 ms, a popup lists the next keys, with group names (`b` buffers, `c` code, `f` find, `g` git, `n` .NET, `o` opencode, `q` session, `t` terminal, `u` toggles). Off: no popup, but which-key still holds the prefix, so after `<leader>` it waits for the next key instead of timing out |
+| `<leader>up` | precognition on/off: motion hints around the cursor in the current buffer. The first-word and end-of-line spots are labelled `B`/`E` (the `shared.lua` keys) instead of `^`/`$`, and the WORD-motion `B`/`E` hints are hidden |
 | `<leader>uh` | hardtime on/off: pressing `h`/`j`/`k`/`l` (and similar) more than 3 times within a second is blocked with a hint; arrow keys are disabled. Not in snacks windows (pickers, explorer, terminals, lazygit) or the OpenCode panel; the mouse keeps working |
 
 which-key loads on `VeryLazy`; precognition and hardtime load on `VeryLazy` only when saved on, otherwise on
@@ -452,6 +453,7 @@ LSP server definitions live in `lua/lsp/servers.lua` (`name = { settings = ..., 
 | Server | Notes |
 |--------|-------|
 | `lua_ls` | Lua Language Server; configured for Neovim API awareness via lazydev |
+| `jsonls` | JSON/JSONC (`vscode-json-language-server`, the one VSCode uses): validation and formatting. Mason package `json-lsp`, installed with npm (needs Node) |
 | `roslyn_ls` | C# (Roslyn). Mason package `roslyn-language-server`, so `cmd` is overridden to that binary. Needs the .NET SDK; roots at the nearest `.sln`, else `.csproj` |
 
 To add a new language server:

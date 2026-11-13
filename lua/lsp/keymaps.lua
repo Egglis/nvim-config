@@ -13,6 +13,9 @@ local function on_attach(bufnr)
 
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+  nmap("<leader>cf", function()
+    vim.lsp.buf.format({ bufnr = bufnr })
+  end, "[C]ode [F]ormat")
 
   nmap("<leader>gd", picker("lsp_definitions"), "[G]oto [D]efinition")
   nmap("<leader>gr", picker("lsp_references"), "[G]oto [R]eferences")

@@ -9,6 +9,8 @@ return {
       },
     },
   },
+  -- JSON: the language server VSCode's own JSON support uses (format, validation).
+  jsonls = {},
   -- C#. Mason's package installs the server as `roslyn-language-server`, not lspconfig's default binary name.
   roslyn_ls = {
     cmd = {

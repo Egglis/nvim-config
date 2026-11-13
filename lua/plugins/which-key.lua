@@ -21,6 +21,7 @@ return {
     end,
     spec = {
       { "<leader>b", group = "buffers" },
+      { "<leader>c", group = "code" },
       { "<leader>f", group = "find" },
       { "<leader>g", group = "git" },
       { "<leader>n", group = ".NET" },

@@ -8,7 +8,7 @@ each row for their platform.
 | Neovim | 0.12+ | all | The config itself; `build` gate (headless startup); nvim-treesitter's `main` branch needs 0.12 | `winget install Neovim.Neovim` (upgrade: `winget upgrade Neovim.Neovim`) | `sudo dnf install neovim` | `nvim --version` (first line ≥ `NVIM v0.12`) | — |
 | StyLua | 2.x | all | `format` gate (`stylua --check`) | `winget install JohnnyMorganz.StyLua` | `npm i -g @johnnymorganz/stylua-bin` | `stylua --version` | — |
 | Git | any | all | lazy.nvim plugin bootstrap, version control | `winget install Git.Git` | `sudo dnf install git` | `git --version` | — |
-| Node.js | 20+ | all | Runs the OpenSpec CLI | `winget install OpenJS.NodeJS.LTS` | `sudo dnf install nodejs npm`, then `npm config set prefix ~/.local` (global installs without sudo) | `node --version` | — |
+| Node.js | 20+ | all | Runs the OpenSpec CLI; Mason installs the JSON language server (`jsonls`) with npm | `winget install OpenJS.NodeJS.LTS` | `sudo dnf install nodejs npm`, then `npm config set prefix ~/.local` (global installs without sudo) | `node --version` | — |
 | OpenSpec CLI | 1.x | all | Change tracking, `validate` gate | `npm i -g @fission-ai/openspec` | same | `openspec --version` | — |
 | OpenCode CLI | 1.x or 2.x | all | Server behind the `opencode.nvim` panel (`<leader>o…` in standalone Neovim) | `npm i -g @opencode/cli` | same | `opencode --version` | provider connected: run `opencode`, then `/connect` (manual, once per platform) |
 | ripgrep | any | all | snacks picker grep (`<leader>fa`/`<leader>fw` in standalone Neovim); files picker fallback when `fd` is missing | `winget install BurntSushi.ripgrep.MSVC` | `sudo dnf install ripgrep` | `rg --version` | — |
