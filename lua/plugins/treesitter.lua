@@ -1,7 +1,7 @@
 -- Tree-sitter highlighting for languages Neovim ships no parser for. The `main` branch needs Neovim 0.12+,
 -- the tree-sitter CLI and a C compiler (see docs/dependencies.md), and doesn't support lazy-loading.
 local languages = { "c_sharp", "xml", "json", "powershell", "python" }
-local filetypes = { "cs", "xml", "json", "ps1", "python" }
+local filetypes = { "cs", "xml", "json", "jsonc", "ps1", "python" }
 
 return {
   "nvim-treesitter/nvim-treesitter",
@@ -10,6 +10,8 @@ return {
   build = ":TSUpdate",
   config = function()
     local ts = require("nvim-treesitter")
+    -- The json grammar parses comments too, so jsonc needs no parser of its own.
+    vim.treesitter.language.register("json", "jsonc")
 
     vim.schedule(function()
       if vim.fn.executable("tree-sitter") == 0 then

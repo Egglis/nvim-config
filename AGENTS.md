@@ -430,8 +430,8 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 
 ## Syntax Highlighting (`lua/plugins/treesitter.lua`)
 
-Standalone only. Tree-sitter highlighting for `cs`, `xml` (`.csproj` etc.), `json`, `ps1` and `python`
-buffers, started from a `FileType` autocmd. Lua, Markdown, Vimscript and help use the parsers Neovim
+Standalone only. Tree-sitter highlighting for `cs`, `xml` (`.csproj` etc.), `json`, `jsonc` (the `json`
+parser, registered for it), `ps1` and `python` buffers, started from a `FileType` autocmd. Lua, Markdown, Vimscript and help use the parsers Neovim
 ships, as before. Other filetypes keep regex `syntax`.
 
 - Parsers (`c_sharp`, `xml` + `dtd`, `json`, `powershell`, `python`) install in the background on start,
@@ -540,7 +540,8 @@ Standalone only (not in VSCode): `hlsearch` (see above; the statusline shows the
 `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
 `synmaxcol=300` (regex highlighting stops at column 300), `g:matchparen_timeout`/`g:matchparen_insert_timeout`
 = 20 ms (bracket matching gives up sooner; Neovim's defaults are 300/60), `.props`/`.targets` files → `xml`
-filetype.
+filetype, every `.json` file → `jsonc` (JSON with comments, so `jsonls` doesn't flag `//` comments in
+`appsettings.json`, `.vscode/*.json` etc.; strict JSON files lose that check).
 
 Shell, per platform (standalone only):
 - **Windows:** `shell=pwsh` (falls back to `powershell`) with the `:h shell-powershell` flags. `:!`/`system()`

@@ -44,7 +44,8 @@ if not vim.g.vscode then
   opt.synmaxcol = 300
 
   -- MSBuild files (.csproj and Directory.Build.* are already xml).
-  vim.filetype.add({ extension = { props = "xml", targets = "xml" } })
+  -- All .json files as JSON with comments (appsettings.json, .vscode/*.json, …), so jsonls allows `//` comments.
+  vim.filetype.add({ extension = { props = "xml", targets = "xml", json = "jsonc" } })
 
   -- Windows: PowerShell as the shell (:h shell-powershell). -NoProfile keeps :! and system() fast; an
   -- interactive :terminal runs bare 'shell' (no shellcmdflag), so it still loads the profile.
