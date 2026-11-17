@@ -18,7 +18,7 @@
 
 ## 4. Human check
 
-- [ ] 4.1 **Human check**, following a recipe the agent provides: in a real file, `qq` shows the `REC @q` block (colour OK next to the repo accent?) and it disappears on `q`; `Q`, `3Q`, visual-line `Q`; `@q` then `@@` typed quickly; `<leader>fm` lists macros readably, `<CR>` runs one, `<C-e>` edits and `:w` saves; VSCode with vscode-neovim: `qq`/`@q`/`Q` unchanged. Verify: the user's answers recorded in a devlog note
+- [x] 4.1 **Human check**, following a recipe the agent provides: in a real file, `qq` shows the `REC @q` block (colour OK next to the repo accent?) and it disappears on `q`; `Q`, `3Q`, visual-line `Q`; `@q` then `@@` typed quickly; `<leader>fm` lists macros readably, `<CR>` runs one, `<C-e>` edits and `:w` saves; VSCode with vscode-neovim: `qq`/`@q`/`Q` unchanged. Verify: the user's answers recorded in a devlog note
 
 ## Workflow follow-up
 
