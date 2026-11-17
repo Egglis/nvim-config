@@ -400,6 +400,24 @@ Insert/select mode. Sources: lazydev, LSP, path, buffer. LSP snippets expand via
 
 ---
 
+### Macros
+The default keys are kept as they are (in both environments); this config only makes macros visible.
+
+| Keys | Action (built in) |
+|------|--------|
+| `qq` … `q` | Record into register `q` (any `a`–`z` works), then stop |
+| `Q` | Replay the **last recorded** register; `3Q` three times |
+| `@q` / `@@` | Run register `q` / repeat the last register run |
+| `V` (lines) + `Q` or `@q` | Run the macro once on each selected line (Neovim's `v_Q-default`/`v_@-default`) |
+| `:reg q` | Show a register's keys |
+
+Standalone only:
+- **Recording indicator:** while recording, the statusline shows a red `REC @q` block right after the
+  mode (`lualine.lua`); `RecordingEnter`/`RecordingLeave` refresh lualine at once. It doesn't rely on the
+  command line, so it survives `cmdheight=0`.
+
+---
+
 ## Plugins
 
 All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in that directory — **no manual registration is needed**. Just create a new file and return a valid plugin spec.
