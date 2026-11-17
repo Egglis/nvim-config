@@ -12,7 +12,7 @@
 
 ## 3. Human check
 
-- [ ] 3.1 **Human check**, following a recipe the agent provides: in a real repo, mark three files with `<leader>ha` (notifications readable?), jump with `<leader>h1`–`h3`, `<leader>hh` search + preview feels like the other pickers, `<leader>he` reorder/delete then `<leader>h1`, unmark keeps the buffer, restart keeps the list; `<leader>fb` `<C-x>`/`dd` closes buffers; VSCode with vscode-neovim: `<leader>ha/hh/he/h1` still run vscode-harpoon. Verify: the user's answers recorded in a devlog note
+- [x] 3.1 **Human check**, following a recipe the agent provides: in a real repo, mark three files with `<leader>ha` (notifications readable?), jump with `<leader>h1`–`h3`, `<leader>hh` search + preview feels like the other pickers, `<leader>he` reorder/delete then `<leader>h1`, unmark keeps the buffer, restart keeps the list; `<leader>fb` `<C-x>`/`dd` closes buffers; VSCode with vscode-neovim: `<leader>ha/hh/he/h1` still run vscode-harpoon. Verify: the user's answers recorded in a devlog note
 
 ## Workflow follow-up
 
