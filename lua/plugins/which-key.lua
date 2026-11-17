@@ -24,6 +24,7 @@ return {
       { "<leader>c", group = "code" },
       { "<leader>f", group = "find" },
       { "<leader>g", group = "git" },
+      { "<leader>h", group = "marks" },
       { "<leader>n", group = ".NET" },
       { "<leader>o", group = "opencode" },
       { "<leader>q", group = "session" },
