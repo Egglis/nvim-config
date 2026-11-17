@@ -46,6 +46,7 @@ nvim/
     │   ├── lazy.lua                # lazy.nvim bootstrap + setup
     │   ├── repo_accent.lua         # Per-repo accent color (statusline block + terminal title)
     │   ├── session.lua             # Per-project session: saved on exit, restored on demand
+    │   ├── macros.lua              # Macro list/run/edit helpers for the <leader>fm picker
     │   └── key_hints.lua           # On/off state of which-key/precognition/hardtime, saved across restarts
     ├── keymaps/
     │   ├── shared.lua              # Active in BOTH Neovim and VSCode
@@ -245,6 +246,7 @@ nothing.
 | `<leader>fd` | Diagnostics |
 | `<leader>fg` | Git status (changed files) |
 | `<leader>fR` | Resume the last picker with its query |
+| `<leader>fm` | Macros (registers `a`–`z`): `<CR>` runs one, `<C-e>` edits it (see Macros) |
 | `<leader>fP` | Recent projects (needs `fd`): confirming one does a **global** `:cd` there (repo accent follows) and opens the file picker |
 | `<leader>fp` | Command palette: normal-mode key mappings + `:` commands in one list |
 | `<leader>fk` | Key mappings (all modes) |
@@ -415,6 +417,14 @@ Standalone only:
 - **Recording indicator:** while recording, the statusline shows a red `REC @q` block right after the
   mode (`lualine.lua`); `RecordingEnter`/`RecordingLeave` refresh lualine at once. It doesn't rely on the
   command line, so it survives `cmdheight=0`.
+- **`<leader>fm` macro picker** (`plugins/snacks.lua` source `macros`, helpers in `config/macros.lua`):
+  the non-empty registers `a`–`z`, keys shown readably (`A;<Esc>j`, a literal `<` as `<lt>`) with a
+  preview. `<CR>` runs the macro once in the window you came from (same as typing `@q`: mappings inside
+  the macro apply). `<C-e>` opens it in a one-line float (`macro://q`): `:w` stores the edited keys back
+  into the register (key names like `<Esc>`/`<CR>` become the keys), `q`/`<Esc>`/`:q!` close it,
+  unsaved edits are dropped. With no macros, snacks says "No results found".
+- No popup on `@`: a which-key register popup there was tried and dropped, because `@@` typed quickly
+  after a macro then edited the wrong lines. which-key's popup on `"` still lists registers.
 
 ---
 
@@ -441,7 +451,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `tris203/precognition.nvim` | `precognition.lua` | Motion hints in the buffer (`<leader>up`; loads at start only when saved on) |
 | `m4xshen/hardtime.nvim` | `hardtime.lua` | Habit trainer (`<leader>uh`; loads at start only when saved on) |
 | `MunifTanjim/nui.nvim` | `hardtime.lua` | hardtime's dependency (its `:Hardtime report` window) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`, the `<leader>fm` macro list under `picker.sources.macros`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---

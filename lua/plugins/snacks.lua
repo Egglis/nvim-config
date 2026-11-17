@@ -276,6 +276,13 @@ return {
       desc = "Search the selection in the current file",
     },
     {
+      "<leader>fm",
+      function()
+        Snacks.picker.pick("macros")
+      end,
+      desc = "[F]ind [M]acros (run / edit)",
+    },
+    {
       "<leader>fd",
       function()
         Snacks.picker.diagnostics()
@@ -493,6 +500,38 @@ return {
           win = {
             input = { keys = { ["<c-f>"] = { "clear_query", mode = { "i", "n" } } } },
             list = { keys = { ["<c-f>"] = "clear_query" } },
+          },
+        },
+        -- <leader>fm: registers a–z; <CR> runs one like @q in the window you came from, <C-e> edits it.
+        macros = {
+          title = "Macros",
+          finder = function()
+            return require("config.macros").list()
+          end,
+          format = "register",
+          preview = "preview",
+          layout = { preset = centred_layout, preview = true },
+          confirm = function(picker, item)
+            picker:close()
+            if item then
+              vim.schedule(function()
+                require("config.macros").run(item.reg)
+              end)
+            end
+          end,
+          actions = {
+            edit_macro = function(picker, item)
+              picker:close()
+              if item then
+                vim.schedule(function()
+                  require("config.macros").edit(item.reg)
+                end)
+              end
+            end,
+          },
+          win = {
+            input = { keys = { ["<c-e>"] = { "edit_macro", mode = { "i", "n" } } } },
+            list = { keys = { ["<c-e>"] = "edit_macro" } },
           },
         },
         -- The explorer's own <c-c> (tcd) and <c-t> (terminal) beat the global keys above; only a
