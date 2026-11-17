@@ -3,8 +3,7 @@
 ## Purpose
 
 Makes Vim macros easier to use in standalone Neovim without changing the default macro keys: shows when a
-macro is being recorded, shows what each register holds before replaying it, and lets the user list, run
-and edit saved macros.
+macro is being recorded, and lets the user list saved macros readably, run them and edit them.
 
 ## ADDED Requirements
 
