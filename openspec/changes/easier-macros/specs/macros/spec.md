@@ -9,11 +9,19 @@ and edit saved macros.
 ## ADDED Requirements
 
 ### Requirement: Default macro keys are unchanged
-This config SHALL NOT remap `q`, `Q`, `@` (in visual mode), or `@@`. Recording with `q{reg}`, replaying with `@{reg}`, `@@` and `Q` (with a count), and running a macro on each line of a linewise selection SHALL work as in plain Neovim, in standalone Neovim and in VSCode mode.
+This config SHALL NOT remap `q`, `Q`, `@` or `@@`. Recording with `q{reg}`, replaying with `@{reg}`, `@@` and `Q` (with a count), and running a macro on each line of a linewise selection SHALL work as in plain Neovim, in standalone Neovim and in VSCode mode, also when the keys are typed in quick succession.
 
 #### Scenario: Record and replay with built-in keys
 - **WHEN** the user types `qq`, `A;<Esc>j`, `q` on the first of five lines, then `3Q`
 - **THEN** the first four lines end with `;`
+
+#### Scenario: Quick repeats
+- **WHEN** register `q` holds `A;<Esc>j` and the user types `@q` then `@@` three times, about 150 ms between keys, on the first of five lines
+- **THEN** the first four lines end with `;`
+
+#### Scenario: Count still applies
+- **WHEN** the user presses `3@q`
+- **THEN** the macro runs three times
 
 #### Scenario: Run on selected lines
 - **WHEN** a macro is in register `q` and the user selects three lines with `V` and presses `Q`
@@ -29,18 +37,6 @@ In standalone Neovim, while a macro is being recorded, the statusline SHALL show
 #### Scenario: Recording ends
 - **WHEN** the user then presses `q`
 - **THEN** the statusline no longer shows the recording block
-
-### Requirement: Register list when replaying
-In standalone Neovim with the key-hints popup on, pressing `@` in normal mode SHALL show the registers that hold something together with their contents; pressing a register key SHALL run that register as a macro, exactly like `@{reg}` without the popup. With the popup off, `@{reg}` SHALL work as usual.
-
-#### Scenario: See registers before replaying
-- **GIVEN** the key-hints popup is on and register `q` holds a macro
-- **WHEN** the user presses `@`
-- **THEN** a popup lists the registers including `q` with its keys, and pressing `q` runs the macro
-
-#### Scenario: Count still applies
-- **WHEN** the user presses `3@q`
-- **THEN** the macro runs three times
 
 ### Requirement: Macro picker
 In standalone Neovim, `<leader>fm` SHALL open a picker listing the registers `a`–`z` that are not empty, each shown with its keys in readable form (e.g. `<Esc>`, `<CR>`) and a preview. Confirming an entry SHALL run that register as a macro in the window the picker was opened from. The picker SHALL follow the closing and on-demand loading rules of the other pickers.
@@ -69,8 +65,8 @@ From the macro picker, `<C-e>` SHALL open the selected register's keys in readab
 - **THEN** register `q` is unchanged
 
 ### Requirement: Macro helpers are absent in VSCode mode
-When Neovim runs with `vim.g.vscode` set, this config SHALL define no `<leader>fm` mapping, no `@` register popup and no recording indicator.
+When Neovim runs with `vim.g.vscode` set, this config SHALL define no `<leader>fm` mapping and no recording indicator.
 
 #### Scenario: VSCode
 - **WHEN** Neovim starts with `vim.g.vscode` set
-- **THEN** `maparg("<leader>fm", "n")` and `maparg("@", "n")` are empty
+- **THEN** `maparg("<leader>fm", "n")` is empty

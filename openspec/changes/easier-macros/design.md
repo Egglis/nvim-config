@@ -50,23 +50,22 @@ What the research found, on Neovim 0.12.6 with the pinned plugins:
    - Lives in `lua/plugins/lualine.lua` next to `searchcount`. `repo_accent.attach_lualine()` keeps owning
      `lualine.setup()`; the component is just part of `opts.sections`.
    - Rejected: relying on Neovim's "recording @q" message (gone with `cmdheight=0`); `noice.nvim` (heavy).
-2. **`@` register popup: one which-key spec entry, normal mode only:**
-   `{ "@", mode = "n", plugin = "registers", desc = "run macro" }` (exact shape confirmed during
-   implementation). Pressing a listed key feeds `@{reg}`, so counts and `@@` behave as built in.
-   - Not in `x` mode: Neovim's own `x` `@` map (run per line) must stay untouched.
-   - When the key-hints popup is off, the existing `delay` returns 1e9, so which-key just waits for the
-     next key, exactly like `"` today. No new toggle.
-   - Risk: which-key's register list includes non-macro registers (`"`, `+`, `%`, …). Accepted: the same
-     list as `"`, and `@:` (repeat last command) is a real Vim feature.
+2. **No `@` register popup (dropped in §2, user's call).** The plan was one which-key spec entry
+   `{ "@", mode = "n", plugin = "registers" }`. It works for `@q`, `3@q` and slow `@@`, but `@q` then
+   `@@ @@ @@` typed ~150 ms apart edited the wrong lines (`a;,b,c;,d,e;` instead of `a;,b;,c;,d;,e`):
+   after a macro `reg_executing()` stays set until the next typed key, which-key's trigger fires in that
+   state and a stray `<Cmd>…<CR>` moves the cursor down. A custom `@` map with a fallback was offered and
+   declined (still a remap of `@`). `@` stays fully default; the picker (decision 3) shows the macros,
+   and which-key's existing `"` popup lists registers.
 3. **Macro picker `<leader>fm`: a custom snacks source `macros` in `opts.picker.sources`.** `fm` = "find
    macros", free in both standalone and (unused) VSCode keymaps, under the existing `f` group.
    - `finder`: registers `a`–`z` with non-empty content; `text`/`value` = `vim.fn.keytrans(getreg(r))`
      (readable: `<Esc>`, `<CR>`, `<lt>`), `preview.text` the same readable text. Same `register` format as
      snacks' `registers` source. Built in `lua/config/macros.lua` so it can be tested without the picker.
    - `confirm`: close the picker, then, scheduled so it runs in the original window in normal mode, feed
-     `@{reg}` with the `@` itself not remapped (`normal! @q` or `nvim_feedkeys("@q", "n", …)`), so
-     which-key's `@` trigger from decision 2 doesn't catch it. The register's contents are still
-     remappable, as with a typed `@q` (verify headless with a macro that uses a user mapping).
+     `@{reg}` (`nvim_feedkeys("@q", "n", …)`), so a mapping on `@` can never catch it. The register's
+     contents are still remappable, as with a typed `@q` (verify headless with a macro that uses a user
+     mapping).
    - `<C-e>` (input `i`/`n`, list) → the edit action (decision 4).
    - Layout: the shared preset rule the other centred pickers use. Lazy key in `plugins/snacks.lua` with
      `desc`, so snacks still loads on demand.
@@ -87,9 +86,8 @@ What the research found, on Neovim 0.12.6 with the pinned plugins:
 
 ## Risks / Trade-offs
 
-- [which-key `@` trigger and counts] → which-key replays the count it captured; verify `3@q` and `@@`
-  headless. If the trigger misbehaves, fall back to dropping decision 2 (the picker still covers listing)
-  and stop to ask.
+- [Typed keys racing a just-finished macro] → that's what sank the `@` popup (decision 2); nothing in this
+  change maps `q`, `Q` or `@` any more. §3 re-runs the quick `@q @@ @@ @@` check.
 - [Running a macro from the picker in the wrong window/mode] → schedule it after close and check
   `nvim_get_current_win()` equals the window the picker started from.
 - [Macros that contain mapped keys behave differently when run from the picker] → only the `@` is fed

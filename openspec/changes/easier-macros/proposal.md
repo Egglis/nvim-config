@@ -16,17 +16,17 @@ editable. The user chose "defaults + small glue" over `chrisgrieser/nvim-recorde
 - **Recording indicator** (standalone): while a macro is being recorded, the statusline shows a
   bright `REC @q` block; it disappears as soon as recording stops. This also covers a future
   `cmdheight=0`, which hides Neovim's own "recording @q" message.
-- **Register list on `@`** (standalone, normal mode): with the key-hints popup on, pressing `@` shows
-  the registers and their contents, like which-key already does for `"`. Pressing a register key runs
-  that macro as usual. Visual `@` (Neovim's run-on-each-line) is untouched.
+- ~~Register list on `@`~~ **dropped during §2** (user's call): a which-key popup on `@` broke `@@`
+  typed at normal speed after a macro (wrong lines edited). `@` stays fully default; the picker below
+  covers seeing macros, and which-key's `"` popup still lists registers.
 - **Macro picker `<leader>fm`** (standalone): a snacks picker of the `a`–`z` registers that hold
   something, shown readably (`<Esc>`, `<CR>` …) with a preview. `<CR>` runs the macro in the window you
   came from; `<C-e>` opens it in a small editor float, where `:w` saves the edited keys back into the
   register.
 - No change to `q`, `Q`, `@`, `@@` or any default macro behaviour; nothing in `shared.lua` or
   `vscode.lua`.
-- Docs: `AGENTS.md` (a Macros section with the built-in flow, the new keys, the plugin row's lazy keys,
-  the which-key note), readme TODO ticked.
+- Docs: `AGENTS.md` (a Macros section with the built-in flow, the new keys, the plugin row's lazy keys),
+  readme TODO ticked.
 
 Out of scope: nvim-recorder or any new plugin, macro slots, breakpoints, saving macros across restarts
 beyond Neovim's own ShaDa (named registers already persist), `cmdheight=0` itself (the "Less clutter"
@@ -36,8 +36,8 @@ TODO), and VSCode mode.
 
 ### New Capabilities
 
-- `macros`: recording indicator, register list on `@`, the macro picker and the macro editor, while the
-  default macro keys keep working.
+- `macros`: recording indicator, the macro picker and the macro editor, while the default macro keys
+  keep working.
 
 ### Modified Capabilities
 
@@ -47,7 +47,7 @@ picker as written.
 ## Impact
 
 - `lua/plugins/lualine.lua` (indicator component + refresh on `RecordingEnter`/`RecordingLeave`),
-  `lua/plugins/which-key.lua` (`@` register trigger), `lua/plugins/snacks.lua` (`<leader>fm` key and
+  `lua/plugins/snacks.lua` (`<leader>fm` key and
   a `macros` source), a new `lua/config/macros.lua` (list/format/edit helpers, no plugin requires at
   load time).
 - No new plugins or dependencies; `docs/dependencies.md`, `gates.ps1`, `gates.sh` unchanged.
