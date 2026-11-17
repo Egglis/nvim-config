@@ -51,15 +51,18 @@ See proposal.md (Why). The current state, checked on Neovim 0.12 with the pinned
 3. **`<leader>h1`–`h9` = `select({ index = n })`**, generated in a loop in the spec's `keys`. A missing
    index is checked first (`find({ index = n })`) and reported as "No mark n" at `INFO` level instead of
    grapple's raw error.
-4. **`<leader>hh` = a custom snacks source `marks`** in `opts.picker.sources` (next to `macros`):
+4. **`<leader>hh` = a custom snacks source `grapple`** in `opts.picker.sources` (next to `macros`). Named
+   `grapple`, not `marks`: snacks already ships a `marks` source (Vim marks), which a same-named
+   source would have replaced (found in §2):
    - `finder`: `require("grapple").tags()` mapped to items `{ text = "<n> <relative path>", file = path,
      pos = { cursor[1], cursor[2] } }`, in list order; `format = "file"` with the index shown first,
      `preview = "file"`, layout = the shared `centred_layout()` rule with preview. Confirm = snacks' default
      `jump` (opens the file at the saved cursor).
-   - Sorting keeps list order when the query is empty (`sort = { fields = { "idx" } }` or the matcher's
-     `keep_order`-style option; whichever snacks supports is confirmed during §1).
+   - Sorting: snacks' default `{ "score:desc", "#text", "idx" }` would put the shortest name first when
+     the query is empty; the source sets `sort = { fields = { "score:desc", "idx" } }`, so ties keep
+     list order. The number is the item's `label`, which the `file` format shows first.
    - The key is defined in `grapple.lua` (so pressing it loads grapple), and calls
-     `Snacks.picker.pick("marks")`, which loads snacks through lazy.nvim's module loader as other
+     `require("snacks").picker.pick("grapple")`, which loads snacks through lazy.nvim's module loader as other
      cross-plugin calls do. `require("grapple")` happens only inside the finder.
    - Rejected: grapple's own window for both `hh` and `he` (user chose search + window), grapple's
      telescope extension (no telescope here).
@@ -85,5 +88,5 @@ See proposal.md (Why). The current state, checked on Neovim 0.12 with the pinned
 
 ## Migration Plan
 
-None: new keys on an unused prefix. Rollback = delete `lua/plugins/grapple.lua`, the `marks` source and
+None: new keys on an unused prefix. Rollback = delete `lua/plugins/grapple.lua`, the `grapple` source and
 the which-key group; the saved lists in `stdpath("data")/grapple` can be deleted by hand.

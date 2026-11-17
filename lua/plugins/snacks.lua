@@ -534,6 +534,27 @@ return {
             list = { keys = { ["<c-e>"] = "edit_macro" } },
           },
         },
+        -- <leader>hh: grapple's file marks, numbered in list order (snacks' own "marks" source is Vim marks).
+        grapple = {
+          title = "Marks",
+          finder = function()
+            local items = {}
+            for i, tag in ipairs(require("grapple").tags() or {}) do
+              items[#items + 1] = {
+                text = i .. " " .. vim.fn.fnamemodify(tag.path, ":."),
+                label = tostring(i),
+                file = tag.path,
+                pos = tag.cursor,
+              }
+            end
+            return items
+          end,
+          format = "file",
+          preview = "file",
+          -- List order, not snacks' default shortest-text-first, when the scores tie (empty query).
+          sort = { fields = { "score:desc", "idx" } },
+          layout = { preset = centred_layout, preview = true },
+        },
         -- The explorer's own <c-c> (tcd) and <c-t> (terminal) beat the global keys above; only a
         -- source-level override wins. <c-t> = false lets the global terminal toggle through.
         explorer = {

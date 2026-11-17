@@ -63,6 +63,7 @@ nvim/
     │   ├── opencode.lua            # sudo-tee/opencode.nvim AI chat panel (+ render-markdown)
     │   ├── snacks.lua              # folke/snacks.nvim (start screen + terminal + picker + file explorer + lazygit)
     │   ├── treesitter.lua          # nvim-treesitter (main): parsers + tree-sitter highlighting
+    │   ├── grapple.lua             # File marks on <leader>h… (like VSCode's harpoon)
     │   ├── which-key.lua           # which-key popup of next keys, <leader> group names
     │   ├── precognition.lua        # Motion hints in the buffer (toggle)
     │   └── hardtime.lua            # Habit trainer: blocks repeated hjkl (toggle)
@@ -239,7 +240,7 @@ nothing.
 |------|--------|
 | `<leader>ff` | Find files |
 | `<leader>fa` | Live grep across the project (needs `rg`) |
-| `<leader>fb` | Open buffers |
+| `<leader>fb` | Open buffers (most recent first). Close buffers from it: `<C-x>` while typing, `dd` in normal mode; `<Tab>` first to select several |
 | `<leader>fh` | Help tags |
 | `<leader>fr` | Recent files |
 | `<leader>fw` | Grep the word under the cursor (n) or the selection (x) |
@@ -327,7 +328,7 @@ and used on the next start; a missing or broken file means the defaults (which-k
 
 | Keys | Action |
 |------|--------|
-| `<leader>uw` | which-key popup on/off. On: after a prefix like `<leader>` and 200 ms, a popup lists the next keys, with group names (`b` buffers, `c` code, `f` find, `g` git, `n` .NET, `o` opencode, `q` session, `t` terminal, `u` toggles). Off: no popup, but which-key still holds the prefix, so after `<leader>` it waits for the next key instead of timing out |
+| `<leader>uw` | which-key popup on/off. On: after a prefix like `<leader>` and 200 ms, a popup lists the next keys, with group names (`b` buffers, `c` code, `f` find, `g` git, `h` marks, `n` .NET, `o` opencode, `q` session, `t` terminal, `u` toggles). Off: no popup, but which-key still holds the prefix, so after `<leader>` it waits for the next key instead of timing out |
 | `<leader>up` | precognition on/off: motion hints around the cursor in the current buffer. The first-word and end-of-line spots are labelled `B`/`E` (the `shared.lua` keys) instead of `^`/`$`, and the WORD-motion `B`/`E` hints are hidden |
 | `<leader>uh` | hardtime on/off: pressing `h`/`j`/`k`/`l` (and similar) more than 3 times within a second is blocked with a hint; arrow keys are disabled. Not in snacks windows (pickers, explorer, terminals, lazygit) or the OpenCode panel; the mouse keeps working |
 
@@ -402,6 +403,25 @@ Insert/select mode. Sources: lazydev, LSP, path, buffer. LSP snippets expand via
 
 ---
 
+### Marks — `lua/plugins/grapple.lua`
+Standalone only (in VSCode the same keys run vscode-harpoon). A short, hand-picked list of files per
+project with fixed numbers, instead of tabs or a buffer bar (grapple.nvim, lazy on the keys and
+`:Grapple`; no icons). Project = the git root of Neovim's cwd, else the cwd (a custom grapple scope,
+re-resolved on `DirChanged`, so `:cd` switches lists at once). Lists are saved in
+`stdpath("data")/grapple` (one JSON file per project), so Windows and WSL keep separate lists.
+
+| Keys | Action |
+|------|--------|
+| `<leader>ha` | Mark the current file (added at the end), or unmark it if it's marked. Notifies "Marked 3: name" / "Unmarked name"; buffers without a file: "Only files can be marked" |
+| `<leader>hh` | Picker of the marks (snacks source `grapple`), numbered in list order, with a preview; `<CR>` opens the file at its saved cursor. No marks: snacks says "No results found" |
+| `<leader>he` | grapple's window with the list: `<CR>` or `1`–`9` opens, `dd` removes, moving lines reorders, `R` renames, `<C-s>` / `\|` open in a split; `q`/`<Esc>` close and apply the edits |
+| `<leader>h1`–`h9` | Open mark N at its saved cursor; "No mark N" when there's none |
+
+Marking never opens or closes buffers; unmarking keeps the buffer open. Numbers shift when a mark is
+removed (`<leader>he` shows the order). Nothing is shown in the top bar or statusline.
+
+---
+
 ### Macros
 The default keys are kept as they are (in both environments); this config only makes macros visible.
 
@@ -451,7 +471,8 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `tris203/precognition.nvim` | `precognition.lua` | Motion hints in the buffer (`<leader>up`; loads at start only when saved on) |
 | `m4xshen/hardtime.nvim` | `hardtime.lua` | Habit trainer (`<leader>uh`; loads at start only when saved on) |
 | `MunifTanjim/nui.nvim` | `hardtime.lua` | hardtime's dependency (its `:Hardtime report` window) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`, the `<leader>fm` macro list under `picker.sources.macros`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, LSP list keys, `vim.ui.select`) |
+| `cbochs/grapple.nvim` | `grapple.lua` | File marks per project on `<leader>h…` (lazy: those keys, `:Grapple`; see Marks) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`, the `<leader>fm` macro list under `picker.sources.macros`, the `<leader>hh` mark list under `picker.sources.grapple`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, `<leader>hh` (via `require("snacks")`), LSP list keys, `vim.ui.select`) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---

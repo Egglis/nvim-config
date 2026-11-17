@@ -35,6 +35,14 @@ end
 local keys = {
   { "<leader>ha", toggle_mark, desc = "[H]arpoon: [A]dd/remove file mark" },
   {
+    "<leader>hh",
+    function()
+      -- Not the Snacks global: snacks may not be loaded yet.
+      require("snacks").picker.pick("grapple")
+    end,
+    desc = "[H]arpoon: search marks",
+  },
+  {
     "<leader>he",
     function()
       require("grapple").toggle_tags()

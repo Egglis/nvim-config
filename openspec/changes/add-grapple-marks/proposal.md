@@ -45,7 +45,7 @@ None. The picker spec's general rules (closing, on-demand loading, absent in VSC
 ## Impact
 
 - New `lua/plugins/grapple.lua` (spec, lazy on its keys and `:Grapple`).
-- `lua/plugins/snacks.lua`: a `marks` picker source for `<leader>hh` (the key itself lives in
+- `lua/plugins/snacks.lua`: a `grapple` picker source for `<leader>hh` (the key itself lives in
   `grapple.lua`, which loads snacks on demand like the other picker keys do).
 - `lua/plugins/which-key.lua`: `h` group.
 - `lazy-lock.json` gains grapple. No new external tool: `docs/dependencies.md`, `gates.ps1`, `gates.sh`

@@ -4,7 +4,6 @@ Also a powershell $profile file!
 Runs on Windows and in WSL (Fedora): see [docs/wsl.md](docs/wsl.md) for the WSL setup.
 
 ## TODO
-
 - [x] Custom color theming based on which repo/workspace I am within should maybe use the .vscode/settings that already exists
 - [x] Git tree/sidebar for simple git actions, probably some plugin
 - [x] Simple file treeview with symbols and git tracking: snacks explorer on `<leader>fe`, a centred float with a preview (like the git pickers), or a right sidebar on `<leader>e`, git and diagnostic marks and add/rename/move/copy/delete (to the Recycle Bin). Plain snacks glyphs, no icon plugin
@@ -24,6 +23,8 @@ Runs on Windows and in WSL (Fedora): see [docs/wsl.md](docs/wsl.md) for the WSL 
 - [x] .NET user secrets: jump from a `.csproj` straight to its `secrets.json` (by `UserSecretsId`), like the VSCode extension (`<leader>ns`)
 - [x] Continue where I left off: per-project session saved on exit (also `:qa!`), restored with `s` on the start screen, `<leader>qs`, `:SessionRestore` or `nvc` in pwsh/zsh
 - [x] Remember less-used shortcuts: which-key popup while typing (`<leader>uw`), precognition motion hints (`<leader>up`) and the hardtime habit trainer (`<leader>uh`); each toggles with a notification and is remembered across restarts. `<leader>fp`/`<leader>fc` are the searchable cheatsheet
-- [ ] Show open buffers: buffer list in the repo-accent top bar (lualine `buffers` component), plus Harpoon 2 with the same `<leader>h…` keys as VSCode
+- [x] Easier buffer navigation without tabs: file marks per project with grapple.nvim on the same keys as VSCode's harpoon (`<leader>ha` mark/unmark, `<leader>hh` search the marks, `<leader>he` edit the list, `<leader>h1`–`h9` jump). `<leader>fb` lists buffers and closes them with `<C-x>`/`dd`
 - [x] Faster scrolling in big C# files: Neovim 0.12, tree-sitter highlighting for C#/XML/JSON/PowerShell/Python instead of regex syntax, and cheaper cursor moves (bracket matching capped at 20 ms, regex highlighting stops at column 300). Holding `j` in a 6,000-line C# file: ~1.5–2.1 → 0.34 ms per step
 - [x] Move everything to WSL 2.0 instead, make it cross compatible! Same `master` on Windows and in WSL Fedora: per-platform shell, win32yank clipboard and Windows browser in WSL, trash on delete, `gates.sh`, a zsh profile with the pwsh aliases and prompt, and the setup in [docs/wsl.md](docs/wsl.md)
+
+
