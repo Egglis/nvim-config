@@ -408,6 +408,9 @@ snacks writes them into `stdpath("cache")/lazygit-theme.yml`.
 
 ### Completion (nvim-cmp) — `lua/plugins/cmp.lua`
 Insert/select mode. Sources: lazydev, LSP, path, buffer. LSP snippets expand via Neovim's built-in `vim.snippet`.
+Menu and documentation have rounded borders; each item is `icon text Kind` (icons from snacks' picker
+kind icons, the same as the LSP symbol pickers; the kind name dimmed on the right). Ghost text: the rest
+of the selected item shows greyed out after the cursor.
 
 | Keys | Action |
 |------|--------|
@@ -479,7 +482,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `mason-org/mason-lspconfig.nvim` | `lsp.lua` | Installs + enables servers (v2, `automatic_enable`) |
 | `j-hui/fidget.nvim` | `lsp.lua` | LSP progress spinner |
 | `folke/lazydev.nvim` | `lsp.lua` | Neovim API types for `lua_ls` (loads on `ft=lua`; also a cmp source) |
-| `hrsh7th/nvim-cmp` | `cmp.lua` | Completion engine |
+| `hrsh7th/nvim-cmp` | `cmp.lua` | Completion engine (rounded borders, snacks kind icons, ghost text) |
 | `hrsh7th/cmp-nvim-lsp` | `cmp.lua` | LSP completion source |
 | `hrsh7th/cmp-path` | `cmp.lua` | Path completion source |
 | `hrsh7th/cmp-buffer` | `cmp.lua` | Buffer-words completion source |

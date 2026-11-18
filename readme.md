@@ -7,13 +7,13 @@ Runs on Windows and in WSL (Fedora): see [docs/wsl.md](docs/wsl.md) for the WSL 
 - [x] Custom color theming based on which repo/workspace I am within should maybe use the .vscode/settings that already exists
 - [x] Git tree/sidebar for simple git actions, probably some plugin
 - [x] Simple file treeview with symbols and git tracking: snacks explorer on `<leader>fe`, a centred float with a preview (like the git pickers), or a right sidebar on `<leader>e`, git and diagnostic marks and add/rename/move/copy/delete (to the Recycle Bin). Plain snacks glyphs, no icon plugin
-- [ ] Other UI improvements for a clean and simpler interface
+- [x] Other UI improvements for a clean and simpler interface
   - [x] Start screen on a plain `nvim`: repo name, quick keys, recent files and projects
   - [x] Less clutter: trim lualine (drop `encoding`/`fileformat`), `cmdheight=0`, no `showmode` (lualine shows it), hide the `~` end-of-buffer markers
   - [x] Key guidance: which-key popup with named `<leader>` groups (`f` find, `t` terminal, `o` opencode, `b` buffers, `g` git …), toggled with `<leader>uw`
   - [x] Nicer notifications/messages: `snacks.notifier` for `vim.notify` (maybe `noice` for the cmdline, but it's heavier)
   - [x] Editor visuals: indent guides (`snacks.indent`) and highlight other uses of the word under the cursor (`snacks.words`). Git signs in the gutter belong to the git TODO
-  - [ ] Completion polish: kind icons, borders and ghost text in nvim-cmp
+  - [x] Completion polish: kind icons, borders and ghost text in nvim-cmp
 - [x] Terminal plugin for running scripts and projects directly within the same session
 - [x] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
 - [x] Better search in the current file than the standard `/`: matches stay highlighted until `<Esc>`, `n`/`N` centred, `[3/7]` count in the statusline, and `<C-f>` fuzzy-searches the file's lines in a centred picker with a preview; like VSCode it reopens with the last query, `<C-f>` again clears it, and in visual mode the selection is the query
