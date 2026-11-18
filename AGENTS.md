@@ -33,6 +33,7 @@ nvim/
 ├── openspec/                       # OpenSpec specs and changes
 ├── .opencode/                      # OpenSpec /opsx-* commands and skills
 ├── readme.md                       # Minimal readme
+├── TODO.md                         # Ideas not yet started (each becomes an OpenSpec change)
 ├── lazy-lock.json                  # Pinned plugin versions (commit lockfile)
 ├── nvim.code-workspace             # VSCode workspace for editing this config
 ├── .vscode/settings.json           # Tells VSCode Lua LSP to recognize `vim` global
