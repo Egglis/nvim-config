@@ -188,15 +188,32 @@ local start_keys = {
 
 return {
   "folke/snacks.nvim",
-  -- Plain `nvim` loads snacks at startup to draw the start screen; with a file or folder it stays lazy.
-  lazy = vim.fn.argc(-1) > 0,
-  init = function()
-    -- Load snacks on the first vim.ui.select; its picker setup then replaces this stub.
-    vim.ui.select = function(...)
-      return require("snacks").picker.select(...)
-    end
-  end,
+  -- Loaded at startup: the notifier has to replace vim.notify before anything notifies, and indent/words
+  -- attach to every buffer. The modules themselves still load on first use.
+  lazy = false,
+  priority = 1000,
   keys = {
+    {
+      "<leader>fn",
+      function()
+        Snacks.picker.notifications()
+      end,
+      desc = "[F]ind [N]otifications (history)",
+    },
+    {
+      "]]",
+      function()
+        Snacks.words.jump(vim.v.count1)
+      end,
+      desc = "Next reference of the word under the cursor",
+    },
+    {
+      "[[",
+      function()
+        Snacks.words.jump(-vim.v.count1)
+      end,
+      desc = "Previous reference of the word under the cursor",
+    },
     {
       "<leader>bd",
       function()
@@ -462,6 +479,12 @@ return {
     },
     terminal = {},
     lazygit = { config = { os = lazygit_os() } },
+    -- vim.notify as stacked popups top-right; <leader>fn lists past ones.
+    notifier = { timeout = 3000 },
+    -- Indent guides, the current block's guide highlighted (no animation, it lags on fast scrolling).
+    indent = { animate = { enabled = false } },
+    -- Other uses of the word under the cursor, from the LSP (documentHighlight); ]] / [[ jump between them.
+    words = {},
     picker = {
       -- Ctrl+c and q close a picker; <Esc> only leaves insert mode.
       win = {

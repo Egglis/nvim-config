@@ -37,6 +37,11 @@ if not vim.g.vscode then
   -- Matches stay highlighted until <Esc> (:noh, keymaps/shared.lua); VSCode keeps the shared `false`.
   opt.hlsearch = true
 
+  -- Less clutter: no command line until it's used, mode shown by lualine only, no `~` past the end of a buffer.
+  opt.cmdheight = 0
+  opt.showmode = false
+  opt.fillchars:append({ eob = " " })
+
   -- Cheaper cursor moves: bracket matching gives up after 20 ms, regex highlighting stops at column 300.
   -- matchparen reads these when it runs, after init.lua.
   vim.g.matchparen_timeout = 20

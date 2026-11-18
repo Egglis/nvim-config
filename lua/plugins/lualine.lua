@@ -16,6 +16,42 @@ local recording = {
   end,
 }
 
+-- Size of the visual selection: `4 lines`, `12 chars`, or `4x12` for a block.
+local selection = {
+  function()
+    local mode = vim.fn.mode()
+    local lines = math.abs(vim.fn.line("v") - vim.fn.line(".")) + 1
+    if mode == "\22" then
+      return ("%dx%d"):format(lines, math.abs(vim.fn.virtcol("v") - vim.fn.virtcol(".")) + 1)
+    elseif mode == "V" or lines > 1 then
+      return lines .. " lines"
+    end
+    return vim.fn.wordcount().visual_chars .. " chars"
+  end,
+  cond = function()
+    return vim.fn.mode():find("^[vV\22]") ~= nil
+  end,
+}
+
+-- `h3` when the file is grapple mark 3 (the <leader>h3 slot), or the mark's name if it was renamed.
+-- Loads grapple with the statusline, so the marks show before the first <leader>h key.
+local mark = {
+  function()
+    local ok, grapple = pcall(require, "grapple")
+    local tag = ok and grapple.name_or_index({ buffer = 0 })
+    if type(tag) == "number" then
+      return "h" .. tag
+    end
+    return tag or ""
+  end,
+  cond = function()
+    return vim.bo.buftype == "" and vim.api.nvim_buf_get_name(0) ~= ""
+  end,
+}
+
+-- Path from the cwd (the repo root, usually), so same-named files in different folders can be told apart.
+local filename = { "filename", path = 1, symbols = { modified = "[+]", readonly = "[RO]" } }
+
 return {
   "nvim-lualine/lualine.nvim",
   -- See `:help lualine.txt`
@@ -29,7 +65,12 @@ return {
       },
       sections = {
         lualine_a = { require("config.repo_accent").component(), "mode", recording },
-        lualine_x = { "searchcount", "encoding", "fileformat", "filetype" },
+        lualine_c = { filename, mark },
+        lualine_x = { "searchcount", selection, { "lsp_status", icon = "" }, "filetype" },
+      },
+      inactive_sections = {
+        lualine_c = { filename },
+        lualine_x = { "location" },
       },
     }
   end,

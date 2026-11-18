@@ -9,6 +9,7 @@ return {
       on_highlights = function(hl, colors)
         hl.LineNrAbove = { fg = colors.blue, bold = true }
         hl.LineNrBelow = { fg = colors.blue, bold = true }
+        hl.WinSeparator = { fg = colors.border_highlight }
       end,
     })
     require("tokyonight").load()

@@ -201,7 +201,7 @@ User command `:Format` → `vim.lsp.buf.format()` (same as `<leader>cf`).
 
 ### Start screen — `lua/plugins/snacks.lua`
 Standalone only. snacks dashboard, shown when Neovim starts with **no** file or folder argument (plain
-`nvim`); `nvim file` and `nvim .` open as before. Snacks loads at startup only in that case.
+`nvim`); `nvim file` and `nvim .` open as before.
 
 - **Header:** the repo name in the repo's accent color (same repo as the top bar), or "Neovim" outside a
   repo.
@@ -227,10 +227,8 @@ Standalone only. snacks dashboard, shown when Neovim starts with **no** file or 
 ---
 
 ### Pickers — `lua/plugins/snacks.lua`
-Standalone only. snacks.nvim picker. On a plain `nvim` (no file or folder argument) snacks loads at
-startup for the start screen; otherwise it's lazy-loaded on the keys below, the LSP list keys, or the
-first `vim.ui.select` (e.g. code actions): an `init` stub loads snacks, whose picker then replaces
-`vim.ui.select`. opencode.nvim uses it too (`preferred_picker = "snacks"`).
+Standalone only. snacks.nvim picker (snacks loads at startup, see Notifications). Its picker also
+replaces `vim.ui.select` (e.g. code actions). opencode.nvim uses it too (`preferred_picker = "snacks"`).
 
 Closing: `Ctrl+c` closes a picker while typing and in normal mode; `q` closes it in normal mode. `<Esc>`
 never closes it: while typing it switches to normal mode (move with `j`/`k`); in normal mode it does
@@ -265,7 +263,7 @@ like `:edit`, is typed on the command line for you to finish.
 
 ### File explorer — `lua/plugins/snacks.lua`
 Standalone only (in VSCode `<leader>fe` focuses VSCode's explorer and `<leader>e` is unmapped). snacks' explorer, a picker source, so
-it follows the picker conventions. Lazy-loaded on `<leader>fe`/`<leader>e`; no new plugin, plain snacks glyphs (no
+it follows the picker conventions. Opened with `<leader>fe`/`<leader>e`; no new plugin, plain snacks glyphs (no
 icon plugin). netrw is not replaced (no `opts.explorer`), so `nvim .` opens as before.
 
 - `<leader>fe` toggles a **centred float laid out like the git pickers**: the tree of Neovim's cwd (with
@@ -338,11 +336,29 @@ their toggle key. hardtime's own setup runs 500 ms after it loads, so blocking s
 
 ---
 
+### Notifications & editor visuals — `lua/plugins/snacks.lua`
+Standalone only. This is why snacks loads at startup (`lazy = false`, `priority = 1000`): its notifier
+must replace `vim.notify` before anything notifies.
+
+- **Notifications:** `vim.notify` (marks, toggles, plugins, LSP) shows as stacked popups top-right, gone
+  after 3 s. `<leader>fn` lists past ones in a picker. Plain `:echo` messages still go to the (hidden,
+  `cmdheight=0`) command line; `:messages` shows them.
+- **Indent guides** (`snacks.indent`): a thin line per indent level, the current block's line
+  highlighted; no animation. Only in file buffers (not pickers, terminals, the start screen).
+- **Word highlights** (`snacks.words`): other uses of the symbol under the cursor are highlighted, from
+  the LSP (`documentHighlight`), so only in buffers with a server (Lua, JSON, C#).
+
+| Keys | Action |
+|------|--------|
+| `<leader>fn` | Notification history picker |
+| `]]` / `[[` | Next / previous use of the symbol under the cursor (snacks.words; replaces Vim's section jumps, normal mode only) |
+
+---
+
 ### Terminal — `lua/plugins/snacks.lua`
 Standalone only (in VSCode the same keys drive VSCode's terminal). Snacks terminal running `vim.o.shell`
-(pwsh with the profile on Windows, the login shell on Linux) in Neovim's cwd. Lazy-loaded on the keys
-below (on a plain `nvim` snacks is already loaded for the start screen, but no shell starts until a key is
-used). Hiding keeps the process running.
+(pwsh with the profile on Windows, the login shell on Linux) in Neovim's cwd. No shell starts until a
+key below is used. Hiding keeps the process running.
 
 | Keys | Mode | Action |
 |------|------|--------|
@@ -364,7 +380,7 @@ the `<leader>tf` ones), not the lazygit float.
 
 ### Git — `lua/plugins/snacks.lua`
 Standalone only. `<leader>gd`/`gr`/`gi` stay the LSP keys (see LSP); the git keys use the other letters,
-so none of them waits on `timeoutlen`. Lazy-loaded on the keys, like the pickers. Needs `lazygit`.
+so none of them waits on `timeoutlen`. Needs `lazygit`.
 
 | Keys | Action |
 |------|--------|
@@ -418,7 +434,9 @@ re-resolved on `DirChanged`, so `:cd` switches lists at once). Lists are saved i
 | `<leader>h1`–`h9` | Open mark N at its saved cursor; "No mark N" when there's none |
 
 Marking never opens or closes buffers; unmarking keeps the buffer open. Numbers shift when a mark is
-removed (`<leader>he` shows the order). Nothing is shown in the top bar or statusline.
+removed (`<leader>he` shows the order). The statusline shows `h3` after the file name when the current
+file is mark 3 (the mark's name if it was renamed with `R`); that component loads grapple when the first
+file buffer is shown, so marks show before any `<leader>h` key.
 
 ---
 
@@ -455,7 +473,7 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | Plugin | File | Purpose |
 |--------|------|---------|
 | `folke/tokyonight.nvim` | `theme.lua` | Colorscheme (`night` style) |
-| `nvim-lualine/lualine.nvim` | `lualine.lua` | Statusline |
+| `nvim-lualine/lualine.nvim` | `lualine.lua` | Statusline: repo block, mode, `REC @q` · branch, diff, diagnostics · path from the cwd with `[+]`/`[RO]`, grapple mark (`h3`) · search count, selection size in visual mode (`4 lines`/`12 chars`/`4x12`), attached LSP servers (`roslyn_ls` + spinner/`✓` progress), filetype · progress, location. No encoding/fileformat |
 | `neovim/nvim-lspconfig` | `lsp.lua` | LSP client configs |
 | `mason-org/mason.nvim` | `lsp.lua` | LSP/tool installer UI |
 | `mason-org/mason-lspconfig.nvim` | `lsp.lua` | Installs + enables servers (v2, `automatic_enable`) |
@@ -471,8 +489,8 @@ All plugin specs live in `lua/plugins/`. lazy.nvim auto-discovers every file in 
 | `tris203/precognition.nvim` | `precognition.lua` | Motion hints in the buffer (`<leader>up`; loads at start only when saved on) |
 | `m4xshen/hardtime.nvim` | `hardtime.lua` | Habit trainer (`<leader>uh`; loads at start only when saved on) |
 | `MunifTanjim/nui.nvim` | `hardtime.lua` | hardtime's dependency (its `:Hardtime report` window) |
-| `cbochs/grapple.nvim` | `grapple.lua` | File marks per project on `<leader>h…` (lazy: those keys, `:Grapple`; see Marks) |
-| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float and buffer delete (`opts = { dashboard, terminal, lazygit, picker }`, the explorer under `picker.sources.explorer`, the `<leader>fm` macro list under `picker.sources.macros`, the `<leader>hh` mark list under `picker.sources.grapple`; loaded at startup only on a plain `nvim`, else lazy: `<leader>t…`, `<C-t>`, `<leader>f…` (incl. `<leader>fe`), `<C-f>`, `<leader>e`, `<leader>g…`, `<leader>bd/bo`, `<leader>hh` (via `require("snacks")`), LSP list keys, `vim.ui.select`) |
+| `cbochs/grapple.nvim` | `grapple.lua` | File marks per project on `<leader>h…` (lazy: those keys, `:Grapple`, or the statusline's mark component on the first file buffer; see Marks) |
+| `folke/snacks.nvim` | `snacks.lua` | Start screen, terminal panel, pickers, file explorer, lazygit float, buffer delete, notifications, indent guides and word highlights (`opts = { dashboard, terminal, lazygit, notifier, indent, words, picker }`, the explorer under `picker.sources.explorer`, the `<leader>fm` macro list under `picker.sources.macros`, the `<leader>hh` mark list under `picker.sources.grapple`; **not lazy**, `priority = 1000`, so the notifier replaces `vim.notify` before anything notifies; each snacks module still loads on first use) |
 | `nvim-treesitter/nvim-treesitter` | `treesitter.lua` | `main` branch, **not lazy** (the branch doesn't support it). Installs the C#, XML, JSON, PowerShell and Python parsers and starts tree-sitter highlighting for them (see Syntax Highlighting) |
 
 ---
@@ -586,7 +604,9 @@ Standalone only. Tells terminal windows apart without touching the colorscheme:
 
 Standalone only (not in VSCode): `hlsearch` (see above; the statusline shows the match count, e.g.
 `[3/7]`, while matches are highlighted: lualine's `searchcount`, first in `lualine_x`),
-`clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cursorline`, `splitright`, `splitbelow`,
+`clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cmdheight=0` (the command line appears only
+while typing `:`/`/` or for messages), `showmode=false` (lualine shows the mode), `fillchars` `eob: ` (no `~`
+past the end of a buffer), `cursorline`, `splitright`, `splitbelow`,
 `synmaxcol=300` (regex highlighting stops at column 300), `g:matchparen_timeout`/`g:matchparen_insert_timeout`
 = 20 ms (bracket matching gives up sooner; Neovim's defaults are 300/60), `.props`/`.targets` files → `xml`
 filetype, every `.json` file → `jsonc` (JSON with comments, so `jsonls` doesn't flag `//` comments in

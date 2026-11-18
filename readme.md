@@ -9,13 +9,11 @@ Runs on Windows and in WSL (Fedora): see [docs/wsl.md](docs/wsl.md) for the WSL 
 - [x] Simple file treeview with symbols and git tracking: snacks explorer on `<leader>fe`, a centred float with a preview (like the git pickers), or a right sidebar on `<leader>e`, git and diagnostic marks and add/rename/move/copy/delete (to the Recycle Bin). Plain snacks glyphs, no icon plugin
 - [ ] Other UI improvements for a clean and simpler interface
   - [x] Start screen on a plain `nvim`: repo name, quick keys, recent files and projects
-  - [ ] Less clutter: trim lualine (drop `encoding`/`fileformat`), `cmdheight=0`, no `showmode` (lualine shows it), hide the `~` end-of-buffer markers
-  - [ ] Consistent floating windows: rounded borders on hover, signature help, the cmp menu/docs, `:Lazy` and `:Mason`
+  - [x] Less clutter: trim lualine (drop `encoding`/`fileformat`), `cmdheight=0`, no `showmode` (lualine shows it), hide the `~` end-of-buffer markers
   - [x] Key guidance: which-key popup with named `<leader>` groups (`f` find, `t` terminal, `o` opencode, `b` buffers, `g` git …), toggled with `<leader>uw`
-  - [ ] Nicer notifications/messages: `snacks.notifier` for `vim.notify` (maybe `noice` for the cmdline, but it's heavier)
-  - [ ] Editor visuals: indent guides (`snacks.indent`) and highlight other uses of the word under the cursor (`snacks.words`). Git signs in the gutter belong to the git TODO
+  - [x] Nicer notifications/messages: `snacks.notifier` for `vim.notify` (maybe `noice` for the cmdline, but it's heavier)
+  - [x] Editor visuals: indent guides (`snacks.indent`) and highlight other uses of the word under the cursor (`snacks.words`). Git signs in the gutter belong to the git TODO
   - [ ] Completion polish: kind icons, borders and ghost text in nvim-cmp
-  - [ ] Harmonize lazygit with the rest: it looks very different from the pickers/floats (border, colors, icons, layout), make it match the tokyonight/snacks look and the repo accent
 - [x] Terminal plugin for running scripts and projects directly within the same session
 - [x] Add a open recent projects directly in neovim that lists all previous neovim repo/sessions similar to vscode
 - [x] Better search in the current file than the standard `/`: matches stay highlighted until `<Esc>`, `n`/`N` centred, `[3/7]` count in the statusline, and `<C-f>` fuzzy-searches the file's lines in a centred picker with a preview; like VSCode it reopens with the last query, `<C-f>` again clears it, and in visual mode the selection is the query
