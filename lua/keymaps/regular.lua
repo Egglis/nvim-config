@@ -45,4 +45,12 @@ return function()
   end, { desc = "Restore this project's [S]ession" })
   vim.keymap.set("n", "n", "nzzzv", { desc = "Next search match, centred" })
   vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search match, centred" })
+  -- Ctrl+æ: Windows Terminal sends it as F14 (windows-terminal/neovim.json); a plain Ctrl+æ never reaches Neovim.
+  -- Toggles a terminal between terminal mode and normal mode.
+  vim.keymap.set("t", "<F14>", "<C-\\><C-n>", { desc = "Terminal: normal mode (Ctrl+æ)" })
+  vim.keymap.set("n", "<F14>", function()
+    if vim.bo.buftype == "terminal" then
+      vim.cmd.startinsert()
+    end
+  end, { desc = "Terminal: back to terminal mode (Ctrl+æ)" })
 end

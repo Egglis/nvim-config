@@ -41,6 +41,9 @@ nvim/
 │   └── Microsoft.PowerShell_profile.ps1  # PowerShell profile (aliases, oh-my-posh)
 ├── shell/
 │   └── .zshrc                      # zsh profile for Linux/WSL (same aliases, oh-my-posh); ~/.zshrc links to it
+├── windows-terminal/
+│   ├── neovim.json                 # Only the Neovim-related Windows Terminal actions + key bindings (Ctrl+ø zoom, Ctrl+æ normal mode)
+│   └── install.ps1                 # Merges neovim.json into the live Windows Terminal settings.json (from WSL: pwsh.exe -ExecutionPolicy Bypass)
 └── lua/
     ├── config/
     │   ├── options.lua             # All vim options (clipboard only in standalone)
@@ -168,6 +171,7 @@ Active only in standalone Neovim.
 | Keys | Mode | Action |
 |------|------|--------|
 | `<M-q>` (Alt+Q) | n | Go back to the last buffer (`:b#`). Windows Terminal's own `alt+q` (Close pane) binding was removed so the key reaches Neovim |
+| `Ctrl+æ` (`<F14>`) | t, n | Toggle a terminal between terminal mode and normal mode (see Terminal) |
 | `<leader>ns` | n | Open the .NET user secrets (`%APPDATA%\Microsoft\UserSecrets\<UserSecretsId>\secrets.json`) of the current `.csproj`, else the nearest one above the current file/cwd. Creates the file as `{}` if missing; warns if there's no `.csproj` or no `<UserSecretsId>` |
 | `<leader>bd` | n | Close the current buffer, keeping the window (`Snacks.bufdelete`; defined in `plugins/snacks.lua`) |
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
@@ -369,10 +373,11 @@ key below is used. Hiding keeps the process running.
 | `N<leader>tt` | n | Same for terminal N (e.g. `2<leader>tt`) |
 | `<leader>tf` | n | Focus a terminal in the current file's folder (one per folder; Neovim's cwd for buffers with no file); in a terminal it hides it |
 | `<leader>tø` | n | Zoom: move the current terminal out of its split into a centred float (90% of the screen, rounded border, editor dimmed behind, the mode shown in the bottom border); again moves it back to the split. Outside a terminal it opens terminal 1 (`N<leader>tø`: terminal N) zoomed |
-| `Ctrl+ø` | n, t | Same as `<leader>tø`, also while typing in the terminal. Windows Terminal sends Ctrl+ø as a plain `ø`, so its `settings.json` binds `ctrl+sc(39)` (the ø key) to `sendInput` `\u001b[25~`, which Neovim reads as `<F13>`; the mapping is on `<F13>`. Without that binding Ctrl+ø just types `ø`. (Alt+z is Windows Terminal's own pane zoom and never reaches Neovim) |
+| `Ctrl+ø` | n, t | Same as `<leader>tø`, also while typing in the terminal. Windows Terminal sends Ctrl+ø as a plain `ø`, so its `settings.json` binds `ctrl+sc(39)` (the ø key) to `sendInput` `\u001b[25~`, which Neovim reads as `<F13>`; the mapping is on `<F13>`. That binding lives in `windows-terminal/neovim.json`; `pwsh windows-terminal/install.ps1` merges it into the live settings. Without it Ctrl+ø just types `ø`. (Alt+z is Windows Terminal's own pane zoom and never reaches Neovim) |
 | `<leader>tr` | n | Move all terminals back to a right split (default) |
 | `<leader>tb` | n | Move all terminals to the bottom (remembered for the session) |
 | `<Esc><Esc>` | t | Terminal → normal mode (snacks' default: two `<Esc>` in quick succession; a single `<Esc>` reaches the program after a short delay). `<C-\><C-n>` (built-in) always works too |
+| `Ctrl+æ` | t, n | Toggle: terminal mode → normal mode at once, and in a terminal's normal mode back to terminal mode (elsewhere it does nothing). Any terminal buffer (`keymaps/regular.lua`). Windows Terminal binds `ctrl+sc(40)` (the æ key) to `sendInput` `\u001b[26~`, read as `<F14>` (`windows-terminal/neovim.json`) |
 | `q` | n (in terminal) | Hide the panel |
 
 A terminal belongs to the cwd it was opened in: after `:cd`, `<leader>tt` opens a new one; the old one

@@ -1,0 +1,16 @@
+{
+  "actions": [
+    {
+      "command": { "action": "sendInput", "input": "\u001b[25~" },
+      "id": "User.NvimTerminalZoom"
+    },
+    {
+      "command": { "action": "sendInput", "input": "\u001b[26~" },
+      "id": "User.NvimTerminalNormal"
+    }
+  ],
+  "keybindings": [
+    { "id": "User.NvimTerminalZoom", "keys": "ctrl+sc(39)" },
+    { "id": "User.NvimTerminalNormal", "keys": "ctrl+sc(40)" }
+  ]
+}
