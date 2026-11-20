@@ -42,6 +42,19 @@ if not vim.g.vscode then
   opt.showmode = false
   opt.fillchars:append({ eob = " " })
 
+  -- Code doesn't wrap (a narrow window would wrap nearly every line); long lines scroll sideways.
+  -- Prose wraps at word boundaries, keeping the indent. The OpenCode panel sets its own wrap.
+  opt.wrap = false
+  opt.sidescrolloff = 8
+  opt.linebreak = true
+  opt.breakindent = true
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "markdown", "text", "gitcommit" },
+    callback = function()
+      vim.opt_local.wrap = true
+    end,
+  })
+
   -- Cheaper cursor moves: bracket matching gives up after 20 ms, regex highlighting stops at column 300.
   -- matchparen reads these when it runs, after init.lua.
   vim.g.matchparen_timeout = 20

@@ -77,6 +77,81 @@ local function toggle_terminal()
   Snacks.terminal.focus(nil, { win = { position = position } })
 end
 
+-- Zoom: the terminal leaves its split for a large float and goes back when the float closes. A terminal
+-- can't be in both (Neovim sizes it to the smallest window showing it), so it moves rather than copies.
+local zoom_opts = { position = "float", border = "rounded", width = 0.9, height = 0.9, backdrop = 60, zindex = 50 }
+local zoom_win ---@type integer?
+
+-- Floats have no statusline, so the zoomed float shows the mode in its bottom border, coloured like
+-- lualine's mode block.
+local function zoom_footer()
+  if not (zoom_win and vim.api.nvim_win_is_valid(zoom_win)) then
+    return
+  end
+  local ok, label = pcall(function()
+    return require("lualine.utils.mode").get_mode()
+  end)
+  local ok_hl, suffix = pcall(function()
+    return require("lualine.highlight").get_mode_suffix()
+  end)
+  local footer = {
+    { " " .. (ok and label or vim.api.nvim_get_mode().mode) .. " ", ok_hl and "lualine_a" .. suffix or "FloatFooter" },
+  }
+  vim.api.nvim_win_set_config(zoom_win, { footer = footer, footer_pos = "center" })
+end
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+  group = vim.api.nvim_create_augroup("terminal_zoom", { clear = true }),
+  callback = function()
+    if vim.api.nvim_get_current_win() == zoom_win then
+      zoom_footer()
+    end
+  end,
+})
+
+local function zoom_terminal()
+  local buf = vim.api.nvim_get_current_buf()
+  local term
+  for _, t in ipairs(Snacks.terminal.list()) do
+    if t.buf == buf and vim.b[buf].snacks_terminal.cmd == nil then
+      term = t
+    end
+  end
+  -- Outside a terminal: the one <leader>tt would focus (N<leader>tø for terminal N).
+  term = term or Snacks.terminal.get(nil, { win = { position = position } })
+  ---@cast term snacks.win
+
+  if term.opts.position ~= "float" then
+    if term:valid() then
+      term:hide()
+    end
+    local saved = { wo = { winfixwidth = term.opts.wo.winfixwidth, winfixheight = term.opts.wo.winfixheight } }
+    for k in pairs(zoom_opts) do
+      saved[k] = term.opts[k]
+    end
+    local on_close = term.opts.on_close
+    -- Any close (unzoom, <C-t>, q, <leader>tr/tb, the shell exiting) puts the split options back.
+    term.opts.on_close = function(self)
+      for k in pairs(zoom_opts) do
+        self.opts[k] = saved[k]
+      end
+      self.opts.wo.winfixwidth, self.opts.wo.winfixheight = saved.wo.winfixwidth, saved.wo.winfixheight
+      self.opts.on_close = on_close
+      if on_close then
+        on_close(self)
+      end
+    end
+    term.opts = vim.tbl_extend("force", term.opts, zoom_opts)
+    term.opts.wo.winfixwidth, term.opts.wo.winfixheight = false, false
+    term:show():focus()
+    zoom_win = term.win
+    zoom_footer()
+    return
+  end
+  term:hide()
+  term:show():focus()
+end
+
 -- A terminal per folder of the current file (snacks keys terminals by cwd); cwd for buffers with no file.
 local function toggle_file_terminal()
   if vim.b.snacks_terminal then
@@ -193,6 +268,13 @@ return {
   lazy = false,
   priority = 1000,
   keys = {
+    {
+      "<leader>ul",
+      function()
+        Snacks.toggle.option("wrap", { name = "Line wrap" }):toggle()
+      end,
+      desc = "Toggle line wrap (this window)",
+    },
     {
       "<leader>fn",
       function()
@@ -427,6 +509,9 @@ return {
     { "<leader>tt", toggle_terminal, desc = "[T]erminal [T]oggle" },
     { "<C-t>", toggle_terminal, mode = { "n", "t" }, desc = "[T]erminal toggle" },
     { "<leader>tf", toggle_file_terminal, desc = "[T]erminal in the [F]ile's folder" },
+    { "<leader>tø", zoom_terminal, desc = "[T]erminal zoom" },
+    -- Windows Terminal sends Ctrl+ø as a plain ø, so its settings.json maps ctrl+ø to F13 (ESC [25~).
+    { "<F13>", zoom_terminal, mode = { "n", "t" }, desc = "Terminal zoom (Ctrl+ø)" },
     {
       "<leader>tr",
       function()

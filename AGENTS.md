@@ -171,6 +171,7 @@ Active only in standalone Neovim.
 | `<leader>ns` | n | Open the .NET user secrets (`%APPDATA%\Microsoft\UserSecrets\<UserSecretsId>\secrets.json`) of the current `.csproj`, else the nearest one above the current file/cwd. Creates the file as `{}` if missing; warns if there's no `.csproj` or no `<UserSecretsId>` |
 | `<leader>bd` | n | Close the current buffer, keeping the window (`Snacks.bufdelete`; defined in `plugins/snacks.lua`) |
 | `<leader>bo` | n | Close all other buffers (`Snacks.bufdelete.other`; defined in `plugins/snacks.lua`) |
+| `<leader>ul` | n | Toggle line wrap in the current window, with an on/off notification (defined in `plugins/snacks.lua`; see Options) |
 | `<leader>qs` | n | Restore this project's session (see Sessions) |
 | `n` / `N` | n | Next / previous search match, centred (`nzzzv`/`Nzzzv`: a count still applies, a closed fold around the match opens) |
 
@@ -367,6 +368,8 @@ key below is used. Hiding keeps the process running.
 | `<C-t>` | n, t | Same as `<leader>tt`, but also works while typing in the terminal (hides the current one). Replaces Vim's tag-pop `<C-t>` |
 | `N<leader>tt` | n | Same for terminal N (e.g. `2<leader>tt`) |
 | `<leader>tf` | n | Focus a terminal in the current file's folder (one per folder; Neovim's cwd for buffers with no file); in a terminal it hides it |
+| `<leader>tø` | n | Zoom: move the current terminal out of its split into a centred float (90% of the screen, rounded border, editor dimmed behind, the mode shown in the bottom border); again moves it back to the split. Outside a terminal it opens terminal 1 (`N<leader>tø`: terminal N) zoomed |
+| `Ctrl+ø` | n, t | Same as `<leader>tø`, also while typing in the terminal. Windows Terminal sends Ctrl+ø as a plain `ø`, so its `settings.json` binds `ctrl+sc(39)` (the ø key) to `sendInput` `\u001b[25~`, which Neovim reads as `<F13>`; the mapping is on `<F13>`. Without that binding Ctrl+ø just types `ø`. (Alt+z is Windows Terminal's own pane zoom and never reaches Neovim) |
 | `<leader>tr` | n | Move all terminals back to a right split (default) |
 | `<leader>tb` | n | Move all terminals to the bottom (remembered for the session) |
 | `<Esc><Esc>` | t | Terminal → normal mode (snacks' default: two `<Esc>` in quick succession; a single `<Esc>` reaches the program after a short delay). `<C-\><C-n>` (built-in) always works too |
@@ -376,6 +379,11 @@ A terminal belongs to the cwd it was opened in: after `:cd`, `<leader>tt` opens 
 keeps running and returns when you `:cd` back. A `<leader>tf` terminal whose folder is the cwd is the
 same terminal as `<leader>tt`'s. `<leader>tr`/`<leader>tb` move only these shell terminals (including
 the `<leader>tf` ones), not the lazygit float.
+
+Zoom moves the terminal rather than showing it twice (Neovim sizes a terminal to the smallest window
+showing it). Any way the float closes (unzoom, `<C-t>`, `q`, `<leader>tr`/`tb`, the shell exiting)
+puts back the split options, so a hidden zoomed terminal returns as a split. The split comes back at its
+default size (40%), not a size you dragged it to. lazygit isn't zoomable (it's already a float).
 
 ---
 
@@ -610,7 +618,11 @@ Standalone only (not in VSCode): `hlsearch` (see above; the statusline shows the
 `[3/7]`, while matches are highlighted: lualine's `searchcount`, first in `lualine_x`),
 `clipboard=unnamedplus`, `undofile`, `signcolumn=yes`, `cmdheight=0` (the command line appears only
 while typing `:`/`/` or for messages), `showmode=false` (lualine shows the mode), `fillchars` `eob: ` (no `~`
-past the end of a buffer), `cursorline`, `splitright`, `splitbelow`,
+past the end of a buffer), `cursorline`, `splitright`, `splitbelow`, `nowrap` (code doesn't wrap; long
+lines scroll sideways, `sidescrolloff=8`) with `linebreak` + `breakindent`, and `wrap` turned back on for
+`markdown`, `text` and `gitcommit` buffers (a `FileType` autocmd; the OpenCode output wraps on its own and
+its prompt via `ui.input.text.wrap`; `<leader>ul` toggles wrap in the current window with an on/off
+notification, `Snacks.toggle.option` in `plugins/snacks.lua`, not saved across restarts),
 `synmaxcol=300` (regex highlighting stops at column 300), `g:matchparen_timeout`/`g:matchparen_insert_timeout`
 = 20 ms (bracket matching gives up sooner; Neovim's defaults are 300/60), `.props`/`.targets` files → `xml`
 filetype, every `.json` file → `jsonc` (JSON with comments, so `jsonls` doesn't flag `//` comments in

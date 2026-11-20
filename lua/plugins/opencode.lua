@@ -24,6 +24,8 @@ return {
     ui = {
       position = "right",
       window_width = 0.40,
+      -- The global 'nowrap' (config/options.lua) would otherwise leave long prompts running off the edge.
+      input = { text = { wrap = true } },
     },
     keymap = {
       input_window = {
